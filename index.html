@@ -43,6 +43,82 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* --- Crypto ticker style --- */
+
+.ticker-wrapper {
+  margin: 0 auto 22px;
+  max-width: var(--max-width);
+}
+
+.ticker {
+  background: #10121f;
+  border-radius: 999px;
+  border: 1px solid rgba(150, 170, 255, 0.45);
+  padding: 4px 0;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 22px;
+  padding-inline: 18px;
+  white-space: nowrap;
+  animation: ticker-scroll 38s linear infinite;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.ticker-symbol {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ticker-price {
+  font-weight: 500;
+}
+
+.ticker-change {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.ticker-change.up {
+  color: var(--success);
+  border-color: rgba(60, 210, 120, 0.7);
+  background: rgba(34, 90, 66, 0.35);
+}
+
+.ticker-change.down {
+  color: var(--danger);
+  border-color: rgba(255, 75, 106, 0.7);
+  background: rgba(97, 40, 55, 0.35);
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* sur mobile on arrête l’animation pour laisser scroller à la main */
+@media (max-width: 720px) {
+  .ticker-track {
+    animation: none;
+  }
+  .ticker {
+    overflow-x: auto;
+  }
+}
+
     /* Grand logo en filigrane */
     body::before {
       content: "";
