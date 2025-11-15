@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lunar&Mars (LUMA) – Moon to Mars Concept Token</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Lunar&Mars (LUMA) is a symbolic BEP-20 token on BNB Smart Chain, representing the conceptual transition between the Moon and Mars."
+  />
+  <style>
+    :root {
+      --bg: #050814;
+      --bg-alt: #0b1020;
+      --accent: #ffcc33;
+      --accent-soft: #ffd96633;
+      --text: #f5f5f5;
+      --muted: #a0a4b8;
+      --border: #22283a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #151b3a 0, #050814 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 16px 48px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 30% 20%, #ffe9a3, #ff7c3a 45%, #3a1d60);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: 1px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 18px #ffcc3333;
+    }
+
+    .brand h1 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .brand span {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #ffffff11;
+      background: #ffffff05;
+    }
+
+    nav a:hover {
+      background: #ffffff10;
+    }
+
+    .hero {
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #0b1020 0, #050814 50%, #20124a 100%);
+      padding: 28px 20px;
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      background: #0b0f20;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .btn {
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #1b1200;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: #ffffff33;
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: #ffffff10;
+    }
+
+    .hero-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-orbit {
+      border-radius: 18px;
+      border: 1px dashed #ffffff22;
+      padding: 16px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orbit-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .orbit-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .dot-moon {
+      background: #e1e4ff;
+    }
+
+    .dot-luma {
+      background: #ffcc33;
+    }
+
+    .dot-mars {
+      background: #ff7043;
+    }
+
+    .section {
+      margin-bottom: 32px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--bg-alt);
+      padding: 20px 18px;
+    }
+
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .section p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .section small {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .card {
+      border-radius: 14px;
+      border: 1px solid #ffffff10;
+      background: #050814;
+      padding: 14px 12px;
+      font-size: 13px;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .key-value {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .key {
+      color: var(--muted);
+    }
+
+    .mono {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      word-break: break-all;
+    }
+
+    ul {
+      margin-left: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <!-- Tu peux remplacer le bloc .logo par une <img> vers ton vrai logo -->
+        <div class="logo">LM</div>
+        <div>
+          <h1>Lunar&Mars (LUMA)</h1>
+          <span>BEP-20 Concept Token – Moon → Mars</span>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#symbolism">Moon → Mars</a>
+        <a href="#tokenomics">Token</a>
+        <a href="#contract">Contract</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div>
+          <div class="hero-title">A symbolic bridge from the Moon to Mars.</div>
+          <div class="hero-sub">
+            LUMA is a symbolic BEP-20 token on BNB Smart Chain, dedicated to
+            representing the conceptual transition between a lunar outpost and
+            humanity’s future presence on Mars.
+          </div>
+
+          <div class="hero-badges">
+            <span class="badge">BEP-20 · BNB Smart Chain</span>
+            <span class="badge">Moon → Mars Concept</span>
+            <span class="badge">Fixed Supply · 225,384,400</span>
+          </div>
+
+          <div class="hero-actions">
+            <a
+              class="btn btn-primary"
+              href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on BscScan
+            </a>
+            <a
+              class="btn btn-outline"
+              href="#contract"
+            >
+              Contract details
+            </a>
+          </div>
+
+          <div class="hero-note">
+            LUMA is a symbolic community-driven concept token. It is <b>not</b> a
+            financial product, investment contract, or guarantee of returns.
+          </div>
+        </div>
+
+        <div class="hero-orbit">
+          <div class="orbit-title">Moon → LUMA → Mars</div>
+          <div class="orbit-line">
+            <span class="dot dot-moon"></span> Moon – first long-term human
+            foothold.
+          </div>
+          <div class="orbit-line">
+            <span class="dot dot-luma"></span> LUMA – symbolic bridge, community
+            and narrative.
+          </div>
+          <div class="orbit-line">
+            <span class="dot dot-mars"></span> Mars – ambitious next step for
+            human presence.
+          </div>
+          <p style="margin-top: 10px;">
+            The fixed supply of 225,384,400 LUMA represents a unique, memorable
+            symbolic value linked to this conceptual transition from the Moon to
+            Mars.
+          </p>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="section">
+        <h2>About Lunar&amp;Mars (LUMA)</h2>
+        <p>
+          Lunar&amp;Mars (LUMA) is a symbolic BEP-20 token deployed on the
+          BNB Smart Chain. Its total fixed supply of
+          <b>225,384,400 LUMA</b> represents a conceptual value tied to the
+          transition between the Moon and Mars, two milestones in humanity’s
+          path toward space exploration and settlement.
+        </p>
+        <p>
+          LUMA is designed as a community-oriented, inspirational token: a way
+          to celebrate, support, and discuss the idea of building the next step
+          after a stable presence on the Moon and aiming toward Mars.
+        </p>
+      </section>
+
+      <!-- SYMBOLISM -->
+      <section id="symbolism" class="section">
+        <h2>Moon → Mars Symbolism</h2>
+        <p>
+          LUMA does not try to represent a precise physical distance or a
+          technical metric. Instead, it captures a symbolic “effort value”:
+          the conceptual journey between a permanent base on the Moon and a
+          future human presence on Mars.
+        </p>
+        <p>
+          The token embodies:
+        </p>
+        <ul>
+          <li>Collective effort and curiosity around space exploration.</li>
+          <li>Technological progress from lunar infrastructure to Martian goals.</li>
+          <li>A shared narrative: Moon as the first step, Mars as the next horizon.</li>
+        </ul>
+      </section>
+
+      <!-- TOKENOMICS -->
+      <section id="tokenomics" class="section">
+        <h2>Token Overview</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Core Parameters</h3>
+            <p class="key-value">
+              <span class="key">Name:</span> Lunar&amp;Mars
+            </p>
+            <p class="key-value">
+              <span class="key">Symbol:</span> LUMA
+            </p>
+            <p class="key-value">
+              <span class="key">Standard:</span> BEP-20 (ERC-20 compatible)
+            </p>
+            <p class="key-value">
+              <span class="key">Network:</span> BNB Smart Chain
+            </p>
+            <p class="key-value">
+              <span class="key">Decimals:</span> 18
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Supply</h3>
+            <p class="key-value">
+              <span class="key">Total supply:</span>
+              225,384,400 LUMA
+            </p>
+            <p>
+              All tokens are initially minted to the deployer wallet. The
+              contract optionally allows controlled minting by the owner and
+              voluntary burns by any holder.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Contract Features</h3>
+            <ul>
+              <li><b>mint()</b> – owner-controlled, optional future minting.</li>
+              <li><b>burn()</b> – any holder can burn their LUMA tokens.</li>
+              <li>Based on OpenZeppelin ERC-20 implementation.</li>
+              <li>No hidden mechanics, no automatic fees or reflections.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTRACT -->
+      <section id="contract" class="section">
+        <h2>Smart Contract</h2>
+        <p>
+          The LUMA contract is verified on BscScan and based on audited
+          OpenZeppelin libraries.
+        </p>
+
+        <div class="card" style="margin-top: 10px;">
+          <p class="key-value">
+            <span class="key">Contract address:</span>
+          </p>
+          <p class="mono">
+            0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
+          </p>
+          <p class="key-value" style="margin-top: 6px;">
+            <span class="key">Explorer:</span>
+            <a
+              href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on BscScan
+            </a>
+          </p>
+        </div>
+
+        <p style="margin-top: 10px;">
+          To import LUMA into a compatible wallet (e.g. MetaMask on BNB Smart
+          Chain), simply add this contract address as a custom token with 18
+          decimals.
+        </p>
+      </section>
+
+      <!-- ROADMAP -->
+      <section id="roadmap" class="section">
+        <h2>Concept Roadmap</h2>
+        <p>
+          LUMA is a symbolic, community-driven project. There is no promise of
+          financial gain, but there is a clear thematic direction:
+        </p>
+
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <h3>Phase 1 – Foundation</h3>
+            <ul>
+              <li>Deploy BEP-20 contract on BNB Smart Chain.</li>
+              <li>Verify source code and ownership on BscScan.</li>
+              <li>Publish basic project information and website.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Phase 2 – Identity & Community</h3>
+            <ul>
+              <li>Finalize visual identity (logos, icons).</li>
+              <li>Share the Moon → Mars concept with early supporters.</li>
+              <li>Create simple tools, visuals, or content around LUMA.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Phase 3 – Extensions (Optional)</h3>
+            <ul>
+              <li>Symbolic airdrops or community events.</li>
+              <li>Integrations with dashboards, explorers, or DApps.</li>
+              <li>Collaborations around space-themed creative projects.</li>
+            </ul>
+          </div>
+        </div>
+
+        <small>
+          This roadmap is conceptual and non-binding. LUMA is not an investment,
+          but a symbolic representation tied to the Moon → Mars narrative.
+        </small>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        © <span id="year"></span> Lunar&amp;Mars (LUMA). Concept BEP-20 token.
+      </div>
+      <div>
+        Explorer:
+        <a
+          href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          BscScan
+        </a>
+        &nbsp;·&nbsp;
+        Website:
+        <span>lunarmars-token.github.io</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
