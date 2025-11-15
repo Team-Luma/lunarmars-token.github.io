@@ -705,7 +705,13 @@ setInterval(loadTicker, 60000);
 
   </style>
 </head>
-
+    <div class="ticker-wrapper">
+      <div class="ticker" id="ticker">
+        <div class="ticker-track" id="ticker-track">
+          <!-- rempli par le script -->
+        </div>
+      </div>
+    </div>
 <body>
   <div class="page">
     <header>
@@ -1411,6 +1417,64 @@ setInterval(loadTicker, 60000);
     applyTranslations(savedLang);
 
     document.getElementById("year").textContent = new Date().getFullYear();
+    // --- Crypto ticker using CoinGecko ---
+
+const lumaCoins = [
+  { id: "bitcoin",     symbol: "BTC",  name: "Bitcoin" },
+  { id: "ethereum",    symbol: "ETH",  name: "Ethereum" },
+  { id: "binancecoin", symbol: "BNB",  name: "BNB" },
+  { id: "solana",      symbol: "SOL",  name: "Solana" },
+  { id: "ripple",      symbol: "XRP",  name: "XRP" },
+  { id: "dogecoin",    symbol: "DOGE", name: "Dogecoin" },
+  { id: "polygon",     symbol: "MATIC",name: "Polygon" },
+  { id: "tron",        symbol: "TRX",  name: "TRON" },
+];
+
+async function loadTicker() {
+  try {
+    const ids = lumaCoins.map(c => c.id).join(",");
+    const url =
+      "https://api.coingecko.com/api/v3/simple/price?ids=" +
+      ids +
+      "&vs_currencies=usd&include_24hr_change=true";
+
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    const track = document.getElementById("ticker-track");
+    if (!track) return;
+
+    track.innerHTML = "";
+
+    lumaCoins.forEach(c => {
+      const info = data[c.id];
+      if (!info) return;
+
+      const price  = info.usd;
+      const change = info.usd_24h_change || 0;
+      const changeClass = change >= 0 ? "up" : "down";
+      const changeStr   = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+
+      track.insertAdjacentHTML(
+        "beforeend",
+        `<div class="ticker-item">
+           <span class="ticker-symbol">${c.symbol}</span>
+           <span class="ticker-price">$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
+           <span class="ticker-change ${changeClass}">${changeStr}</span>
+         </div>`
+      );
+    });
+
+    // duplication pour un défilement infini fluide
+    track.innerHTML += track.innerHTML;
+  } catch (e) {
+    console.error("Ticker error:", e);
+  }
+}
+
+// chargement initial + refresh toutes les 60 secondes
+loadTicker();
+setInterval(loadTicker, 60000);
   </script>
 </body>
 </html>
