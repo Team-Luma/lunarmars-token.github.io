@@ -1516,126 +1516,154 @@
 
     // Set default language
     setLanguage("en");
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ---- Global ticker (CoinGecko) ----
-    const lumaCoins = [
-      { id: "bitcoin",        symbol: "BTC"  },
-      { id: "ethereum",       symbol: "ETH"  },
-      { id: "binancecoin",    symbol: "BNB"  },
-      { id: "solana",         symbol: "SOL"  },
-      { id: "ripple",         symbol: "XRP"  },
-      { id: "dogecoin",       symbol: "DOGE" },
-      { id: "litecoin",       symbol: "LTC"  },
-      { id: "shiba-inu",      symbol: "SHIB" },
-      { id: "bitcoin-cash",   symbol: "BCH"  },
-      { id: "zcash",          symbol: "ZEC"  },
-      { id: "polygon",        symbol: "MATIC"},
-      { id: "tron",           symbol: "TRX"  }
-    ];
+  // ---- Global ticker (CoinGecko) ----
+  const lumaCoins = [
+    { id: "bitcoin", symbol: "BTC" },
+    { id: "ethereum", symbol: "ETH" },
+    { id: "binancecoin", symbol: "BNB" },
+    { id: "solana", symbol: "SOL" },
+    { id: "ripple", symbol: "XRP" },
+    { id: "dogecoin", symbol: "DOGE" },
+    { id: "polygon", symbol: "MATIC" },
+    { id: "tron", symbol: "TRX" }
+  ];
 
-    async function loadTicker() {
-      try {
-        const ids = lumaCoins.map(c => c.id).join(",");
-        const url =
-          "https://api.coingecko.com/api/v3/simple/price?ids=" +
-          ids +
-          "&vs_currencies=usd&include_24hr_change=true";
+  async function loadTicker() {
+    try {
+      const ids = lumaCoins.map(c => c.id).join(",");
+      const url =
+        "https://api.coingecko.com/api/v3/simple/price?ids=" +
+        ids +
+        "&vs_currencies=usd&include_24hr_change=true";
 
-        const res  = await fetch(url);
-        const data = await res.json();
+      const res = await fetch(url);
+      const data = await res.json();
+      const track = document.getElementById("ticker-track");
+      if (!track) return;
 
-        const track = document.getElementById("ticker-track");
-        if (!track) return;
+      track.innerHTML = "";
 
-        track.innerHTML = "";
+      lumaCoins.forEach(c => {
+        const info = data[c.id];
+        if (!info) return;
 
-        lumaCoins.forEach(c => {
-          const info = data[c.id];
-          if (!info) return;
+        const price = info.usd;
+        const change = info.usd_24h_change || 0;
+        const changeClass = change >= 0 ? "up" : "down";
+        const changeStr =
+          (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
 
-          const price  = info.usd;
-          const change = info.usd_24h_change || 0;
-          const changeClass = change >= 0 ? "up" : "down";
-          const changeStr   =
-            (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+        track.insertAdjacentHTML(
+          "beforeend",
+          `<div class="ticker-item">
+             <span class="ticker-symbol">${c.symbol}</span>
+             <span class="ticker-price">$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
+             <span class="ticker-change ${changeClass}">${changeStr}</span>
+           </div>`
+        );
+      });
 
-          track.insertAdjacentHTML(
-            "beforeend",
-            `<div class="ticker-item">
-               <span class="ticker-symbol">${c.symbol}</span>
-               <span class="ticker-price">$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
-               <span class="ticker-change ${changeClass}">${changeStr}</span>
-             </div>`
-          );
-        });
-
-        // Duplicate for smooth infinite scroll
-        track.innerHTML += track.innerHTML;
-      } catch (e) {
-        console.error("Ticker error:", e);
-      }
+      track.innerHTML += track.innerHTML;
+    } catch (e) {
+      console.error("Ticker error:", e);
     }
+  }
 
-    loadTicker();
-    setInterval(loadTicker, 60000);
-    
+  loadTicker();
+  setInterval(loadTicker, 60000);
+
+  // ---- LUMA LIVE DATA (FIXED WITH FALLBACK) ----
+  const LUMA_TOKEN = "0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9";
+  const LUMA_PAIR  = "0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+
   async function loadLumaLive() {
-    const priceEl  = document.getElementById("luma-price");
+    const priceEl = document.getElementById("luma-price");
     const changeEl = document.getElementById("luma-change");
-    const extraEl  = document.getElementById("luma-extra");
+    const extraEl = document.getElementById("luma-extra");
 
     const setError = (msg) => {
-      if (priceEl)  priceEl.textContent  = msg;
+      if (priceEl) priceEl.textContent = msg;
       if (changeEl) changeEl.textContent = "N/A";
-      if (extraEl)  extraEl.textContent  = "Live data unavailable";
+      if (extraEl) extraEl.textContent = "Live data unavailable";
     };
 
     try {
-      // 👉 on passe par l’endpoint "search" et on cherche par adresse de pair
-      const url = "https://api.dexscreener.com/latest/dex/search?q=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
-      const res = await fetch(url);
-      if (!res.ok) {
-        console.error("Dexscreener HTTP error:", res.status, res.statusText);
-        setError("Unavailable");
-        return;
+      let pair = null;
+
+      // 1) TRY TOKEN ENDPOINT
+      let res = await fetch(
+        "https://api.dexscreener.com/latest/dex/tokens/" + LUMA_TOKEN
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.pairs && data.pairs.length > 0) {
+          pair = data.pairs.find(p => p.chainId === "bsc") || data.pairs[0];
+        }
       }
 
-      const data = await res.json();
-      const pair = data?.pairs?.[0];
+      // 2) FALLBACK SEARCH BY TOKEN
       if (!pair) {
-        console.error("Dexscreener: no pair found in search");
+        res = await fetch(
+          "https://api.dexscreener.com/latest/dex/search?q=" + LUMA_TOKEN
+        );
+        if (res.ok) {
+          const d = await res.json();
+          if (d?.pairs && d.pairs.length > 0) {
+            pair = d.pairs[0];
+          }
+        }
+      }
+
+      // 3) LAST FALLBACK SEARCH BY PAIR
+      if (!pair) {
+        res = await fetch(
+          "https://api.dexscreener.com/latest/dex/search?q=" + LUMA_PAIR
+        );
+        if (res.ok) {
+          const d2 = await res.json();
+          if (d2?.pairs && d2.pairs.length > 0) {
+            pair = d2.pairs[0];
+          }
+        }
+      }
+
+      if (!pair) {
+        console.warn("Dexscreener: aucune paire trouvée");
         setError("Unavailable");
         return;
       }
 
-      const price  = Number(pair.priceUsd);
+      const price = Number(pair.priceUsd);
       const change = Number(pair.priceChange?.h24 ?? 0);
 
-      if (priceEl && !Number.isNaN(price)) {
+      if (!Number.isNaN(price)) {
         priceEl.textContent = "$" + price.toFixed(5);
+      } else {
+        priceEl.textContent = "N/A";
       }
 
-      if (changeEl && !Number.isNaN(change)) {
+      if (!Number.isNaN(change)) {
         const sign = change >= 0 ? "+" : "";
         changeEl.textContent = sign + change.toFixed(2) + "%";
         changeEl.style.color = change >= 0 ? "#3cd278" : "#ff4b6a";
+      } else {
+        changeEl.textContent = "N/A";
       }
 
-      if (extraEl) {
-        const liq = pair.liquidity?.usd;
-        const buys  = pair.txns?.h24?.buys  || 0;
-        const sells = pair.txns?.h24?.sells || 0;
-        const tx = buys + sells;
+      const liq = pair.liquidity?.usd;
+      const buys = pair.txns?.h24?.buys || 0;
+      const sells = pair.txns?.h24?.sells || 0;
+      const tx = buys + sells;
 
-        let txt = "Dexscreener pair data";
-        if (liq) {
-          txt = "Liquidity ≈ $" + Number(liq).toLocaleString("en-US",{ maximumFractionDigits: 0 });
-        }
-        if (tx) {
-          txt += " • 24h trades: " + tx;
-        }
-        extraEl.textContent = txt;
-      }
+      let txt = "Dexscreener pair data";
+      if (liq) txt = "Liquidity ≈ $" + Number(liq).toLocaleString();
+      if (tx) txt += " • 24h trades: " + tx;
+
+      extraEl.textContent = txt;
+
     } catch (e) {
       console.error("LUMA live price error:", e);
       setError("Unavailable");
@@ -1644,6 +1672,6 @@
 
   loadLumaLive();
   setInterval(loadLumaLive, 60000);
- </script>
+</script>
 </body>
 </html>
