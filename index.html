@@ -1413,5 +1413,41 @@
 loadTicker();
 setInterval(loadTicker, 60000);
   </script>
+  
+  <div id="luma-live" style="margin-top:20px; font-size:18px; color:#fff;">
+    <strong>LUMA Price:</strong> <span id="luma-price">Loading...</span><br>
+    <strong>24h Change:</strong> <span id="luma-change">Loading...</span>
+</div>
+
+  // --- Live LUMA Price (Dexscreener API) ---
+async function loadLumaLive() {
+    try {
+        const url = "https://api.dexscreener.com/latest/dex/pairs/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.pairs || !data.pairs[0]) return;
+
+        const pair = data.pairs[0];
+
+        const price = pair.priceUsd;
+        const change = pair.priceChange.h24;
+
+        document.getElementById("luma-price").innerText = "$" + Number(price).toFixed(6);
+        document.getElementById("luma-change").innerText = change + "%";
+
+        // Couleur auto : vert si + , rouge si -
+        document.getElementById("luma-change").style.color =
+            change >= 0 ? "#4caf50" : "#f44336";
+
+    } catch (e) {
+        console.error("LUMA live price error:", e);
+    }
+}
+
+// Chargement + refresh toutes les 60 secondes
+loadLumaLive();
+setInterval(loadLumaLive, 60000);
+
 </body>
 </html>
