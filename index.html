@@ -1579,54 +1579,72 @@
     loadTicker();
     setInterval(loadTicker, 60000);
 
-    // ---- LUMA live price from Dexscreener ----
-    async function loadLumaLive() {
-      const url = "https://api.dexscreener.com/latest/dex/pairs/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+<script>
+  async function loadLumaLive() {
+    const priceEl  = document.getElementById("luma-price");
+    const changeEl = document.getElementById("luma-change");
+    const extraEl  = document.getElementById("luma-extra");
 
-      try {
-        const res  = await fetch(url);
-        const data = await res.json();
-        const pair = data?.pairs?.[0];
-        if (!pair) return;
+    const setError = (msg) => {
+      if (priceEl)  priceEl.textContent  = msg;
+      if (changeEl) changeEl.textContent = "N/A";
+      if (extraEl)  extraEl.textContent  = "Live data unavailable";
+    };
 
-        const price  = Number(pair.priceUsd);
-        const change = Number(pair.priceChange?.h24 ?? 0);
-
-        const priceEl  = document.getElementById("luma-price");
-        const changeEl = document.getElementById("luma-change");
-        const extraEl  = document.getElementById("luma-extra");
-
-        if (priceEl) {
-          priceEl.textContent = "$" + price.toFixed(5);
-        }
-
-        if (changeEl) {
-          const sign = change >= 0 ? "+" : "";
-          changeEl.textContent = sign + change.toFixed(2) + "%";
-          changeEl.style.color = change >= 0 ? "#3cd278" : "#ff4b6a";
-        }
-
-        if (extraEl) {
-          const liq = pair.liquidity?.usd;
-          const tx  = (pair.txns?.h24?.buys || 0) + (pair.txns?.h24?.sells || 0);
-          let txt = "";
-          if (liq) {
-            txt = "Liquidity ≈ $" + Number(liq).toLocaleString("en-US",{maximumFractionDigits:0});
-          } else {
-            txt = "Dexscreener pair data";
-          }
-          if (tx) {
-            txt += " • 24h trades: " + tx;
-          }
-          extraEl.textContent = txt;
-        }
-      } catch (e) {
-        console.error("LUMA live price error:", e);
+    try {
+      // 👉 on passe par l’endpoint "search" et on cherche par adresse de pair
+      const url = "https://api.dexscreener.com/latest/dex/search?q=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+      const res = await fetch(url);
+      if (!res.ok) {
+        console.error("Dexscreener HTTP error:", res.status, res.statusText);
+        setError("Unavailable");
+        return;
       }
-    }
 
-    loadLumaLive();
-    setInterval(loadLumaLive, 60000);
-  </script>
+      const data = await res.json();
+      const pair = data?.pairs?.[0];
+      if (!pair) {
+        console.error("Dexscreener: no pair found in search");
+        setError("Unavailable");
+        return;
+      }
+
+      const price  = Number(pair.priceUsd);
+      const change = Number(pair.priceChange?.h24 ?? 0);
+
+      if (priceEl && !Number.isNaN(price)) {
+        priceEl.textContent = "$" + price.toFixed(5);
+      }
+
+      if (changeEl && !Number.isNaN(change)) {
+        const sign = change >= 0 ? "+" : "";
+        changeEl.textContent = sign + change.toFixed(2) + "%";
+        changeEl.style.color = change >= 0 ? "#3cd278" : "#ff4b6a";
+      }
+
+      if (extraEl) {
+        const liq = pair.liquidity?.usd;
+        const buys  = pair.txns?.h24?.buys  || 0;
+        const sells = pair.txns?.h24?.sells || 0;
+        const tx = buys + sells;
+
+        let txt = "Dexscreener pair data";
+        if (liq) {
+          txt = "Liquidity ≈ $" + Number(liq).toLocaleString("en-US",{ maximumFractionDigits: 0 });
+        }
+        if (tx) {
+          txt += " • 24h trades: " + tx;
+        }
+        extraEl.textContent = txt;
+      }
+    } catch (e) {
+      console.error("LUMA live price error:", e);
+      setError("Unavailable");
+    }
+  }
+
+  loadLumaLive();
+  setInterval(loadLumaLive, 60000);
+ </script>
 </body>
 </html>
