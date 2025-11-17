@@ -45,79 +45,78 @@
 
     /* --- Crypto ticker style --- */
 
-.ticker-wrapper {
-  margin: 0 auto 22px;
-  max-width: var(--max-width);
-}
+    .ticker-wrapper {
+      margin: 0 auto 22px;
+      max-width: var(--max-width);
+    }
 
-.ticker {
-  background: #10121f;
-  border-radius: 999px;
-  border: 1px solid rgba(150, 170, 255, 0.45);
-  padding: 4px 0;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-}
+    .ticker {
+      background: #10121f;
+      border-radius: 999px;
+      border: 1px solid rgba(150, 170, 255, 0.45);
+      padding: 4px 0;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+    }
 
-.ticker-track {
-  display: inline-flex;
-  gap: 22px;
-  padding-inline: 18px;
-  white-space: nowrap;
-  animation: ticker-scroll 38s linear infinite;
-}
+    .ticker-track {
+      display: inline-flex;
+      gap: 22px;
+      padding-inline: 18px;
+      white-space: nowrap;
+      animation: ticker-scroll 38s linear infinite;
+    }
 
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
 
-.ticker-symbol {
-  font-weight: 600;
-  color: var(--text);
-}
+    .ticker-symbol {
+      font-weight: 600;
+      color: var(--text);
+    }
 
-.ticker-price {
-  font-weight: 500;
-}
+    .ticker-price {
+      font-weight: 500;
+    }
 
-.ticker-change {
-  font-size: 11px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-}
+    .ticker-change {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
 
-.ticker-change.up {
-  color: var(--success);
-  border-color: rgba(60, 210, 120, 0.7);
-  background: rgba(34, 90, 66, 0.35);
-}
+    .ticker-change.up {
+      color: var(--success);
+      border-color: rgba(60, 210, 120, 0.7);
+      background: rgba(34, 90, 66, 0.35);
+    }
 
-.ticker-change.down {
-  color: var(--danger);
-  border-color: rgba(255, 75, 106, 0.7);
-  background: rgba(97, 40, 55, 0.35);
-}
+    .ticker-change.down {
+      color: var(--danger);
+      border-color: rgba(255, 75, 106, 0.7);
+      background: rgba(97, 40, 55, 0.35);
+    }
 
-@keyframes ticker-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
-/* sur mobile on arrête l’animation pour laisser scroller à la main */
-@media (max-width: 720px) {
-  .ticker-track {
-    animation: none;
-  }
-  .ticker {
-    overflow-x: auto;
-  }
-}
+    @media (max-width: 720px) {
+      .ticker-track {
+        animation: none;
+      }
+      .ticker {
+        overflow-x: auto;
+      }
+    }
 
     /* Grand logo en filigrane */
     body::before {
@@ -433,8 +432,6 @@
       box-shadow: 0 0 8px rgba(60, 210, 120, 0.9);
     }
 
-    /* Sections génériques */
-
     section {
       margin-bottom: 40px;
     }
@@ -602,8 +599,6 @@
       text-decoration-style: dotted;
     }
 
-    /* Réactivité */
-
     @media (max-width: 960px) {
       .hero {
         grid-template-columns: minmax(0, 1fr);
@@ -644,75 +639,18 @@
         opacity: 0.08;
       }
     }
-    // --- Crypto ticker using CoinGecko ---
-
-const lumaCoins = [
-  { id: "bitcoin",     symbol: "BTC",  name: "Bitcoin" },
-  { id: "ethereum",    symbol: "ETH",  name: "Ethereum" },
-  { id: "binancecoin", symbol: "BNB",  name: "BNB" },
-  { id: "solana",      symbol: "SOL",  name: "Solana" },
-  { id: "ripple",      symbol: "XRP",  name: "XRP" },
-  { id: "dogecoin",    symbol: "DOGE", name: "Dogecoin" },
-  { id: "polygon",     symbol: "MATIC",name: "Polygon" },
-  { id: "tron",        symbol: "TRX",  name: "TRON" },
-];
-
-async function loadTicker() {
-  try {
-    const ids = lumaCoins.map(c => c.id).join(",");
-    const url =
-      "https://api.coingecko.com/api/v3/simple/price?ids=" +
-      ids +
-      "&vs_currencies=usd&include_24hr_change=true";
-
-    const res  = await fetch(url);
-    const data = await res.json();
-
-    const track = document.getElementById("ticker-track");
-    if (!track) return;
-
-    track.innerHTML = "";
-
-    lumaCoins.forEach(c => {
-      const info = data[c.id];
-      if (!info) return;
-
-      const price  = info.usd;
-      const change = info.usd_24h_change || 0;
-      const changeClass = change >= 0 ? "up" : "down";
-      const changeStr   = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
-
-      track.insertAdjacentHTML(
-        "beforeend",
-        `<div class="ticker-item">
-           <span class="ticker-symbol">${c.symbol}</span>
-           <span class="ticker-price">$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
-           <span class="ticker-change ${changeClass}">${changeStr}</span>
-         </div>`
-      );
-    });
-
-    // duplication pour un défilement infini fluide
-    track.innerHTML += track.innerHTML;
-  } catch (e) {
-    console.error("Ticker error:", e);
-  }
-}
-
-// chargement initial + refresh toutes les 60 secondes
-loadTicker();
-setInterval(loadTicker, 60000);
-
   </style>
 </head>
-    <div class="ticker-wrapper">
-      <div class="ticker" id="ticker">
-        <div class="ticker-track" id="ticker-track">
-          <!-- rempli par le script -->
-        </div>
+<body>
+  <!-- Crypto ticker -->
+  <div class="ticker-wrapper">
+    <div class="ticker" id="ticker">
+      <div class="ticker-track" id="ticker-track">
+        <!-- Filled by script -->
       </div>
     </div>
-<body>
+  </div>
+
   <div class="page">
     <header>
       <div class="brand">
@@ -997,9 +935,9 @@ setInterval(loadTicker, 60000);
             distributions. Always double-check the contract address.
           </li>
           <li data-i18n="how.step4">
-            4. (Optional) If a DEX pool is created in the future, you will be
-            able to swap a small amount of BNB for LUMA. Always verify the
-            contract and slippage before trading.
+            4. (Optional) If liquidity is available, you can trade the LUMA/BNB
+            pool using DEX interfaces such as ApeSpace or Dexscreener. Always
+            verify the contract address and slippage before trading.
           </li>
         </ul>
 
@@ -1042,8 +980,13 @@ setInterval(loadTicker, 60000);
           <span>https://lunarmars-token.github.io</span>
         </div>
         <div class="tokenomics-item">
-          <strong data-i18n="community.item3.title">Future channels</strong>
-          <span data-i18n="community.item3.text">Social channels (Discord, Telegram, X, etc.) may be announced once the community is ready.</span>
+          <strong data-i18n="community.item3.title">Trading &amp; social links</strong>
+          <span data-i18n="community.item3.text">
+            You can follow the project and access the LUMA/BNB pair on third-party platforms:<br>
+            <a href="https://x.com/LMars26424" target="_blank" rel="noopener">@LMars26424 on X (Twitter)</a><br>
+            <a href="https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9" target="_blank" rel="noopener">LUMA page on ApeSpace</a><br>
+            <a href="https://dexscreener.com/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" rel="noopener">LUMA/BNB pair on Dexscreener</a>
+          </span>
         </div>
       </div>
     </section>
@@ -1104,8 +1047,7 @@ setInterval(loadTicker, 60000);
     </footer>
   </div>
 
-  <!-- Simple i18n -->
-
+  <!-- i18n -->
   <script>
     const translations = {
       en: {
@@ -1208,7 +1150,7 @@ setInterval(loadTicker, 60000);
         "how.step3":
           "3. Receive LUMA by transfer from the deployer or from community distributions. Always double-check the contract address.",
         "how.step4":
-          "4. (Optional) If a DEX pool is created in the future, you will be able to swap a small amount of BNB for LUMA. Always verify the contract and slippage before trading.",
+          "4. (Optional) If liquidity is available, you can trade the LUMA/BNB pool using DEX interfaces such as ApeSpace or Dexscreener. Always verify the contract address and slippage before trading.",
         "how.disclaimerTitle": "Important notice",
         "how.disclaimerText":
           "LUMA is a conceptual and symbolic token. It does not promise profits, dividends or price appreciation. Never invest more than you can afford to lose, and consider LUMA primarily as a creative and educational asset.",
@@ -1219,9 +1161,9 @@ setInterval(loadTicker, 60000);
         "community.subtitle":
           "Join the discussion, propose experiments and help shape the Moon → Mars narrative around LUMA.",
         "community.item2.title": "Website",
-        "community.item3.title": "Future channels",
+        "community.item3.title": "Trading & social links",
         "community.item3.text":
-          "Social channels (Discord, Telegram, X, etc.) may be announced once the community is ready.",
+          "You can follow the project and access the LUMA/BNB pair on third-party platforms:<br><a href='https://x.com/LMars26424' target='_blank' rel='noopener'>@LMars26424 on X (Twitter)</a><br><a href='https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9' target='_blank' rel='noopener'>LUMA page on ApeSpace</a><br><a href='https://dexscreener.com/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6' target='_blank' rel='noopener'>LUMA/BNB pair on Dexscreener</a>",
 
         "faq.title": "FAQ",
         "faq.subtitle":
@@ -1346,7 +1288,7 @@ setInterval(loadTicker, 60000);
         "how.step3":
           "3. Reçois des LUMA par transfert depuis le déployeur ou via des distributions communautaires. Vérifie toujours l’adresse du contrat.",
         "how.step4":
-          "4. (Optionnel) Si un pool DEX est créé plus tard, tu pourras échanger un peu de BNB contre LUMA. Vérifie toujours le contrat et le slippage avant de trader.",
+          "4. (Optionnel) Si de la liquidité est disponible, tu peux échanger la paire LUMA/BNB via des interfaces DEX comme ApeSpace ou Dexscreener. Vérifie toujours l’adresse du contrat et le slippage avant de trader.",
         "how.disclaimerTitle": "Avis important",
         "how.disclaimerText":
           "LUMA est un jeton conceptuel et symbolique. Il ne promet ni profits, ni dividendes, ni hausse de prix. N’investis jamais plus que ce que tu peux te permettre de perdre et considère LUMA d’abord comme un actif créatif et éducatif.",
@@ -1357,9 +1299,9 @@ setInterval(loadTicker, 60000);
         "community.subtitle":
           "Participe aux discussions, propose des expériences et aide à construire le récit Lune → Mars autour de LUMA.",
         "community.item2.title": "Site web",
-        "community.item3.title": "Canaux futurs",
+        "community.item3.title": "Liens de trading & réseaux sociaux",
         "community.item3.text":
-          "Les canaux sociaux (Discord, Telegram, X, etc.) pourront être annoncés lorsque la communauté sera prête.",
+          "Tu peux suivre le projet et consulter la paire LUMA/BNB sur des plates-formes tierces :<br><a href='https://x.com/LMars26424' target='_blank' rel='noopener'>@LMars26424 sur X (Twitter)</a><br><a href='https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9' target='_blank' rel='noopener'>Page LUMA sur ApeSpace</a><br><a href='https://dexscreener.com/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6' target='_blank' rel='noopener'>Paire LUMA/BNB sur Dexscreener</a>",
 
         "faq.title": "FAQ",
         "faq.subtitle":
@@ -1394,7 +1336,7 @@ setInterval(loadTicker, 60000);
           if (text !== undefined) el.innerHTML = text;
         });
 
-      document
+    document
         .querySelectorAll(".lang-btn")
         .forEach((btn) => btn.classList.toggle("active", btn.dataset.lang === lang));
 
@@ -1409,64 +1351,65 @@ setInterval(loadTicker, 60000);
     applyTranslations(savedLang);
 
     document.getElementById("year").textContent = new Date().getFullYear();
-    // --- Crypto ticker using CoinGecko ---
+  </script>
 
-const lumaCoins = [
-  { id: "bitcoin",     symbol: "BTC",  name: "Bitcoin" },
-  { id: "ethereum",    symbol: "ETH",  name: "Ethereum" },
-  { id: "binancecoin", symbol: "BNB",  name: "BNB" },
-  { id: "solana",      symbol: "SOL",  name: "Solana" },
-  { id: "ripple",      symbol: "XRP",  name: "XRP" },
-  { id: "dogecoin",    symbol: "DOGE", name: "Dogecoin" },
-  { id: "polygon",     symbol: "MATIC",name: "Polygon" },
-  { id: "tron",        symbol: "TRX",  name: "TRON" },
-];
+  <!-- Crypto ticker JS -->
+  <script>
+    const lumaCoins = [
+      { id: "bitcoin",     symbol: "BTC",  name: "Bitcoin" },
+      { id: "ethereum",    symbol: "ETH",  name: "Ethereum" },
+      { id: "binancecoin", symbol: "BNB",  name: "BNB" },
+      { id: "solana",      symbol: "SOL",  name: "Solana" },
+      { id: "ripple",      symbol: "XRP",  name: "XRP" },
+      { id: "dogecoin",    symbol: "DOGE", name: "Dogecoin" },
+      { id: "polygon",     symbol: "MATIC",name: "Polygon" },
+      { id: "tron",        symbol: "TRX",  name: "TRON" },
+    ];
 
-async function loadTicker() {
-  try {
-    const ids = lumaCoins.map(c => c.id).join(",");
-    const url =
-      "https://api.coingecko.com/api/v3/simple/price?ids=" +
-      ids +
-      "&vs_currencies=usd&include_24hr_change=true";
+    async function loadTicker() {
+      try {
+        const ids = lumaCoins.map(c => c.id).join(",");
+        const url =
+          "https://api.coingecko.com/api/v3/simple/price?ids=" +
+          ids +
+          "&vs_currencies=usd&include_24hr_change=true";
 
-    const res  = await fetch(url);
-    const data = await res.json();
+        const res  = await fetch(url);
+        const data = await res.json();
 
-    const track = document.getElementById("ticker-track");
-    if (!track) return;
+        const track = document.getElementById("ticker-track");
+        if (!track) return;
 
-    track.innerHTML = "";
+        track.innerHTML = "";
 
-    lumaCoins.forEach(c => {
-      const info = data[c.id];
-      if (!info) return;
+        lumaCoins.forEach(c => {
+          const info = data[c.id];
+          if (!info) return;
 
-      const price  = info.usd;
-      const change = info.usd_24h_change || 0;
-      const changeClass = change >= 0 ? "up" : "down";
-      const changeStr   = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+          const price  = info.usd;
+          const change = info.usd_24h_change || 0;
+          const changeClass = change >= 0 ? "up" : "down";
+          const changeStr   = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
 
-      track.insertAdjacentHTML(
-        "beforeend",
-        `<div class="ticker-item">
-           <span class="ticker-symbol">${c.symbol}</span>
-           <span class="ticker-price">$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
-           <span class="ticker-change ${changeClass}">${changeStr}</span>
-         </div>`
-      );
-    });
+          track.insertAdjacentHTML(
+            "beforeend",
+            `<div class="ticker-item">
+               <span class="ticker-symbol">${c.symbol}</span>
+               <span class="ticker-price">$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
+               <span class="ticker-change ${changeClass}">${changeStr}</span>
+             </div>`
+          );
+        });
 
-    // duplication pour un défilement infini fluide
-    track.innerHTML += track.innerHTML;
-  } catch (e) {
-    console.error("Ticker error:", e);
-  }
-}
+        // duplication pour un défilement infini fluide
+        track.innerHTML += track.innerHTML;
+      } catch (e) {
+        console.error("Ticker error:", e);
+      }
+    }
 
-// chargement initial + refresh toutes les 60 secondes
-loadTicker();
-setInterval(loadTicker, 60000);
+    loadTicker();
+    setInterval(loadTicker, 60000);
   </script>
 </body>
 </html>
