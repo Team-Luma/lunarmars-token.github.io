@@ -72,14 +72,15 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+      width: 52px;     /* plus gros */
+      height: 52px;
+      border-radius: 16px;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .brand-logo img {
@@ -90,7 +91,7 @@
 
     .brand-name {
       font-weight: 800;
-      font-size: 20px;
+      font-size: 22px;
       letter-spacing: 0.03em;
     }
 
@@ -202,19 +203,20 @@
     .market-inner {
       max-width: var(--max-width);
       margin: 0 auto;
-      padding: 8px 18px;
+      padding: 12px 18px;      /* plus haut */
       white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 28px;
       animation: ticker-scroll 40s linear infinite;
+      min-height: 40px;        /* bande plus grosse */
     }
 
     .market-item {
       display: inline-flex;
       align-items: baseline;
       gap: 6px;
-      font-size: 12px;
+      font-size: 13px;         /* texte plus gros */
       color: var(--text-soft);
     }
 
@@ -229,7 +231,7 @@
 
     .market-change {
       font-size: 11px;
-      padding: 2px 6px;
+      padding: 3px 7px;
       border-radius: 999px;
       border: 1px solid transparent;
     }
@@ -643,7 +645,7 @@
         <p data-i18n="sec2-p1">
           LUMA is not listed on every exchange. It mainly lives on decentralised
           exchanges (DEX) on BNB Smart Chain, and is also available on the MEXC
-          centralized exchange.
+          platform.
         </p>
         <p data-i18n="sec2-p2">
           Always double-check the contract address. If an address is different,
@@ -673,8 +675,7 @@
           </li>
           <li data-i18n="how-step-5">
             <strong>5. Or trade on MEXC</strong>
-            You can also trade LUMA on the MEXC centralized exchange if the
-            listing is available in your region.
+            You can also trade LUMA on MEXC using their DEX interface.
           </li>
         </ul>
       </div>
@@ -716,12 +717,11 @@
             </a>
           </li>
           <li>
-            <strong>MEXC (CEX)</strong>
-            <a href="https://www.mexc.com/"
+            <strong>MEXC DEX</strong>
+            <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
                target="_blank" rel="noopener noreferrer">
-              Open MEXC and search for LUMA
+              Trade LUMA on MEXC
             </a>
-            <!-- Remplace le lien ci-dessus par l’URL exacte de ta paire LUMA/USDT si tu veux -->
           </li>
           <li>
             <strong>X (Twitter)</strong>
@@ -786,7 +786,7 @@
           "<strong>OpenZeppelin base</strong>Contract built on well-known OpenZeppelin components for standard ERC-20/BEP-20 behaviour.",
         "sec2-title": "How to get and hold LUMA",
         "sec2-p1":
-          "LUMA is not listed on every exchange. It mainly lives on decentralised exchanges (DEX) on BNB Smart Chain, and is also available on the MEXC centralized exchange.",
+          "LUMA is not listed on every exchange. It mainly lives on decentralised exchanges (DEX) on BNB Smart Chain, and is also available on the MEXC platform.",
         "sec2-p2":
           "Always double-check the contract address. If an address is different, it is not the same token.",
         "how-step-1":
@@ -798,7 +798,7 @@
         "how-step-4":
           "<strong>4. Swap on a DEX</strong>Use ApeSpace or another BSC DEX, select the official LUMA contract and confirm your trade.",
         "how-step-5":
-          "<strong>5. Or trade on MEXC</strong>You can also trade LUMA on the MEXC centralized exchange if the listing is available in your region.",
+          "<strong>5. Or trade on MEXC</strong>You can also trade LUMA on MEXC using their DEX interface.",
         "sec3-title": "Official links and resources",
         "sec3-p1":
           "These links point to the official contract, current main liquidity pool and exchanges. Bookmark them and use them as your reference.",
@@ -843,7 +843,7 @@
           "<strong>Base OpenZeppelin</strong>Contrat construit à partir de briques OpenZeppelin reconnues pour le comportement standard ERC-20/BEP-20.",
         "sec2-title": "Comment obtenir et garder LUMA",
         "sec2-p1":
-          "LUMA n’est pas présent sur toutes les plateformes. Il vit surtout sur des échanges décentralisés (DEX) de la BNB Smart Chain, et est aussi disponible sur l’exchange centralisé MEXC.",
+          "LUMA n’est pas présent sur toutes les plateformes. Il vit surtout sur des échanges décentralisés (DEX) de la BNB Smart Chain, et est aussi disponible sur MEXC.",
         "sec2-p2":
           "Vérifie toujours l’adresse du contrat. Si l’adresse est différente, ce n’est pas le même jeton.",
         "how-step-1":
@@ -855,7 +855,7 @@
         "how-step-4":
           "<strong>4. Échanger sur un DEX</strong>Utilise ApeSpace ou un autre DEX BSC, sélectionne le contrat officiel de LUMA et confirme la transaction.",
         "how-step-5":
-          "<strong>5. Ou trader sur MEXC</strong>Tu peux aussi trader LUMA sur la plateforme centralisée MEXC si la paire est disponible dans ta région.",
+          "<strong>5. Ou trader sur MEXC</strong>Tu peux aussi trader LUMA sur MEXC via leur interface DEX.",
         "sec3-title": "Liens officiels et ressources",
         "sec3-p1":
           "Ces liens pointent vers le contrat officiel, la principale pool de liquidité et les exchanges. Mets-les en favoris et utilise-les comme référence.",
@@ -944,6 +944,26 @@
     setInterval(loadMarketBar, 60000);
 
     /* --- LUMA live price from GeckoTerminal --- */
+
+    function formatLumaPrice(price) {
+      // Si prix normal, 4 décimales
+      if (!isFinite(price) || price <= 0) return "Price unavailable";
+
+      if (price >= 0.01) {
+        return "$" + price.toFixed(4);
+      }
+
+      if (price >= 0.00000001) {
+        // Prix très petit : beaucoup de décimales, on enlève les zéros de fin
+        let s = price.toFixed(10);
+        s = s.replace(/0+$/,"").replace(/\.$/,"");
+        return "$" + s;
+      }
+
+      // Extrême cas ultra petit
+      return "$" + price.toExponential(4);
+    }
+
     async function loadLumaPrice() {
       const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
       const priceEl  = document.getElementById("luma-price");
@@ -974,11 +994,7 @@
             0
           );
 
-        if (!isFinite(price) || price <= 0) {
-          priceEl.textContent  = "Price unavailable";
-        } else {
-          priceEl.textContent = "$" + price.toFixed(5);
-        }
+        priceEl.textContent = formatLumaPrice(price);
 
         const isUp = change >= 0;
         const badgeClass = isUp ? "up" : "down";
