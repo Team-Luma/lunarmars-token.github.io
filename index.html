@@ -10,8 +10,8 @@
         /* Variables */
         :root {
             --bg-page: #000;
-            --bg-card: rgba(0, 0, 0, 0.75); /* Dark transparent overlay for the main content block */
-            --bg-section: rgba(0, 0, 0, 0.5); /* Slightly lighter for lower sections */
+            --bg-card: rgba(0, 0, 0, 0.75);
+            --bg-section: rgba(0, 0, 0, 0.5);
             --accent-main: #ffb21a;
             --accent-danger: #ff4b6a;
             --accent-ok: #2bbf6b;
@@ -21,6 +21,7 @@
             --radius-lg: 26px;
             --radius-md: 18px;
             --max-width: 1200px;
+            --ticker-height: 38px; /* Hauteur de la nouvelle barre de défilement */
         }
 
         /* Base Styles */
@@ -39,7 +40,7 @@
 
         a {
             text-decoration: none;
-            color: var(--text-main); /* Default link color is white */
+            color: inherit;
         }
         
         img {
@@ -47,15 +48,19 @@
             display: block;
         }
 
-        /* --- Header (Top Bar) - Based on Image Style --- */
-        .top-bar {
+        /* --- Header (Top Bar) - Fixed at top --- */
+        .top-shell {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
+            z-index: 100;
+            /* Le padding-top du .hero-section sera ajusté à cause du ticker */
+        }
+
+        .top-bar {
             background: rgba(0, 0, 0, 0.5); 
             border-bottom: 1px solid var(--border-soft);
-            z-index: 100;
         }
 
         .top-bar-inner {
@@ -69,12 +74,6 @@
             font-size: 14px;
         }
 
-        .bar-left, .bar-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
         .bar-logo {
             display: flex;
             align-items: center;
@@ -84,48 +83,79 @@
             color: var(--accent-main);
         }
         
-        /* Placeholder for logo image */
         .bar-logo-img {
             width: 20px;
             height: 20px;
             background: var(--accent-main);
             border-radius: 4px;
-            /* In a real scenario, you'd use <img src="luma-logo.png" alt="LUMA logo" style="width:20px; height:20px; border-radius:4px;" /> */
         }
-
-        .price-item {
+        
+        /* --- NOUVEAU: Market Ticker (Barre de défilement de prix) --- */
+        .market-bar {
+            width: 100%;
+            height: var(--ticker-height);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05); /* Arrière-plan légèrement clair/gris */
+            white-space: nowrap;
             display: flex;
-            align-items: baseline;
-            gap: 6px;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .market-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+            animation: ticker-scroll 30s linear infinite; /* Vitesse de défilement */
+            min-width: 200%; /* Important pour que l'animation boucle */
+            padding-left: 20px;
+        }
+
+        .market-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
             font-weight: 500;
+            color: var(--text-main);
+            flex-shrink: 0; /* Empêche les éléments de rétrécir */
         }
-
-        .price-symbol {
-            color: var(--accent-main);
-            font-size: 16px;
-        }
-
-        .price-change {
-            font-size: 12px;
-            padding: 3px 6px;
-            border-radius: 999px;
+        
+        .market-symbol {
             font-weight: 700;
         }
 
-        .price-change.down {
-            background: rgba(255, 75, 106, 0.2); 
-            color: var(--accent-danger);
+        .market-price-value {
+            color: var(--text-soft);
+        }
+
+        .market-change {
+            font-size: 12px;
+            padding: 3px 6px;
+            border-radius: 4px; /* Carré/rectangulaire comme sur l'image */
+            font-weight: 700;
+        }
+
+        .market-change.down {
+            background: var(--accent-danger);
+            color: var(--text-main);
         }
         
-        .price-change.up {
-            background: rgba(43, 191, 107, 0.2); 
-            color: var(--accent-ok);
+        .market-change.up {
+            background: var(--accent-ok);
+            color: var(--text-main);
         }
 
+        @keyframes ticker-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Défilement de 50% de la largeur totale (200%) */
+        }
+        
+        /* --- FIN NOUVEAU: Market Ticker --- */
 
-        /* --- Main Hero Section (Full-Screen Layout from Image) --- */
+        /* --- Main Hero Section (Updated padding-top) --- */
         .hero-section {
-            padding-top: 60px;
+            /* 60px (Top Bar) + 38px (Ticker Bar) = 98px */
+            padding-top: calc(60px + var(--ticker-height)); 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -148,6 +178,8 @@
             pointer-events: none;
         }
 
+        /* Le reste du code CSS (main-block, hero-title, section, etc.) reste inchangé */
+        
         .content-shell {
             max-width: var(--max-width);
             width: 100%;
@@ -156,12 +188,11 @@
             z-index: 10;
         }
         
-        /* The main content block from the image */
         .main-block {
             background: var(--bg-card); 
             border-radius: var(--radius-lg);
             padding: 40px;
-            max-width: 650px; /* Wider to accommodate more text */
+            max-width: 650px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             margin-bottom: 5%; 
         }
@@ -214,7 +245,6 @@
             line-height: 1.6;
         }
 
-        /* Price Card Styles (Right side in Hero) */
         .price-card .main-price {
             font-size: 38px;
             font-weight: 900;
@@ -228,7 +258,7 @@
             font-size: 14px;
             padding: 5px 10px;
             border-radius: 999px;
-            background: rgba(43, 191, 107, 0.3); /* Green up */
+            background: rgba(43, 191, 107, 0.3);
             color: var(--accent-ok);
             margin-bottom: 15px;
             font-weight: 700;
@@ -271,7 +301,7 @@
             box-shadow: 0 18px 40px rgba(255, 178, 26, 0.7);
         }
         
-        /* --- General Content Sections (Below Hero) --- */
+        /* --- General Content Sections --- */
         .page {
             max-width: var(--max-width);
             margin: 60px auto;
@@ -381,36 +411,137 @@
                 font-size: 40px;
             }
         }
+        
+        @media (max-width: 768px) {
+            .market-inner {
+                animation: none; /* Désactive le défilement sur mobile */
+                overflow-x: auto; /* Permet le défilement manuel */
+                padding: 0;
+            }
+            .market-bar {
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .market-inner > .market-item {
+                margin: 0 10px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="top-bar-inner">
-            <div class="bar-left">
-                <a href="#" class="bar-logo">
-                    <div class="bar-logo-img"></div>
-                    Lunar&Mars
-                </a>
-                <div class="price-item">
-                    <span class="price-symbol">$LUMA</span>
-                    <span class="price-value">$0.000023855</span> 
+    <div class="top-shell">
+        
+        <div class="top-bar">
+            <div class="top-bar-inner">
+                <div class="bar-left">
+                    <a href="#" class="bar-logo">
+                        <div class="bar-logo-img"></div>
+                        Lunar&Mars
+                    </a>
                 </div>
-            </div>
-            
-            <div class="bar-right">
-                <div class="price-item">
-                    <span class="price-symbol">$ETH</span>
-                    <span class="price-value">$3,023.43</span>
-                    <span class="price-change down">4.82%</span>
-                </div>
-                <div class="price-item">
-                    <span class="price-symbol">$XRP</span>
-                    <span class="price-value">$2.15</span>
-                    <span class="price-change up">9.72%</span>
+                
+                <div class="bar-right">
+                    <a href="#what" style="color:var(--text-soft);">What is LUMA?</a>
+                    <a href="#tokenomics" style="color:var(--text-soft);">Tokenomics</a>
+                    <a href="#how" style="color:var(--text-soft);">How to get</a>
+                    <a href="#links" style="color:var(--text-soft);">Links</a>
+                    <a href="#mexc" style="color:var(--text-soft);">MEXC</a>
+                    <a class="btn-mexc" style="width: auto; padding: 8px 18px; font-size: 14px;"
+                        href="https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9"
+                        target="_blank" rel="noopener noreferrer">
+                        🚀 Buy LUMA (DEX)
+                    </a>
                 </div>
             </div>
         </div>
+
+        <div class="market-bar">
+            <div class="market-inner">
+                <div class="market-item">
+                    <span class="market-symbol">ETHEREUM</span>
+                    <span class="market-price-value">$3,030.36</span>
+                    <span class="market-change down">5.87%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BINANCE COIN</span>
+                    <span class="market-price-value">$600.32</span>
+                    <span class="market-change down">4.38%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">SOLANA</span>
+                    <span class="market-price-value">$152.45</span>
+                    <span class="market-change down">5.55%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">RIPPLE</span>
+                    <span class="market-price-value">$0.5212</span>
+                    <span class="market-change down">5.00%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">LITECOIN</span>
+                    <span class="market-price-value">$91.56</span>
+                    <span class="market-change down">9.02%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">DOGECOIN</span>
+                    <span class="market-price-value">$0.1562</span>
+                    <span class="market-change down">5.60%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">TRON</span>
+                    <span class="market-price-value">$0.128</span>
+                    <span class="market-change up">1.57%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BITCOIN</span>
+                    <span class="market-price-value">$67,800</span>
+                    <span class="market-change down">6.78%</span>
+                </div>
+                
+                <div class="market-item">
+                    <span class="market-symbol">ETHEREUM</span>
+                    <span class="market-price-value">$3,030.36</span>
+                    <span class="market-change down">5.87%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BINANCE COIN</span>
+                    <span class="market-price-value">$600.32</span>
+                    <span class="market-change down">4.38%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">SOLANA</span>
+                    <span class="market-price-value">$152.45</span>
+                    <span class="market-change down">5.55%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">RIPPLE</span>
+                    <span class="market-price-value">$0.5212</span>
+                    <span class="market-change down">5.00%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">LITECOIN</span>
+                    <span class="market-price-value">$91.56</span>
+                    <span class="market-change down">9.02%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">DOGECOIN</span>
+                    <span class="market-price-value">$0.1562</span>
+                    <span class="market-change down">5.60%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">TRON</span>
+                    <span class="market-price-value">$0.128</span>
+                    <span class="market-change up">1.57%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BITCOIN</span>
+                    <span class="market-price-value">$67,800</span>
+                    <span class="market-change down">6.78%</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="hero-section">
@@ -451,25 +582,6 @@
             </div>
         </div>
     </div>
-    
-    <nav class="top-bar" style="position: absolute; top: 0; background: none; border-bottom: none; z-index: 10;">
-        <div class="top-bar-inner">
-             <div class="bar-logo">LUMA</div>
-             <div class="bar-right" style="gap: 15px;">
-                <a href="#what" style="color:var(--text-soft);">What is LUMA?</a>
-                <a href="#tokenomics" style="color:var(--text-soft);">Tokenomics</a>
-                <a href="#how" style="color:var(--text-soft);">How to get</a>
-                <a href="#links" style="color:var(--text-soft);">Links</a>
-                <a href="#mexc" style="color:var(--text-soft);">MEXC</a>
-                <a class="btn-mexc" style="width: auto; padding: 8px 18px; font-size: 14px;"
-                    href="https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9"
-                    target="_blank" rel="noopener noreferrer">
-                    🚀 Buy LUMA (DEX)
-                </a>
-             </div>
-        </div>
-    </nav>
-
 
     <main class="page">
         
