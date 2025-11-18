@@ -27,6 +27,7 @@
             display:flex;
             align-items:center;
             justify-content:space-between;
+            gap:20px;
             padding:10px 24px;
             background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.6));
             backdrop-filter:blur(16px);
@@ -54,6 +55,27 @@
             font-weight:900;
             letter-spacing:0.02em;
         }
+
+        /* MENU */
+        .nav {
+            display:flex;
+            gap:16px;
+            font-size:12px;
+            text-transform:uppercase;
+        }
+        .nav a {
+            padding:4px 8px;
+            border-radius:999px;
+            border:1px solid transparent;
+            color:#f5f5ff;
+            opacity:0.85;
+        }
+        .nav a:hover {
+            border-color:rgba(255,255,255,0.35);
+            background:rgba(0,0,0,0.55);
+            opacity:1;
+        }
+
         /* Style du Sélecteur de Langue */
         .lang-switch {
             display:flex;
@@ -126,6 +148,7 @@
         }
         @media (max-width:800px) {
             .ticker-track { animation:none; }
+            .nav { display:none; } /* on cache le menu sur mobile pour rester simple */
         }
         
         /* -------- HERO « WHAT IS LUMA? » -------- */
@@ -211,8 +234,6 @@
         .scroll-content::-webkit-scrollbar-track {
             background: transparent; /* Fond de la barre transparent */
         }
-
-
         
         /* Panel de droite : prix */
         .price-label {
@@ -290,6 +311,84 @@
             gap:10px; 
         }
         
+        /* SECTION TOKENOMICS */
+        .tokenomics-section {
+            max-width:1300px;
+            margin:0 auto 60px;
+            padding:0 24px;
+        }
+        .tokenomics-card {
+            margin-top:10px;
+            background:rgba(9,10,22,0.9);
+            border-radius:24px;
+            border:1px solid rgba(255,255,255,0.16);
+            padding:24px 26px;
+            box-shadow:0 20px 55px rgba(0,0,0,0.75);
+        }
+        .tokenomics-title {
+            font-size:20px;
+            font-weight:800;
+            margin-bottom:16px;
+        }
+        .tokenomics-grid {
+            display:flex;
+            justify-content:space-between;
+            gap:24px;
+            font-size:14px;
+        }
+        .tokenomics-card code {
+            font-size:12px;
+            background:rgba(0,0,0,0.6);
+            padding:4px 6px;
+            border-radius:6px;
+        }
+        .tokenomics-note {
+            display:flex;
+            align-items:flex-start;
+            justify-content:flex-end;
+        }
+        .tokenomics-badge {
+            font-size:12px;
+            padding:10px 14px;
+            border-radius:14px;
+            background:rgba(0,0,0,0.65);
+            border:1px solid rgba(255,255,255,0.25);
+        }
+        @media (max-width:800px) {
+            .tokenomics-grid { flex-direction:column; }
+        }
+
+        /* SECTION LIENS */
+        .links-section {
+            max-width:1300px;
+            margin:0 auto 40px;
+            padding:0 24px;
+        }
+        .links-card {
+            background:rgba(9,10,22,0.9);
+            border-radius:24px;
+            border:1px solid rgba(255,255,255,0.16);
+            padding:20px 24px;
+            box-shadow:0 18px 45px rgba(0,0,0,0.7);
+        }
+        .links-title {
+            font-size:18px;
+            font-weight:800;
+            margin-bottom:12px;
+        }
+        .links-chips {
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            font-size:13px;
+        }
+        .link-chip {
+            padding:8px 14px;
+            border-radius:999px;
+            background:rgba(0,0,0,0.6);
+            border:1px solid rgba(255,255,255,0.25);
+        }
+
         /* Media Queries (Responsive) */
         @media (max-width:1200px) {
             .hero-grid {
@@ -336,6 +435,13 @@
             </div>
             <div class="brand-name">Lunar&Mars</div>
         </div>
+
+        <!-- MENU -->
+        <nav class="nav">
+            <a href="#hero" class="translatable" data-en="About" data-fr="À propos">À propos</a>
+            <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
+            <a href="#links" class="translatable" data-en="Links" data-fr="Liens">Liens</a>
+        </nav>
         
         <div class="lang-switch">
             <button id="lang-en" onclick="setLanguage('en')">EN</button>
@@ -352,7 +458,7 @@
     </div>
 
     <main>
-        <section class="hero">
+        <section class="hero" id="hero">
             <h1 class="hero-title translatable" data-en="WHAT IS LUMA?" data-fr="QU'EST-CE QUE LUMA ?">QU'EST-CE QUE LUMA ?</h1>
 
             <div class="hero-grid">
@@ -365,10 +471,10 @@
                     
                     <div class="panel-text scroll-content">
                         <span class="translatable" 
-                            data-en="Lunar&Mars; (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars. The project's vision is simple: symbolically represent the imaginary corridor between the Moon and Mars. LUMA is not a speculative asset; it is a conceptual, community-driven, and educational token meant to inspire interest in space technologies, decentralization, and future interplanetary projects. It serves as an emblem for those who wish to support, symbolically, the initiatives linked to space exploration and futuristic innovation. The project is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future."
-                            data-fr="Lunar&Mars; (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour des technologies spatiales, de la décentralisation et des futurs projets interplanétaires. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire."
+                            data-en="Lunar&amp;Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars. The project's vision is simple: symbolically represent the imaginary corridor between the Moon and Mars. LUMA is not a speculative asset; it is a conceptual, community-driven, and educational token meant to inspire interest in space technologies, decentralization, and future interplanetary projects. It serves as an emblem for those who wish to support, symbolically, the initiatives linked to space exploration and futuristic innovation. The project is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future. It is important to note that LUMA is not a financial instrument for speculation, but a symbolic and community project."
+                            data-fr="Lunar&amp;Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour des technologies spatiales, de la décentralisation et des futurs projets interplanétaires. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire."
                         >
-                            Lunar&Mars; (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire.
+                            Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire.
                         </span>
                     </div>
                 </article>
@@ -433,6 +539,64 @@
                         </a>
                     </div>
                 </article>
+            </div>
+        </section>
+
+        <!-- SECTION TOKENOMICS -->
+        <section id="tokenomics" class="tokenomics-section">
+            <div class="tokenomics-card">
+                <h2 class="tokenomics-title translatable"
+                    data-en="Tokenomics & Contract"
+                    data-fr="Tokenomics & Contrat">
+                    Tokenomics & Contrat
+                </h2>
+                <div class="tokenomics-grid">
+                    <div>
+                        <p><strong>Total supply :</strong> 225 384 400 LUMA</p>
+                        <p class="translatable"
+                           data-en="Tax (3% per transaction): 1% Burn · 1% Liquidity · 1% Dev wallet."
+                           data-fr="Taxe (3 % par transaction) : 1 % Burn · 1 % Liquidité · 1 % Portefeuille Dev.">
+                            Taxe (3 % par transaction) : 1 % Burn · 1 % Liquidité · 1 % Portefeuille Dev.
+                        </p>
+                        <p><strong>Contract:</strong><br>
+                            <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code>
+                        </p>
+                    </div>
+                    <div class="tokenomics-note">
+                        <span class="tokenomics-badge translatable"
+                              data-en="Symbolic, community-driven project. Not financial advice."
+                              data-fr="Projet symbolique et communautaire. Aucun conseil financier.">
+                            Projet symbolique et communautaire. Aucun conseil financier.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION LIENS & COMMUNAUTÉ -->
+        <section id="links" class="links-section">
+            <div class="links-card">
+                <h2 class="links-title translatable"
+                    data-en="Links & Community"
+                    data-fr="Liens & Communauté">
+                    Liens & Communauté
+                </h2>
+                <div class="links-chips">
+                    <a class="link-chip" href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" rel="noopener noreferrer">
+                        BscScan
+                    </a>
+                    <a class="link-chip" href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" rel="noopener noreferrer">
+                        GeckoTerminal
+                    </a>
+                    <a class="link-chip" href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" rel="noopener noreferrer">
+                        MEXC DEX
+                    </a>
+                    <a class="link-chip" href="LUMA_Whitepaper_v1.pdf" target="_blank" rel="noopener noreferrer">
+                        Whitepaper
+                    </a>
+                    <span class="link-chip">X (à venir)</span>
+                    <span class="link-chip">Telegram (à venir)</span>
+                </div>
             </div>
         </section>
     </main>
