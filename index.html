@@ -6,23 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Lunar&Mars (LUMA) – symbolic BEP-20 token on BNB Smart Chain representing the transition from the Moon to Mars." />
     <link rel="icon" href="luma-logo.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
 
         :root {
-            --bg: #020314;
-            --bg-alt: #07091b;
-            --card: #101325;
-            --card-soft: rgba(13, 17, 40, 0.92);
-            --accent-moon: #ffb21a;
+            --bg: #f3f4fa;
+            --bg-alt: #ffffff;
+            --card: #ffffff;
+            --card-soft: rgba(255, 255, 255, 0.96);
+            --accent-moon: #f9a826;
             --accent-mars: #ff4b6a;
-            --accent-soft: rgba(255, 75, 106, 0.2);
-            --border-soft: rgba(255, 255, 255, 0.06);
-            --text-main: #f5f7ff;
-            --text-muted: #9ca3c7;
-            --shadow-deep: 0 0 40px rgba(0, 0, 0, 0.7);
+            --accent-soft: rgba(255, 75, 106, 0.18);
+            --border-soft: rgba(15, 23, 42, 0.06);
+            --border-strong: rgba(15, 23, 42, 0.12);
+            --text-main: #0b1020;
+            --text-muted: #6b7280;
+            --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+            --shadow-header: 0 10px 30px rgba(15, 23, 42, 0.10);
             --radius-xl: 24px;
             --radius-lg: 18px;
             --radius-pill: 999px;
@@ -31,31 +33,23 @@
 
         body {
             font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            background:#000 url("luma-bg.jpg") center/cover fixed no-repeat;
+            background:
+              radial-gradient(circle at top left, #ffffff 0, #eff3ff 45%, #e5ecff 100%);
             color:var(--text-main);
             overflow-x:hidden;
             min-height:100vh;
             position:relative;
         }
 
-        /* Large logo watermark */
-        body::before {
-            content:"";
-            position:fixed;
-            inset:0;
-            background:
-              radial-gradient(circle at top left, rgba(255,178,26,0.08), transparent 60%),
-              radial-gradient(circle at bottom right, rgba(255,75,106,0.12), transparent 55%);
-            pointer-events:none;
-            z-index:-2;
-        }
+        /* Large logo watermark, très subtil */
         body::after {
             content:"";
             position:fixed;
             inset:0;
-            background:url("luma-logo.png") center/40% no-repeat;
-            opacity:0.04;
-            mix-blend-mode:screen;
+            background:
+              url("luma-logo.png") center/32% no-repeat;
+            opacity:0.035;
+            mix-blend-mode:multiply;
             pointer-events:none;
             z-index:-1;
         }
@@ -74,12 +68,12 @@
             align-items:center;
             justify-content:space-between;
             gap:16px;
-            padding:12px 18px;
+            padding:10px 18px;
             margin-bottom:18px;
-            background:linear-gradient(120deg, rgba(4,7,26,0.96), rgba(10,13,40,0.96));
+            background:rgba(255, 255, 255, 0.94);
             border-radius:var(--radius-xl);
             border:1px solid var(--border-soft);
-            box-shadow:var(--shadow-deep);
+            box-shadow:var(--shadow-header);
             backdrop-filter:blur(var(--blur-bg));
             position:sticky;
             top:10px;
@@ -95,7 +89,7 @@
             width:40px;
             height:40px;
             border-radius:16px;
-            background:radial-gradient(circle at 20% 20%, #fff, #ffb21a 40%, #ff4b6a 80%);
+            background:radial-gradient(circle at 20% 20%, #ffffff, #ffd796 40%, #ff9cae 80%);
             display:flex;
             align-items:center;
             justify-content:center;
@@ -138,11 +132,11 @@
             padding:6px 10px;
             border-radius:999px;
             border:1px solid transparent;
-            opacity:0.85;
+            opacity:0.9;
         }
         .nav-links a:hover {
-            border-color:rgba(255,255,255,0.18);
-            background:rgba(12,16,38,0.9);
+            border-color:var(--border-strong);
+            background:rgba(243, 244, 255, 0.9);
             opacity:1;
         }
 
@@ -152,7 +146,7 @@
             border-radius:var(--radius-pill);
             border:1px solid var(--border-soft);
             padding:2px;
-            background:rgba(5,7,28,0.9);
+            background:rgba(248, 250, 255, 0.85);
             font-size:11px;
         }
         .lang-btn {
@@ -166,7 +160,7 @@
         }
         .lang-btn.active {
             background:linear-gradient(135deg, var(--accent-moon), var(--accent-mars));
-            color:#020314;
+            color:#ffffff;
             font-weight:700;
         }
 
@@ -185,19 +179,19 @@
         }
         .btn-primary {
             background:linear-gradient(135deg, var(--accent-moon), var(--accent-mars));
-            color:#020314;
-            box-shadow:0 0 20px rgba(255,75,106,0.5);
+            color:#ffffff;
+            box-shadow:0 0 18px rgba(255, 75, 106, 0.35);
         }
         .btn-primary:hover {
             filter:brightness(1.05);
         }
         .btn-ghost {
-            background:rgba(7,10,33,0.9);
-            border-color:var(--border-soft);
+            background:#ffffff;
+            border-color:var(--border-strong);
             color:var(--text-main);
         }
         .btn-ghost:hover {
-            background:rgba(13,16,44,0.96);
+            background:#f9fafb;
         }
 
         .hero {
@@ -208,11 +202,11 @@
         }
 
         .hero-card {
-            background:linear-gradient(145deg, rgba(11,14,38,0.97), rgba(9,13,34,0.98));
+            background:var(--card-soft);
             border-radius:28px;
             padding:24px 22px 22px;
-            border:1px solid rgba(255,255,255,0.08);
-            box-shadow:var(--shadow-deep);
+            border:1px solid var(--border-soft);
+            box-shadow:var(--shadow-soft);
             position:relative;
             overflow:hidden;
         }
@@ -220,11 +214,12 @@
             content:"";
             position:absolute;
             inset:-40%;
-            background:radial-gradient(circle at 0 0, rgba(255,178,26,0.2), transparent 55%),
-                        radial-gradient(circle at 100% 100%, rgba(255,75,106,0.25), transparent 55%);
-            opacity:0.8;
+            background:
+              radial-gradient(circle at 0 0, rgba(249,168,38,0.15), transparent 55%),
+              radial-gradient(circle at 100% 100%, rgba(255,75,106,0.16), transparent 55%);
+            opacity:0.85;
             pointer-events:none;
-            mix-blend-mode:screen;
+            mix-blend-mode:multiply;
         }
         .hero-inner {
             position:relative;
@@ -237,8 +232,8 @@
             gap:8px;
             padding:4px 10px;
             border-radius:999px;
-            background:rgba(4,7,26,0.9);
-            border:1px solid rgba(255,255,255,0.14);
+            background:rgba(248, 250, 255, 0.95);
+            border:1px solid var(--border-soft);
             font-size:11px;
             color:var(--text-muted);
             margin-bottom:10px;
@@ -248,7 +243,7 @@
             height:8px;
             border-radius:999px;
             background:conic-gradient(from 120deg, var(--accent-moon), var(--accent-mars));
-            box-shadow:0 0 10px rgba(255,178,26,0.9);
+            box-shadow:0 0 8px rgba(249,168,38,0.8);
         }
 
         .hero-title {
@@ -283,21 +278,22 @@
             gap:2px;
         }
         .meta-label {
-            opacity:0.8;
+            opacity:0.95;
         }
         .meta-value {
             font-weight:600;
-            color:var(--accent-moon);
+            color:#111827;
         }
 
         .hero-orbit {
-            background:radial-gradient(circle at 20% 0, rgba(255,178,26,0.2), transparent 60%),
-                        radial-gradient(circle at 100% 80%, rgba(255,75,106,0.18), transparent 60%),
-                        rgba(4,7,26,0.95);
+            background:
+              radial-gradient(circle at 20% 0, rgba(249,168,38,0.22), transparent 60%),
+              radial-gradient(circle at 100% 80%, rgba(255,75,106,0.18), transparent 60%),
+              #ffffff;
             border-radius:28px;
             padding:20px 18px;
-            border:1px solid rgba(255,255,255,0.1);
-            box-shadow:var(--shadow-deep);
+            border:1px solid var(--border-soft);
+            box-shadow:var(--shadow-soft);
             position:relative;
             overflow:hidden;
         }
@@ -318,8 +314,8 @@
             font-size:11px;
             padding:4px 8px;
             border-radius:999px;
-            background:rgba(2,5,24,0.88);
-            border:1px solid rgba(255,255,255,0.18);
+            background:rgba(248, 250, 255, 0.95);
+            border:1px solid var(--border-soft);
         }
         .orbit-trace {
             position:relative;
@@ -331,17 +327,17 @@
             position:absolute;
             inset:12%;
             border-radius:50%;
-            border:1px dashed rgba(255,255,255,0.18);
+            border:1px dashed rgba(148,163,184,0.5);
         }
         .orbit-line:nth-child(2) {
             inset:27%;
             border-style:solid;
-            border-color:rgba(255,178,26,0.45);
+            border-color:rgba(249,168,38,0.55);
         }
         .orbit-line:nth-child(3) {
             inset:42%;
             border-style:solid;
-            border-color:rgba(255,75,106,0.55);
+            border-color:rgba(255,75,106,0.6);
         }
         .planet {
             position:absolute;
@@ -352,35 +348,37 @@
             font-size:9px;
             text-transform:uppercase;
             letter-spacing:0.06em;
+            color:#111827;
         }
         .planet.earth {
             width:40px; height:40px;
             left:8%; top:48%;
-            background:radial-gradient(circle at 30% 20%, #fff, #7cd2ff 45%, #003366);
-            box-shadow:0 0 16px rgba(124,210,255,0.7);
+            background:radial-gradient(circle at 30% 20%, #ffffff, #7cd2ff 45%, #2563eb);
+            box-shadow:0 0 14px rgba(125,211,252,0.8);
         }
         .planet.moon {
             width:32px; height:32px;
             left:40%; top:18%;
-            background:radial-gradient(circle at 30% 20%, #fff, #d5d7e5 60%, #6a6d80);
-            box-shadow:0 0 14px rgba(255,178,26,0.7);
+            background:radial-gradient(circle at 30% 20%, #ffffff, #e5e7eb 60%, #9ca3af);
+            box-shadow:0 0 12px rgba(249,168,38,0.8);
         }
         .planet.mars {
             width:38px; height:38px;
             right:3%; top:52%;
-            background:radial-gradient(circle at 20% 15%, #ffd2aa, #ff4b2a 45%, #7b1d12);
-            box-shadow:0 0 18px rgba(255,75,106,0.9);
+            background:radial-gradient(circle at 20% 15%, #fed7aa, #fb923c 45%, #b91c1c);
+            box-shadow:0 0 14px rgba(248,113,113,0.95);
         }
         .ship {
             position:absolute;
             width:28px; height:28px;
             border-radius:50%;
-            background:radial-gradient(circle at 30% 20%, #fff, #e1e5ff 50%, #7c85ff);
-            box-shadow:0 0 15px rgba(124,133,255,0.9);
+            background:radial-gradient(circle at 30% 20%, #ffffff, #e0e7ff 50%, #818cf8);
+            box-shadow:0 0 12px rgba(129,140,248,0.9);
             display:flex;
             align-items:center;
             justify-content:center;
             font-size:9px;
+            color:#111827;
         }
         .ship.luna {
             left:32%; top:54%;
@@ -394,9 +392,9 @@
             margin-top:22px;
             padding:9px 16px;
             border-radius:var(--radius-xl);
-            background:rgba(5,8,30,0.95);
-            border:1px solid rgba(255,255,255,0.08);
-            box-shadow:var(--shadow-deep);
+            background:rgba(255, 255, 255, 0.95);
+            border:1px solid var(--border-soft);
+            box-shadow:var(--shadow-soft);
             overflow:hidden;
             position:relative;
         }
@@ -411,8 +409,8 @@
             color:var(--text-muted);
             padding:4px 8px;
             border-radius:999px;
-            background:rgba(9,12,42,0.96);
-            border:1px solid rgba(255,255,255,0.14);
+            background:#f3f4ff;
+            border:1px solid var(--border-soft);
             z-index:2;
         }
         .ticker-track {
@@ -429,8 +427,8 @@
             font-size:12px;
             padding:6px 10px;
             border-radius:999px;
-            background:rgba(10,13,43,0.95);
-            border:1px solid rgba(255,255,255,0.12);
+            background:#f8fafc;
+            border:1px solid rgba(148,163,184,0.45);
             white-space:nowrap;
         }
         .ticker-symbol {
@@ -438,17 +436,17 @@
             letter-spacing:0.05em;
         }
         .ticker-price {
-            color:var(--accent-moon);
+            color:#111827;
             font-weight:600;
         }
         .ticker-change {
             font-size:11px;
         }
         .ticker-change.up {
-            color:#4ade80;
+            color:#16a34a;
         }
         .ticker-change.down {
-            color:#fb7185;
+            color:#dc2626;
         }
 
         @keyframes ticker {
@@ -464,7 +462,7 @@
             background:var(--card-soft);
             border-radius:var(--radius-xl);
             border:1px solid var(--border-soft);
-            box-shadow:var(--shadow-deep);
+            box-shadow:var(--shadow-soft);
             padding:20px 18px 18px;
         }
         .section-header {
@@ -499,8 +497,8 @@
         .tokenomics-list li {
             padding:8px 10px;
             border-radius:14px;
-            background:rgba(5,8,28,0.96);
-            border:1px solid rgba(255,255,255,0.08);
+            background:#f9fafb;
+            border:1px solid var(--border-soft);
         }
         .badge {
             display:inline-flex;
@@ -511,9 +509,9 @@
             font-size:11px;
             text-transform:uppercase;
             letter-spacing:0.05em;
-            background:rgba(8,11,35,0.9);
-            border:1px solid rgba(255,255,255,0.14);
-            color:var(--text-muted);
+            background:#eff6ff;
+            border:1px solid rgba(129,140,248,0.5);
+            color:#4b5563;
         }
         .badge span {
             width:8px;
@@ -537,8 +535,8 @@
         .step {
             padding:10px 10px;
             border-radius:16px;
-            background:rgba(5,8,28,0.96);
-            border:1px solid rgba(255,255,255,0.08);
+            background:#f9fafb;
+            border:1px solid var(--border-soft);
             display:flex;
             justify-content:space-between;
             align-items:flex-start;
@@ -568,8 +566,8 @@
         .faq-item {
             padding:8px 10px;
             border-radius:14px;
-            background:rgba(5,8,28,0.96);
-            border:1px solid rgba(255,255,255,0.08);
+            background:#f9fafb;
+            border:1px solid var(--border-soft);
         }
         .faq-q {
             font-weight:600;
@@ -589,8 +587,8 @@
         .link-chip {
             padding:7px 11px;
             border-radius:999px;
-            background:rgba(4,7,26,0.96);
-            border:1px solid rgba(255,255,255,0.14);
+            background:#f9fafb;
+            border:1px solid var(--border-soft);
         }
 
         footer {
@@ -612,7 +610,7 @@
             height:32px;
             border-radius:999px;
             border:1px solid var(--border-soft);
-            background:rgba(5,8,30,0.9);
+            background:#f9fafb;
             align-items:center;
             justify-content:center;
             cursor:pointer;
@@ -620,7 +618,7 @@
         .menu-toggle span {
             width:16px;
             height:2px;
-            background:#fff;
+            background:#111827;
             position:relative;
         }
         .menu-toggle span::before,
@@ -630,7 +628,7 @@
             left:0;
             width:16px;
             height:2px;
-            background:#fff;
+            background:#111827;
         }
         .menu-toggle span::before { top:-5px; }
         .menu-toggle span::after { top:5px; }
@@ -644,12 +642,13 @@
                 top:60px;
                 right:12px;
                 flex-direction:column;
-                background:rgba(4,7,26,0.98);
+                background:#ffffff;
                 border-radius:20px;
-                border:1px solid rgba(255,255,255,0.12);
+                border:1px solid var(--border-strong);
                 padding:10px;
                 min-width:170px;
                 display:none;
+                box-shadow:var(--shadow-soft);
             }
             .nav-links.open {
                 display:flex;
@@ -711,6 +710,7 @@
     </header>
 
     <main>
+        <!-- HERO -->
         <section class="hero" id="about">
             <div class="hero-card">
                 <div class="hero-inner">
@@ -796,14 +796,17 @@
             </aside>
         </section>
 
+        <!-- TICKER -->
         <section class="ticker-wrap">
             <div class="ticker-label" data-en="Live Market" data-fr="Marché en direct">
                 Marché en direct
             </div>
             <div class="ticker-track" id="ticker-track">
-                </div>
+                <!-- Filled by JS -->
+            </div>
         </section>
 
+        <!-- TOKENOMICS + LORE -->
         <section id="tokenomics">
             <div class="section-card">
                 <div class="section-header">
@@ -890,6 +893,7 @@
             </div>
         </section>
 
+        <!-- WHITEPAPER -->
         <section id="whitepaper">
             <div class="section-card">
                 <div class="section-header">
@@ -901,295 +905,308 @@
                         </div>
                         <div class="section-sub"
                              data-en="Understand the vision, the mechanics and the long-term ambition behind LUMA."
-                             data-fr="Comprenez la vision, la mécanique et l'ambition à long terme derrière LUMA.">
-                            Comprenez la vision, la mécanique et l'ambition à long terme derrière LUMA.
+                             data-fr="Comprendre la vision, la mécanique et l’ambition long terme derrière LUMA.">
+                            Comprendre la vision, la mécanique et l’ambition long terme derrière LUMA.
                         </div>
                     </div>
-                    <a href="LUMA_Whitepaper_v1.pdf" class="btn-ghost" style="padding:8px 14px;"
-                       data-en="Download PDF" data-fr="Télécharger le PDF">
-                        Télécharger le PDF
-                    </a>
                 </div>
 
                 <div class="grid-2">
                     <div>
-                        <div class="section-title" style="font-size:15px; margin-bottom:10px;"
-                             data-en="Project Core Objectives (Chapter 5)"
-                             data-fr="Objectifs principaux du projet (Chapitre 5)">
-                            Objectifs principaux du projet (Chapitre 5)
-                        </div>
-                        <ul class="tokenomics-list">
-                            <li>
-                                <strong data-en="Symbolic" data-fr="Symbolique">Symbolique</strong><br />
-                                <span data-en="Representing the conceptual bridge between the Moon and Mars."
-                                      data-fr="Représenter un pont imaginaire entre la Lune et Mars.">
-                                    [cite_start]Représenter un pont imaginaire entre la Lune et Mars. [cite: 28]
-                                </span>
-                            </li>
-                            <li>
-                                <strong data-en="Educational" data-fr="Éducatif">Éducatif</strong><br />
-                                <span data-en="Serving to learn about blockchain, BEP-20 tokens, and space exploration."
-                                      data-fr="Servir de support à l'apprentissage de la blockchain et des thématiques spatiales.">
-                                    [cite_start]Servir de support à l'apprentissage de la blockchain et des thématiques spatiales. [cite: 29]
-                                </span>
-                            </li>
-                            <li>
-                                <strong data-en="Community" data-fr="Communautaire">Communautaire</strong><br />
-                                <span data-en="Gathering people around spatial innovation in a non-speculative framework."
-                                      data-fr="Rassembler une communauté autour de l'innovation spatiale, sans spéculation.">
-                                    [cite_start]Rassembler une communauté autour de l'innovation spatiale, sans spéculation. [cite: 30]
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <div class="badge">
-                            <span></span>
-                            <span data-en="LUMA's Defining Statement"
-                                  data-fr="Déclaration de principe de LUMA">
-                                Déclaration de principe de LUMA
+                        <p class="lore-text">
+                            <span data-en="The LUMA whitepaper details the symbolic supply, the transaction tax model, the role of burns, and how the project connects the Moon–Mars narrative with a real on-chain asset."
+                                  data-fr="Le whitepaper LUMA détaille l’offre symbolique, le modèle de taxe, le rôle des burns et la manière dont le projet relie le récit Lune–Mars à un actif réel sur la blockchain.">
+                                Le whitepaper LUMA détaille l’offre symbolique, le modèle de taxe, le rôle des burns et la manière dont le projet relie le récit Lune–Mars à un actif réel sur la blockchain.
                             </span>
-                        </div>
-                        <p class="lore-text" style="margin-top:8px;"
-                           data-en="Lunar&Mars (LUMA) is a conceptual, community-driven, and educational token. It is not a financial instrument intended for speculation, but rather a symbolic project focused on space exploration, education, and inspiration, reflecting humanity's desire for an interplanetary future."
-                           data-fr="Lunar&Mars (LUMA) est un jeton conceptuel, communautaire et éducatif. Ce n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique axé sur l'exploration spatiale, l'éducation et l'inspiration, reflétant la volonté de l'humanité d'avancer vers un futur interplanétaire.">
-                            [cite_start]Lunar&amp;Mars (LUMA) est un jeton conceptuel, communautaire et éducatif[cite: 6]. [cite_start]Ce n'est pas un instrument financier destiné à la spéculation [cite: 45][cite_start], mais un projet symbolique axé sur l'exploration spatiale, l'éducation et l'inspiration [cite: 45][cite_start], reflétant la volonté de l'humanité d'avancer vers un futur interplanétaire[cite: 46].
                         </p>
+                        <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:10px;">
+                            <a href="LUMA-Whitepaper.pdf" class="btn-primary"
+                               data-en="Download PDF"
+                               data-fr="Télécharger le PDF">
+                                Télécharger le PDF
+                            </a>
+                            <a href="#faq" class="btn-ghost"
+                               data-en="Quick FAQ"
+                               data-fr="FAQ rapide">
+                                FAQ rapide
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="tokenomics-list" style="font-size:12px;">
+                            <li data-en="Version: 1.0 – Community draft, subject to evolution with the ecosystem."
+                                data-fr="Version : 1.0 – Ébauche communautaire, amenée à évoluer avec l’écosystème.">
+                                Version : 1.0 – Ébauche communautaire, amenée à évoluer avec l’écosystème.
+                            </li>
+                            <li data-en="Chain: BNB Smart Chain (BEP-20)."
+                                data-fr="Chaîne : BNB Smart Chain (BEP-20).">
+                                Chaîne : BNB Smart Chain (BEP-20).
+                            </li>
+                            <li data-en="Focus: symbolic value, burns, community-driven liquidity, simple and transparent tokenomics."
+                                data-fr="Focus : valeur symbolique, burns, liquidité portée par la communauté, tokenomics simples et transparentes.">
+                                Focus : valeur symbolique, burns, liquidité portée par la communauté, tokenomics simples et transparentes.
+                            </li>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ROADMAP + FAQ -->
         <section id="roadmap">
             <div class="section-card">
                 <div class="section-header">
                     <div>
                         <div class="section-title"
-                             data-en="Roadmap (Draft)"
-                             data-fr="Feuille de route (Ébauche)">
-                            Feuille de route (Ébauche)
+                             data-en="Roadmap & Community"
+                             data-fr="Feuille de route & Communauté">
+                            Feuille de route & Communauté
                         </div>
                         <div class="section-sub"
-                             data-en="Key milestones on the journey from the Moon to Mars."
-                             data-fr="Jalons clés sur la trajectoire Lune → Mars.">
-                            Jalons clés sur la trajectoire Lune → Mars.
+                             data-en="A realistic path: build, stabilize, then expand."
+                             data-fr="Un chemin réaliste : bâtir, stabiliser, puis développer.">
+                            Un chemin réaliste : bâtir, stabiliser, puis développer.
                         </div>
                     </div>
                 </div>
 
-                <div class="roadmap-steps">
-                    <div class="step">
-                        <label data-en="Phase 1" data-fr="Phase 1">Phase 1</label>
-                        <div>
-                            <strong data-en="Launch Preparation (2025)" data-fr="Préparation au lancement (2025)">
-                                Préparation au lancement (2025)
-                            </strong>
-                            <span data-en="Contract publication/verification on BscScan, website/whitepaper release, GitHub setup, visual identity."
-                                  data-fr="Publication et vérification du contrat sur BscScan, mise en ligne du site et du whitepaper, création du dépôt GitHub et identité visuelle.">
-                                [cite_start]Publication et vérification du contrat sur BscScan [cite: 33][cite_start], mise en ligne du site et du whitepaper [cite: 34][cite_start], création du dépôt GitHub et identité visuelle[cite: 35, 36].
-                            </span>
+                <div class="grid-2">
+                    <div>
+                        <div class="roadmap-steps">
+                            <div class="step">
+                                <div>
+                                    <label data-en="Phase 1" data-fr="Phase 1">Phase 1</label>
+                                    <strong data-en="Launch & Foundation"
+                                            data-fr="Lancement & Fondations">
+                                        Lancement & Fondations
+                                    </strong>
+                                    <span data-en="Contract deployed, initial burns, first community holders, website & whitepaper online."
+                                          data-fr="Contrat déployé, premiers burns, premiers détenteurs, mise en ligne du site et du whitepaper.">
+                                        Contrat déployé, premiers burns, premiers détenteurs, mise en ligne du site et du whitepaper.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div>
+                                    <label data-en="Phase 2" data-fr="Phase 2">Phase 2</label>
+                                    <strong data-en="Liquidity & Visibility"
+                                            data-fr="Liquidité & Visibilité">
+                                        Liquidité & Visibilité
+                                    </strong>
+                                    <span data-en="Optimize liquidity, track burns publicly, grow presence on social platforms and explorers."
+                                          data-fr="Optimisation de la liquidité, suivi public des burns, développement de la présence sur les réseaux et les explorateurs.">
+                                        Optimisation de la liquidité, suivi public des burns, développement de la présence sur les réseaux et les explorateurs.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div>
+                                    <label data-en="Phase 3" data-fr="Phase 3">Phase 3</label>
+                                    <strong data-en="Ecosystem & Utilities"
+                                            data-fr="Écosystème & Utilités">
+                                        Écosystème & Utilités
+                                    </strong>
+                                    <span data-en="Experiment with utilities, collaborations, and creative projects aligned with the Moon–Mars corridor vision."
+                                          data-fr="Expérimentation d’utilités, de collaborations et de projets créatifs alignés avec la vision du corridor Lune–Mars.">
+                                        Expérimentation d’utilités, de collaborations et de projets créatifs alignés avec la vision du corridor Lune–Mars.
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="step">
-                        <label data-en="Phase 2" data-fr="Phase 2">Phase 2</label>
-                        <div>
-                            <strong data-en="Community and Listing (2025)" data-fr="Communauté et cotations (2025)">
-                                Communauté et cotations (2025)
-                            </strong>
-                            <span data-en="Submission to CoinGecko/CoinMarketCap, visual integration in wallets, launch of social channels (X, Telegram)."
-                                  data-fr="Soumission aux plateformes d'agrégation (CoinGecko, CoinMarketCap), intégration visuelle dans les portefeuilles et lancement des canaux communautaires (X, Telegram).">
-                                [cite_start]Soumission aux plateformes d'agrégation [cite: 38][cite_start], intégration visuelle dans les portefeuilles [cite: 39] [cite_start]et lancement des canaux communautaires[cite: 40].
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <label data-en="Phase 3" data-fr="Phase 3">Phase 3</label>
-                        <div>
-                            <strong data-en="Mid-Term Development" data-fr="Développement à moyen terme">
-                                Développement à moyen terme
-                            </strong>
-                            <span data-en="Symbolic content development (NFTs, mini-projects), expansion of community and collaborations."
-                                  data-fr="Développement de contenu symbolique (visuels, NFT thématiques, mini-projets éducatifs) et renforcement de la communauté.">
-                                [cite_start]Développement de contenu symbolique (NFTs, mini-projets éducatifs) [cite: 42] [cite_start]et renforcement de la communauté et des collaborations[cite: 43].
-                            </span>
+                    <div id="faq">
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <div class="faq-q"
+                                     data-en="Is LUMA a speculative meme or a serious project?"
+                                     data-fr="LUMA est-il un meme spéculatif ou un projet sérieux ?">
+                                    LUMA est-il un meme spéculatif ou un projet sérieux ?
+                                </div>
+                                <div class="faq-a"
+                                     data-en="LUMA embraces a playful narrative (Moon → Mars) but keeps tokenomics simple and transparent. No false promises, no unrealistic roadmap: just a symbolic asset the community can grow over time."
+                                     data-fr="LUMA assume un récit ludique (Lune → Mars) mais conserve des tokenomics simples et transparentes. Pas de fausses promesses, pas de feuille de route irréaliste : un actif symbolique que la communauté peut faire grandir dans le temps.">
+                                    LUMA assume un récit ludique (Lune → Mars) mais conserve des tokenomics simples et transparentes. Pas de fausses promesses, pas de feuille de route irréaliste : un actif symbolique que la communauté peut faire grandir dans le temps.
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-q"
+                                     data-en="How do transaction taxes work?"
+                                     data-fr="Comment fonctionne la taxe de 3 % ?">
+                                    Comment fonctionne la taxe de 3 % ?
+                                </div>
+                                <div class="faq-a"
+                                     data-en="Each buy and sell applies a 3 % tax: 1 % is burned, 1 % goes to liquidity, and 1 % goes to a dev wallet. It is automatic and handled by the smart contract."
+                                     data-fr="Chaque achat et chaque vente appliquent une taxe de 3 % : 1 % est burn, 1 % va à la liquidité, 1 % va au portefeuille de développement. C’est automatique et géré par le smart contract.">
+                                    Chaque achat et chaque vente appliquent une taxe de 3 % : 1 % est burn, 1 % va à la liquidité, 1 % va au portefeuille de développement. C’est automatique et géré par le smart contract.
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-q"
+                                     data-en="Is this financial advice?"
+                                     data-fr="Est-ce un conseil financier ?">
+                                    Est-ce un conseil financier ?
+                                </div>
+                                <div class="faq-a"
+                                     data-en="No. LUMA is a symbolic project. Always do your own research and never invest more than you can afford to lose."
+                                     data-fr="Non. LUMA est un projet symbolique. Faites toujours vos propres recherches et n’investissez jamais plus que ce que vous pouvez vous permettre de perdre.">
+                                    Non. LUMA est un projet symbolique. Faites toujours vos propres recherches et n’investissez jamais plus que ce que vous pouvez vous permettre de perdre.
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-q"
+                                     data-en="A word to holders"
+                                     data-fr="Un mot pour les détenteurs">
+                                    Un mot pour les détenteurs
+                                </div>
+                                <div class="faq-a"
+                                     data-en="To everyone who follows and holds LUMA: thank you. Your dream and your trust help propel this vision from the Moon to Mars."
+                                     data-fr="À tous ceux qui suivent et détiennent LUMA : merci. Votre rêve et votre confiance contribuent à propulser cette vision de la Lune vers Mars.">
+                                    À tous ceux qui suivent et détiennent LUMA : merci. Votre rêve et votre confiance contribuent à propulser cette vision de la Lune vers Mars.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="faq">
+        <!-- CONTACT / SOCIAL -->
+        <section>
             <div class="section-card">
                 <div class="section-header">
                     <div>
-                        <div class="section-title">FAQ</div>
-                        <div class="section-sub"
-                             data-en="Common questions about the Lunar&Mars project."
-                             data-fr="Questions fréquentes sur le projet Lunar&Mars;">
-                            Questions fréquentes sur le projet Lunar&amp;Mars.
+                        <div class="section-title"
+                             data-en="Links & Community"
+                             data-fr="Liens & Communauté">
+                            Liens & Communauté
                         </div>
                     </div>
                 </div>
-
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <div class="faq-q"
-                             data-en="What is Lunar&Mars (LUMA)?"
-                             data-fr="Qu'est-ce que Lunar&Mars (LUMA) ?">
-                            Qu'est-ce que Lunar&amp;Mars (LUMA) ?
-                        </div>
-                        <div class="faq-a"
-                             data-en="LUMA is a conceptual BEP-20 token representing the symbolic corridor between the Moon and Mars, intended to unite a community around space exploration and decentralization."
-                             data-fr="LUMA est un jeton BEP-20 conceptuel représentant le corridor symbolique entre la Lune et Mars, destiné à unir une communauté autour de l'exploration spatiale et de la décentralisation.">
-                            [cite_start]LUMA est un jeton BEP-20 conceptuel représentant le corridor symbolique entre la Lune et Mars [cite: 5, 8][cite_start], destiné à unir une communauté autour de l'exploration spatiale et de la décentralisation[cite: 30].
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-q"
-                             data-en="What is the total supply and what does it represent?"
-                             data-fr="Quelle est l'offre totale et que représente-t-elle ?">
-                            Quelle est l'offre totale et que représente-t-elle ?
-                        </div>
-                        <div class="faq-a"
-                             data-en="The total fixed supply is 225,384,400 LUMA, inspired by the average trajectory distance between the Moon and Mars during favorable launch windows."
-                             data-fr="L'offre totale fixe est de 225 384 400 LUMA, inspirée par la distance moyenne de trajectoire entre la Lune et Mars lors de fenêtres de lancement favorables.">
-                            [cite_start]L'offre totale fixe est de **225 384 400 LUMA** [cite: 12][cite_start], inspirée par la distance moyenne de trajectoire entre la Lune et Mars lors de fenêtres de lancement favorables[cite: 12].
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-q"
-                             data-en="Is LUMA a speculative asset?"
-                             data-fr="Est-ce un actif spéculatif ?">
-                            Est-ce un actif spéculatif ?
-                        </div>
-                        <div class="faq-a"
-                             data-en="No, LUMA is not a speculative asset. It is a conceptual, community-driven, and educational token meant to inspire reflection around space technologies and decentralization."
-                             data-fr="Non, LUMA n'est pas un actif spéculatif. Il s'agit d'un jeton conceptuel, communautaire et éducatif destiné à inspirer la réflexion autour des technologies spatiales et de la décentralisation.">
-                            [cite_start]Non, LUMA n'est pas un actif spéculatif[cite: 6]. [cite_start]C'est un jeton conceptuel, communautaire et éducatif destiné à inspirer la réflexion autour des technologies spatiales et de la décentralisation[cite: 6].
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-q"
-                             data-en="What are the technical characteristics of the token?"
-                             data-fr="Quelles sont les caractéristiques techniques du jeton ?">
-                            Quelles sont les caractéristiques techniques du jeton ?
-                        </div>
-                        <div class="faq-a"
-                             data-en="LUMA is a BEP-20 token built using OpenZeppelin standards on the BNB Smart Chain. The contract is simple, open-source, verifiable, and includes a mint function (owner-controlled) and a burn function (accessible to all holders)."
-                             data-fr="LUMA est un jeton BEP-20 basé sur les standards OpenZeppelin sur la BNB Smart Chain. Le contrat est simple, open-source et vérifiable. Il inclut une fonction de mint (contrôlée par le propriétaire) et de burn (accessible à tous les détenteurs).">
-                            [cite_start]LUMA est un jeton BEP-20 [cite: 5] [cite_start]basé sur les standards OpenZeppelin sur la **BNB Smart Chain**[cite: 16]. [cite_start]Le contrat est simple, open-source et vérifiable[cite: 18, 20]. [cite_start]Il inclut une fonction de mint (contrôlée par le propriétaire) [cite: 23] [cite_start]et de burn (accessible à tous les détenteurs)[cite: 24].
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-q"
-                             data-en="Are there transaction taxes (buy/sell)?"
-                             data-fr="Y a-t-il des taxes sur les transactions (achat/vente) ?">
-                            Y a-t-il des taxes sur les transactions (achat/vente) ?
-                        </div>
-                        <div class="faq-a"
-                             data-en="Yes, the token mechanics include a 3% tax (1% for Burn, 1% for Liquidity Pool, and 1% for the Development Wallet) to help sustain the project's long-term vision."
-                             data-fr="Oui, la mécanique du jeton inclut une taxe de 3 % (1 % pour le Burn, 1 % pour la Liquidité et 1 % pour le Portefeuille de Développement) pour aider à soutenir la vision à long terme du projet.">
-                            Oui, la mécanique du jeton inclut une taxe de **3 %** (1 % pour le Burn, 1 % pour la Liquidité et 1 % pour le Portefeuille de Développement) comme indiqué dans la section Tokenomics.
-                        </div>
-                    </div>
+                <div class="links-row">
+                    <span class="link-chip">Twitter / X</span>
+                    <span class="link-chip">Telegram</span>
+                    <span class="link-chip">Discord</span>
+                    <span class="link-chip">LUMA Wiki</span>
+                    <span class="link-chip">DexScreener</span>
                 </div>
             </div>
         </section>
     </main>
-    
-    <script>
-        // Dummy data for ticker to avoid missing script error (assuming a JS file handles the real data)
-        const dummyTickerData = [
-            { symbol: 'BNB', price: '600.00 $', change: '+1.5%', class: 'up' },
-            { symbol: 'ETH', price: '4200.00 $', change: '+0.8%', class: 'up' },
-            { symbol: 'BTC', price: '70,000.00 $', change: '-0.2%', class: 'down' },
-            { symbol: 'CAKE', price: '3.50 $', change: '+2.1%', class: 'up' },
-            { symbol: 'LUNA', price: '0.00012 $', change: '-1.0%', class: 'down' },
-            { symbol: 'MARS', price: '0.0000003 $', change: '+5.0%', class: 'up' },
-        ];
 
-        const tickerTrack = document.getElementById('ticker-track');
-        function populateTicker() {
-            tickerTrack.innerHTML = ''; // Clear existing content
-            // Duplicate the data to ensure smooth looping animation
-            const fullTickerData = [...dummyTickerData, ...dummyTickerData]; 
+    <footer>
+        <div data-en="Lunar&Mars (LUMA) is a symbolic BEP-20 token. This website does not provide financial advice."
+             data-fr="Lunar&Mars (LUMA) est un jeton BEP-20 symbolique. Ce site ne fournit aucun conseil financier.">
+            Lunar&Mars (LUMA) est un jeton BEP-20 symbolique. Ce site ne fournit aucun conseil financier.
+        </div>
+    </footer>
+</div>
 
-            fullTickerData.forEach(item => {
-                const tickerItem = document.createElement('div');
-                tickerItem.className = 'ticker-item';
-                tickerItem.innerHTML = `
-                    <span class="ticker-symbol">${item.symbol}</span>
-                    <span class="ticker-price">${item.price}</span>
-                    <span class="ticker-change ${item.class}">${item.change}</span>
-                `;
-                tickerTrack.appendChild(tickerItem);
-            });
-        }
-        populateTicker();
-
-
-        // Language Switch Logic (Based on data-lang attributes)
-        const langBtns = document.querySelectorAll('.lang-btn');
-        const elementsToTranslate = document.querySelectorAll('[data-fr], [data-en]');
-
-        langBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const newLang = btn.dataset.lang;
-                
-                // Update active button state
-                langBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // Update text content
-                elementsToTranslate.forEach(el => {
-                    const translation = el.dataset[newLang];
-                    if (translation) {
-                        // For code elements, just update text, don't use innerHTML
-                        if (el.tagName === 'CODE') {
-                             // Do nothing for code as content is an address, but good practice.
-                        } else if (el.tagName === 'A' && el.classList.contains('btn-ghost')) {
-                            // Special handling for button text (to keep HTML structure simple)
-                            el.textContent = translation;
-                        } else {
-                            el.innerHTML = translation;
-                        }
-                    }
-                });
-                
-                // Update HTML lang attribute
-                document.documentElement.setAttribute('lang', newLang);
-            });
-        });
-        
-        // Menu Toggle (for mobile)
-        const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links');
-
+<script>
+    // Mobile nav
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    if (menuToggle) {
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('open');
         });
-        
-        // Close menu on link click (for mobile)
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navLinks.classList.contains('open')) {
-                    navLinks.classList.remove('open');
-                }
-            });
+    }
+
+    // Language switch
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const translatable = document.querySelectorAll('[data-en][data-fr]');
+
+    function setLang(lang) {
+        translatable.forEach(el => {
+            el.textContent = el.getAttribute(lang === 'en' ? 'data-en' : 'data-fr');
         });
-        
-    </script>
-    
-    <footer>
-        &copy; 2025 Lunar&amp;Mars (LUMA) – Project Symbolique. Tous droits réservés.
-    </footer>
-</div>
+        langButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        document.documentElement.lang = lang;
+    }
+
+    langButtons.forEach(btn => {
+        btn.addEventListener('click', () => setLang(btn.dataset.lang));
+    });
+
+    // Default: FR
+    setLang('fr');
+
+    // Crypto ticker (Coingecko for majors + placeholder for LUMA)
+    const tickerTrack = document.getElementById('ticker-track');
+
+    const coins = [
+        { id: 'bitcoin', symbol: 'BTC' },
+        { id: 'ethereum', symbol: 'ETH' },
+        { id: null, symbol: 'LUMA' }, // Placeholder
+        { id: 'litecoin', symbol: 'LTC' },
+        { id: 'dogecoin', symbol: 'DOGE' },
+        { id: 'shiba-inu', symbol: 'SHIB' },
+        { id: 'bitcoin-cash', symbol: 'BCH' },
+        { id: 'zcash', symbol: 'ZEC' }
+    ];
+
+    function renderTicker(data) {
+        tickerTrack.innerHTML = '';
+        const items = [];
+
+        coins.forEach(c => {
+            const priceData = data && c.id ? data[c.id] : null;
+            const price = priceData ? ('$' + priceData.usd.toFixed(4)) : '—';
+            const change = priceData ? priceData.usd_24h_change : null;
+
+            const item = document.createElement('div');
+            item.className = 'ticker-item';
+
+            const sym = document.createElement('span');
+            sym.className = 'ticker-symbol';
+            sym.textContent = c.symbol;
+
+            const p = document.createElement('span');
+            p.className = 'ticker-price';
+            p.textContent = price;
+
+            item.appendChild(sym);
+            item.appendChild(p);
+
+            if (change !== null) {
+                const ch = document.createElement('span');
+                ch.className = 'ticker-change ' + (change >= 0 ? 'up' : 'down');
+                ch.textContent = (change >= 0 ? '▲ ' : '▼ ') + Math.abs(change).toFixed(2) + '%';
+                item.appendChild(ch);
+            } else if (c.symbol === 'LUMA') {
+                const ch = document.createElement('span');
+                ch.className = 'ticker-change';
+                ch.textContent = 'soon';
+                item.appendChild(ch);
+            }
+
+            items.push(item);
+        });
+
+        [...items, ...items].forEach(it => tickerTrack.appendChild(it.cloneNode(true)));
+    }
+
+    async function fetchPrices() {
+        try {
+            const ids = coins.filter(c => c.id).map(c => c.id).join(',');
+            const res = await fetch(
+                'https://api.coingecko.com/api/v3/simple/price?ids=' +
+                encodeURIComponent(ids) +
+                '&vs_currencies=usd&include_24hr_change=true'
+            );
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const json = await res.json();
+            renderTicker(json);
+        } catch (e) {
+            console.warn('Price fetch error, using placeholders:', e);
+            renderTicker(null);
+        }
+    }
+
+    fetchPrices();
+    setInterval(fetchPrices, 60000);
+</script>
 </body>
 </html>
