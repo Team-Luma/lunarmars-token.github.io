@@ -176,11 +176,20 @@
             line-height:1.1;
             margin-bottom:16px;
         }
+        /* Conteneur principal pour le paragraphe - ne défile pas */
         .panel-text {
-            font-size:15px; /* Légèrement plus grand */
+            font-size:15px;
             color:rgba(255,255,255,0.85);
             line-height:1.7;
         }
+        /* NOUVEAU CONTENEUR pour le texte défilant */
+        .scroll-content {
+            max-height: 250px; /* Hauteur maximale avant le scroll (ajustable) */
+            overflow-y: auto;  /* Active la barre de défilement si le contenu dépasse */
+            padding-right: 15px; /* Pour éviter que le texte ne touche la barre de défilement */
+        }
+
+        
         /* Panel de droite : prix */
         .price-label {
             font-size:13px;
@@ -244,7 +253,6 @@
             box-shadow:0 22px 60px rgba(255,178,26,0.9);
         }
         .btn-secondary {
-            /* Retrait du margin-left pour laisser le flex gap gérer l'espacement */
             background:rgba(0,0,0,0.55);
             color:#fff;
             border:1px solid rgba(255,255,255,0.35);
@@ -255,13 +263,12 @@
             display:flex;
             flex-wrap:wrap;
             align-items:center;
-            gap:10px; /* L'espacement est géré ici */
+            gap:10px; 
         }
         
         /* Media Queries (Responsive) */
         @media (max-width:1200px) {
             .hero-grid {
-                /* Sur les écrans moyens, on revient à la grille 1:1 */
                 grid-template-columns: minmax(0,1fr) minmax(0,1fr);
             }
         }
@@ -280,7 +287,8 @@
             .brand-name { font-size:20px; }
             .hero-title { font-size:32px; }
             .panel { padding:20px 16px; }
-            /* Pas besoin d'ajuster .btn-secondary car le margin-left a été retiré */
+            /* Réduit la hauteur max sur mobile pour mieux s'adapter */
+            .scroll-content { max-height: 180px; }
         }
         
         footer {
@@ -331,11 +339,13 @@
                         LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.
                     </div>
                     
-                    <div class="panel-text translatable" 
-                        [cite_start]data-en="Lunar&Mars; (LUMA) is a BEP-20 token on the BNB Smart Chain[cite: 50]. [cite_start]It is a conceptual, community-driven, and educational asset meant to inspire interest in space technologies and decentralization[cite: 51]. [cite_start]It is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future[cite: 55]."
-                        data-fr="Lunar&Mars; (LUMA) [cite_start]est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. [cite_start]Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. [cite_start]Il n'a pas pour but de générer un profit, mais d'unir la communauté autour d'une vision commune de l'avenir spatial[cite: 10]."
-                    >
-                        [cite_start]Lunar&Mars; (LUMA) est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. [cite_start]Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. [cite_start]Il n'a pas pour but de générer un profit, mais d'unir la communauté autour d'une vision commune de l'avenir spatial[cite: 10].
+                    <div class="panel-text scroll-content">
+                        <span class="translatable" 
+                            data-en="Lunar&Mars; (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars. LUMA is a conceptual, community-driven, and educational asset, not intended for speculation."
+                            data-fr="Lunar&Mars; (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. LUMA est un actif conceptuel, communautaire et éducatif, non destiné à la spéculation."
+                        >
+                            Lunar&Mars; (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. LUMA est un actif conceptuel, communautaire et éducatif, non destiné à la spéculation.
+                        </span>
                     </div>
                 </article>
 
@@ -423,7 +433,6 @@
             document.querySelectorAll('.translatable').forEach(el => {
                 const translation = el.getAttribute('data-' + lang);
                 if (translation) {
-                    // Utiliser innerHTML pour préserver les balises internes et les citations
                     el.innerHTML = translation;
                 }
             });
