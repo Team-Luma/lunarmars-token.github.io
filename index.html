@@ -21,7 +21,7 @@
             --radius-lg: 26px;
             --radius-md: 18px;
             --max-width: 1200px;
-            --ticker-height: 38px; /* Hauteur de la nouvelle barre de défilement */
+            --ticker-height: 38px;
         }
 
         /* Base Styles */
@@ -55,7 +55,6 @@
             left: 0;
             width: 100%;
             z-index: 100;
-            /* Le padding-top du .hero-section sera ajusté à cause du ticker */
         }
 
         .top-bar {
@@ -90,12 +89,12 @@
             border-radius: 4px;
         }
         
-        /* --- NOUVEAU: Market Ticker (Barre de défilement de prix) --- */
+        /* --- Market Ticker --- */
         .market-bar {
             width: 100%;
             height: var(--ticker-height);
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.05); /* Arrière-plan légèrement clair/gris */
+            background: rgba(255, 255, 255, 0.05);
             white-space: nowrap;
             display: flex;
             border-bottom: 1px solid var(--border-soft);
@@ -105,8 +104,8 @@
             display: inline-flex;
             align-items: center;
             gap: 30px;
-            animation: ticker-scroll 30s linear infinite; /* Vitesse de défilement */
-            min-width: 200%; /* Important pour que l'animation boucle */
+            animation: ticker-scroll 30s linear infinite;
+            min-width: 200%;
             padding-left: 20px;
         }
 
@@ -117,7 +116,7 @@
             font-size: 14px;
             font-weight: 500;
             color: var(--text-main);
-            flex-shrink: 0; /* Empêche les éléments de rétrécir */
+            flex-shrink: 0;
         }
         
         .market-symbol {
@@ -131,7 +130,7 @@
         .market-change {
             font-size: 12px;
             padding: 3px 6px;
-            border-radius: 4px; /* Carré/rectangulaire comme sur l'image */
+            border-radius: 4px;
             font-weight: 700;
         }
 
@@ -147,14 +146,11 @@
 
         @keyframes ticker-scroll {
             0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Défilement de 50% de la largeur totale (200%) */
+            100% { transform: translateX(-50%); }
         }
         
-        /* --- FIN NOUVEAU: Market Ticker --- */
-
         /* --- Main Hero Section (Updated padding-top) --- */
         .hero-section {
-            /* 60px (Top Bar) + 38px (Ticker Bar) = 98px */
             padding-top: calc(60px + var(--ticker-height)); 
             display: flex;
             justify-content: center;
@@ -178,8 +174,6 @@
             pointer-events: none;
         }
 
-        /* Le reste du code CSS (main-block, hero-title, section, etc.) reste inchangé */
-        
         .content-shell {
             max-width: var(--max-width);
             width: 100%;
@@ -188,11 +182,12 @@
             z-index: 10;
         }
         
+        /* --- ADJUSTEMENT ICI: main-block width and text-section gap --- */
         .main-block {
             background: var(--bg-card); 
             border-radius: var(--radius-lg);
             padding: 40px;
-            max-width: 650px;
+            max-width: 750px; /* **AUGMENTÉ** pour plus d'espace */
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             margin-bottom: 5%; 
         }
@@ -207,18 +202,20 @@
 
         .text-section {
             display: flex;
-            gap: 30px;
+            gap: 40px; /* **AUGMENTÉ** l'espace entre le texte gauche et le bloc prix droit */
+            align-items: flex-start; /* Aligner en haut */
         }
 
         .text-left {
             flex: 1;
-            padding-right: 30px;
+            padding-right: 40px; /* **AUGMENTÉ** le padding à droite pour plus d'espace */
             border-right: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .text-right {
              flex-shrink: 0;
-             width: 220px;
+             width: 260px; /* **AUGMENTÉ** la largeur du bloc de prix pour mieux contenir les chiffres */
+             padding-left: 10px; /* Petit padding pour éviter que le texte touche le bord gauche du bloc */
         }
 
         .text-section .sub-title {
@@ -403,6 +400,7 @@
             .text-right {
                  width: 100%;
                  margin-top: 20px;
+                 padding-left: 0; /* Pas de padding gauche sur mobile */
             }
             .section {
                 grid-template-columns: 1fr;
@@ -414,8 +412,8 @@
         
         @media (max-width: 768px) {
             .market-inner {
-                animation: none; /* Désactive le défilement sur mobile */
-                overflow-x: auto; /* Permet le défilement manuel */
+                animation: none;
+                overflow-x: auto;
                 padding: 0;
             }
             .market-bar {
