@@ -244,7 +244,7 @@
             box-shadow:0 22px 60px rgba(255,178,26,0.9);
         }
         .btn-secondary {
-            margin-left:12px;
+            /* Retrait du margin-left pour laisser le flex gap gérer l'espacement */
             background:rgba(0,0,0,0.55);
             color:#fff;
             border:1px solid rgba(255,255,255,0.35);
@@ -255,7 +255,7 @@
             display:flex;
             flex-wrap:wrap;
             align-items:center;
-            gap:10px;
+            gap:10px; /* L'espacement est géré ici */
         }
         
         /* Media Queries (Responsive) */
@@ -280,7 +280,7 @@
             .brand-name { font-size:20px; }
             .hero-title { font-size:32px; }
             .panel { padding:20px 16px; }
-            .btn-secondary { margin-left:0; margin-top:10px; }
+            /* Pas besoin d'ajuster .btn-secondary car le margin-left a été retiré */
         }
         
         footer {
@@ -332,10 +332,10 @@
                     </div>
                     
                     <div class="panel-text translatable" 
-                        data-en="Lunar&Mars; (LUMA) is a BEP-20 token on the BNB Smart Chain. It is a conceptual, community-driven, and educational asset meant to inspire interest in space technologies and decentralization. It is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future."
-                        [cite_start]data-fr="Lunar&Mars; (LUMA) est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. Il n'a pas pour but de générer un profit, mais d'unir la communauté autour de l'avenir spatial[cite: 10]."
+                        [cite_start]data-en="Lunar&Mars; (LUMA) is a BEP-20 token on the BNB Smart Chain[cite: 50]. [cite_start]It is a conceptual, community-driven, and educational asset meant to inspire interest in space technologies and decentralization[cite: 51]. [cite_start]It is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future[cite: 55]."
+                        data-fr="Lunar&Mars; (LUMA) [cite_start]est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. [cite_start]Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. [cite_start]Il n'a pas pour but de générer un profit, mais d'unir la communauté autour d'une vision commune de l'avenir spatial[cite: 10]."
                     >
-                        Lunar&Mars; (LUMA) est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. Il n'a pas pour but de générer un profit, mais d'unir la communauté autour de l'avenir spatial[cite: 10].
+                        [cite_start]Lunar&Mars; (LUMA) est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. [cite_start]Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. [cite_start]Il n'a pas pour but de générer un profit, mais d'unir la communauté autour d'une vision commune de l'avenir spatial[cite: 10].
                     </div>
                 </article>
 
@@ -377,6 +377,16 @@
                         >
                             Voir le contrat
                         </a>
+                        <a
+                            class="btn btn-secondary translatable"
+                            href="LUMA_Whitepaper_v1.pdf" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-en="View Whitepaper"
+                            data-fr="Voir le Whitepaper"
+                        >
+                            Voir le Whitepaper
+                        </a>
                     </div>
                 </article>
             </div>
@@ -413,8 +423,7 @@
             document.querySelectorAll('.translatable').forEach(el => {
                 const translation = el.getAttribute('data-' + lang);
                 if (translation) {
-                    // Utiliser innerHTML pour préserver les balises internes comme <strong> et les citations
-                    // NOTE: Les citations sont conservées dans la version finale du code pour la traçabilité.
+                    // Utiliser innerHTML pour préserver les balises internes et les citations
                     el.innerHTML = translation;
                 }
             });
