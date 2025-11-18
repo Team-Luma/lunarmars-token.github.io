@@ -1,541 +1,809 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Lunar&Mars (LUMA)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="luma-logo.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-
-    body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background:#000 url("luma-bg.jpg") center/cover fixed no-repeat;
-      color:#fff;
-      overflow-x:hidden;
-    }
-
-    a { color:inherit; text-decoration:none; }
-
-    /* -------- HEADER + TICKER (on garde) -------- */
-
-    header {
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      z-index:1000;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:10px 24px;
-      background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.6));
-      backdrop-filter:blur(16px);
-      border-bottom:1px solid rgba(255,255,255,0.15);
-    }
-
-    .brand {
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .brand-logo {
-      width:52px;
-      height:52px;
-      border-radius:16px;
-      overflow:hidden;
-      background:#000;
-    }
-
-    .brand-logo img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .brand-name {
-      font-size:24px;
-      font-weight:900;
-      letter-spacing:0.02em;
-    }
-
-    .lang-switch {
-      display:flex;
-      gap:8px;
-    }
-
-    .lang-switch button {
-      background:#000;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.35);
-      padding:4px 10px;
-      border-radius:999px;
-      cursor:pointer;
-      font-size:11px;
-    }
-
-    .lang-switch button.active {
-      background:#fff;
-      color:#000;
-    }
-
-    /* TICKER */
-
-    .ticker {
-      position:fixed;
-      top:74px;  /* sous le header */
-      left:0;
-      right:0;
-      z-index:900;
-      background:#f7f7fb;
-      border-bottom:1px solid #e0e0ef;
-      overflow:hidden;
-    }
-
-    .ticker-inner {
-      padding:6px 0;
-      white-space:nowrap;
-    }
-
-    .ticker-track {
-      display:inline-flex;
-      gap:22px;
-      padding:0 24px;
-      animation:scroll 38s linear infinite;
-    }
-
-    .ticker-item {
-      font-size:13px;
-      color:#222;
-      font-weight:600;
-    }
-
-    .ticker-item span {
-      margin-right:4px;
-    }
-
-    .ticker-change {
-      font-size:11px;
-      padding:2px 6px;
-      border-radius:999px;
-      border:1px solid transparent;
-    }
-
-    .ticker-change.up {
-      color:#1a9c4d;
-      border-color:rgba(26,156,77,0.35);
-      background:rgba(26,156,77,0.08);
-    }
-
-    .ticker-change.down {
-      color:#e64b5f;
-      border-color:rgba(230,75,95,0.4);
-      background:rgba(230,75,95,0.08);
-    }
-
-    @keyframes scroll {
-      0% { transform:translateX(0); }
-      100% { transform:translateX(-50%); }
-    }
-
-    @media (max-width:800px) {
-      .ticker-track { animation:none; }
-    }
-
-    /* -------- HERO « WHAT IS LUMA? » -------- */
-
-    main {
-      min-height:100vh;
-    }
-
-    .hero {
-      max-width:1150px;
-      margin:0 auto;
-      padding:180px 24px 80px; /* on décale sous header + ticker */
-      position:relative;
-    }
-
-    /* Titre géant centré comme sur l’image 2 */
-    .hero-title {
-      text-align:center;
-      font-size:54px;
-      font-weight:900;
-      letter-spacing:0.08em;
-      margin-bottom:30px;
-      text-shadow:0 0 18px rgba(0,0,0,0.9);
-    }
-
-    /* Deux panneaux semi-transparents */
-
-    .hero-grid {
-      display:grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
-      gap:26px;
-    }
-
-    .panel {
-      background:rgba(9,10,22,0.78);
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,0.18);
-      padding:26px 26px 22px;
-      box-shadow:0 24px 60px rgba(0,0,0,0.65);
-      backdrop-filter:blur(10px);
-    }
-
-    .panel-title-small {
-      font-size:13px;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.8);
-      margin-bottom:12px;
-    }
-
-    .panel-heading {
-      font-size:30px;
-      font-weight:900;
-      line-height:1.1;
-      margin-bottom:16px;
-    }
-
-    .panel-text {
-      font-size:14px;
-      color:rgba(255,255,255,0.85);
-      line-height:1.7;
-    }
-
-    /* Panel de droite : prix */
-
-    .price-label {
-      font-size:13px;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-      color:#f3f3ff;
-      margin-bottom:12px;
-    }
-
-    .price-main {
-      font-size:32px;
-      font-weight:900;
-      letter-spacing:0.04em;
-      margin-bottom:10px;
-    }
-
-    .price-change {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      font-size:12px;
-      padding:4px 10px;
-      border-radius:999px;
-      background:#2c3f2c;
-      color:#46d47b;
-      margin-bottom:10px;
-    }
-
-    .price-change.down {
-      background:#4a2730;
-      color:#ff7b8f;
-    }
-
-    .price-note {
-      font-size:12px;
-      color:rgba(255,255,255,0.78);
-      margin-bottom:14px;
-    }
-
-    .price-pool {
-      font-size:12px;
-      color:rgba(255,255,255,0.9);
-      margin-bottom:22px;
-    }
-
-    /* Bouton MEXC comme sur l’image 2 */
-
-    .btn {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      padding:12px 28px;
-      border:none;
-      cursor:pointer;
-      font-size:16px;
-      font-weight:700;
-      white-space:nowrap;
-      text-decoration:none;
-    }
-
-    .btn-mexc {
-      background:#ffb21a;
-      color:#1b1302;
-      box-shadow:0 16px 45px rgba(255,178,26,0.7);
-    }
-
-    .btn-mexc:hover {
-      transform:translateY(-1px);
-      box-shadow:0 22px 60px rgba(255,178,26,0.9);
-    }
-
-    .btn-secondary {
-      margin-left:12px;
-      background:rgba(0,0,0,0.55);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.35);
-      font-size:14px;
-      padding:10px 20px;
-    }
-
-    .panel-buttons {
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:10px;
-    }
-
-    @media (max-width:960px) {
-      .hero {
-        padding-top:170px;
-      }
-      .hero-grid {
-        grid-template-columns:minmax(0,1fr);
-      }
-      .hero-title {
-        font-size:40px;
-      }
-    }
-
-    @media (max-width:640px) {
-      .brand-name { font-size:20px; }
-      .hero-title { font-size:32px; }
-      .panel { padding:20px 16px; }
-    }
-
-    footer {
-      max-width:1150px;
-      margin:0 auto 24px;
-      padding:12px 24px;
-      font-size:11px;
-      color:rgba(255,255,255,0.75);
-      text-align:center;
-      text-shadow:0 0 10px rgba(0,0,0,0.8);
-    }
-  </style>
-</head>
-<body>
-  <!-- HEADER -->
-  <header>
-    <div class="brand">
-      <div class="brand-logo">
-        <img src="luma-logo.png" alt="LUMA logo" />
-      </div>
-      <div class="brand-name">Lunar&Mars</div>
-    </div>
-    <div class="lang-switch">
-      <button class="active">EN</button>
-      <button>FR</button>
-    </div>
-  </header>
-
-  <!-- TICKER (inchangé) -->
-  <div class="ticker">
-    <div class="ticker-inner">
-      <div class="ticker-track" id="ticker-track">
-        Loading...
-      </div>
-    </div>
-  </div>
-
-  <main>
-    <!-- HERO -->
-    <section class="hero">
-      <h1 class="hero-title">WHAT IS LUMA?</h1>
-
-      <div class="hero-grid">
-        <!-- PANEL GAUCHE : texte -->
-        <article class="panel">
-          <div class="panel-title-small">LUMA IN ONE SENTENCE</div>
-          <div class="panel-heading">
-            LUMA IS A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE.
-          </div>
-          <div class="panel-text">
-            LUMA lives on BNB Smart Chain as a BEP-20 token. It is a symbolic asset
-            for people who like space, memes and the idea of a corridor between the
-            Moon and Mars. No promises, only a shared story and an open smart contract.
-          </div>
-        </article>
-
-        <!-- PANEL DROITE : prix + MEXC -->
-        <article class="panel">
-          <div class="price-label">CURRENT PRICE (DEX)</div>
-          <div id="luma-price" class="price-main">$0.000000000</div>
-          <div id="luma-change" class="price-change">0.00% (24h)</div>
-
-          <div class="price-note">
-            Price and 24h change from the LUMA / WBNB pool on GeckoTerminal
-            (if data is available).
-          </div>
-
-          <div class="price-pool">
-            <strong>Pool:</strong> LUMA / WBNB (DEX)<br />
-            <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
-               target="_blank" rel="noopener noreferrer">
-              Open on GeckoTerminal
-            </a>
-          </div>
-
-          <div class="panel-buttons">
-            <a
-              class="btn btn-mexc"
-              href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open on MEXC
-            </a>
-
-            <a
-              class="btn btn-secondary"
-              href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View contract
-            </a>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    LUMA is a symbolic community token on BNB Smart Chain. Nothing here is financial or investment advice.
-  </footer>
-
-  <!-- SCRIPTS -->
-  <script>
-    /* --- TICKER depuis CoinGecko (on garde) --- */
-    const barCoins = [
-      { id:"ethereum",     symbol:"ETH" },
-      { id:"binancecoin",  symbol:"BNB" },
-      { id:"solana",       symbol:"SOL" },
-      { id:"ripple",       symbol:"XRP" },
-      { id:"litecoin",     symbol:"LTC" },
-      { id:"bitcoin-cash", symbol:"BCH" },
-      { id:"dogecoin",     symbol:"DOGE" },
-      { id:"tron",         symbol:"TRX" },
-      { id:"bitcoin",      symbol:"BTC" }
-    ];
-
-    async function loadTicker() {
-      try {
-        const ids  = barCoins.map(c => c.id).join(",");
-        const url  = "https://api.coingecko.com/api/v3/simple/price?ids=" +
-                     ids +
-                     "&vs_currencies=usd&include_24hr_change=true";
-        const res  = await fetch(url);
-        const data = await res.json();
-
-        const track = document.getElementById("ticker-track");
-        track.innerHTML = "";
-
-        barCoins.forEach(c => {
-          const info = data[c.id];
-          if (!info) return;
-          const price  = info.usd;
-          const change = info.usd_24h_change || 0;
-          const cls    = change >= 0 ? "up" : "down";
-          const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
-
-          track.insertAdjacentHTML(
-            "beforeend",
-            `<div class="ticker-item">
-               <span>${c.symbol}</span>
-               <span>$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
-               <span class="ticker-change ${cls}">${changeStr}</span>
-             </div>`
-          );
-        });
-
-        track.innerHTML += track.innerHTML; // pour le scroll infini
-      } catch (e) {
-        console.error("Ticker error:", e);
-      }
-    }
-
-    loadTicker();
-    setInterval(loadTicker, 60000);
-
-    /* --- Prix LUMA depuis GeckoTerminal --- */
-
-    function formatLumaPrice(price) {
-      if (!isFinite(price) || price <= 0) return "Price unavailable";
-
-      if (price >= 0.01) {
-        return "$" + price.toFixed(4);
-      }
-
-      // affichage style 0.0{5}xxxxx lisible
-      if (price < 0.01 && price > 0) {
-        let s = price.toFixed(10);
-        s = s.replace(/0+$/,"").replace(/\.$/,"");
-        return "$" + s;
-      }
-
-      return "$" + price.toExponential(4);
-    }
-
-    async function loadLumaPrice() {
-      const url =
-        "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
-
-      const priceEl  = document.getElementById("luma-price");
-      const changeEl = document.getElementById("luma-change");
-
-      try {
-        const res  = await fetch(url);
-        const data = await res.json();
-        const attr = data?.data?.attributes;
-
-        if (!attr) {
-          priceEl.textContent  = "Price unavailable";
-          changeEl.textContent = "N/A (24h)";
-          changeEl.classList.remove("down");
-          return;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Lunar&Mars (LUMA) – What is LUMA?</title>
+    <meta name="description" content="Lunar&Mars (LUMA) is a community token on BNB Smart Chain inspired by the corridor between the Moon and Mars." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Variables */
+        :root {
+            --bg-page: #000;
+            --bg-card: rgba(0, 0, 0, 0.75);
+            --bg-section: rgba(0, 0, 0, 0.5);
+            --accent-main: #ffb21a;
+            --accent-danger: #ff4b6a;
+            --accent-ok: #2bbf6b;
+            --text-main: #ffffff;
+            --text-soft: #cccccc;
+            --border-soft: #333333;
+            --radius-lg: 26px;
+            --radius-md: 18px;
+            --max-width: 1200px;
+            --ticker-height: 38px;
         }
 
-        const price =
-          Number(attr.base_token_price_usd ??
-                 attr.quote_token_price_usd ??
-                 attr.price_usd ??
-                 0);
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        const change =
-          Number(
-            (attr.price_change_percentage && attr.price_change_percentage.h24) ??
-            attr.price_change_percentage_24h ??
-            0
-          );
+        body {
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
 
-        priceEl.textContent = formatLumaPrice(price);
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        img {
+            max-width: 100%;
+            display: block;
+        }
 
-        const isUp = change >= 0;
-        changeEl.classList.toggle("down", !isUp);
-        changeEl.classList.toggle("up", isUp);
+        /* --- Header (Top Bar) - Fixed at top --- */
+        .top-shell {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
 
-        const sign = isUp ? "+" : "";
-        changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
-      } catch (e) {
-        console.error("LUMA price error:", e);
-        priceEl.textContent  = "Price unavailable";
-        changeEl.textContent = "N/A (24h)";
-        changeEl.classList.remove("down","up");
-      }
-    }
+        .top-bar {
+            background: rgba(0, 0, 0, 0.5); 
+            border-bottom: 1px solid var(--border-soft);
+        }
 
-    loadLumaPrice();
-    setInterval(loadLumaPrice, 60000);
-  </script>
+        .top-bar-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .bar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bar-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--accent-main);
+        }
+        
+        .bar-logo-img {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-main);
+            border-radius: 4px;
+        }
+
+        /* --- Language Switcher Style --- */
+        .lang-switcher {
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .lang-switcher a {
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lang-switcher a:hover, .lang-switcher a.active {
+            color: var(--accent-main);
+        }
+        
+        /* --- Market Ticker --- */
+        .market-bar {
+            width: 100%;
+            height: var(--ticker-height);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+            display: flex;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .market-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+            animation: ticker-scroll 30s linear infinite;
+            min-width: 200%;
+            padding-left: 20px;
+        }
+
+        .market-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            flex-shrink: 0;
+        }
+        
+        .market-symbol {
+            font-weight: 700;
+        }
+
+        .market-price-value {
+            color: var(--text-soft);
+        }
+
+        .market-change {
+            font-size: 12px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .market-change.down {
+            background: var(--accent-danger);
+            color: var(--text-main);
+        }
+        
+        .market-change.up {
+            background: var(--accent-ok);
+            color: var(--text-main);
+        }
+
+        @keyframes ticker-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* --- Main Hero Section --- */
+        .hero-section {
+            padding-top: calc(60px + var(--ticker-height)); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            background-image: url('luma-bg.jpg'); 
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.3); 
+            pointer-events: none;
+        }
+
+        .content-shell {
+            max-width: var(--max-width);
+            width: 100%;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* --- ADJUSTEMENT MAJEUR ICI: main-block width pour l'effet "large" --- */
+        .main-block {
+            background: var(--bg-card); 
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            /* Augmenté à 850px pour un effet "large" qui englobe bien l'astronaute (visuel de l'image) */
+            max-width: 850px; 
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin-bottom: 5%; 
+        }
+        
+        .hero-title {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .text-section {
+            display: flex;
+            gap: 40px; 
+            align-items: flex-start;
+        }
+
+        .text-left {
+            /* Le texte de gauche prend plus d'espace */
+            flex: 1; 
+            padding-right: 40px; 
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .text-right {
+             /* Le bloc de prix reste fixe, mais plus large */
+             flex-shrink: 0;
+             width: 280px; /* Légèrement plus large pour les chiffres */
+             padding-left: 10px;
+        }
+
+        .text-section .sub-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 10px;
+        }
+
+        .text-section .big-text {
+            font-size: 34px;
+            line-height: 1.1;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 20px;
+        }
+
+        .text-section .body-text {
+            font-size: 14px;
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+
+        .price-card .main-price {
+            font-size: 38px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .price-change-badge-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(43, 191, 107, 0.3);
+            color: var(--accent-ok);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .price-card .note-text {
+             font-size: 12px;
+            color: var(--text-soft);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .price-card .pool-info {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-soft);
+            margin-bottom: 20px;
+        }
+
+        .btn-mexc {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 24px;
+            border-radius: 999px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+            background: var(--accent-main);
+            color: #1b1404;
+            box-shadow: 0 12px 30px rgba(255, 178, 26, 0.5);
+            width: 100%;
+        }
+
+        .btn-mexc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px rgba(255, 178, 26, 0.7);
+        }
+        
+        /* --- General Content Sections (Reste inchangé) --- */
+        .page {
+            max-width: var(--max-width);
+            margin: 60px auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            color: var(--accent-main);
+        }
+
+        .section p {
+            font-size: 15px;
+            color: var(--text-soft);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .section-card {
+            background: var(--bg-section);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-soft);
+            padding: 25px;
+        }
+
+        .section-card ul {
+            list-style: none;
+            font-size: 14px;
+            color: var(--text-soft);
+            display: grid;
+            gap: 15px;
+        }
+
+        .section-card li strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .section-card code {
+            font-family: monospace;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: var(--accent-main);
+        }
+        
+        .section-links a {
+            color: var(--accent-main);
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-soft);
+            padding: 20px 24px;
+            font-size: 12px;
+            color: var(--text-soft);
+            max-width: var(--max-width);
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Media Queries (Responsive) */
+        @media (max-width: 992px) {
+            .main-block {
+                 max-width: 100%;
+                 margin-bottom: 10%; 
+            }
+            .text-section {
+                flex-direction: column;
+            }
+            .text-left {
+                padding-right: 0;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding-bottom: 20px;
+            }
+            .text-right {
+                 width: 100%;
+                 margin-top: 20px;
+                 padding-left: 0;
+            }
+            .section {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .market-inner {
+                animation: none;
+                overflow-x: auto;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body data-lang="fr">
+
+    <div class="top-shell">
+        
+        <div class="top-bar">
+            <div class="top-bar-inner">
+                <div class="bar-left">
+                    <a href="#" class="bar-logo">
+                        <div class="bar-logo-img"></div>
+                        Lunar&Mars
+                    </a>
+                </div>
+                
+                <div class="bar-right">
+                    <div class="lang-switcher">
+                        <a id="lang-fr" onclick="setLanguage('fr')" class="active">FR</a> | 
+                        <a id="lang-en" onclick="setLanguage('en')">EN</a>
+                    </div>
+                    
+                    <a href="#what" class="nav-item" data-fr="Qu'est-ce que LUMA ?" data-en="What is LUMA?">What is LUMA?</a>
+                    <a href="#tokenomics" class="nav-item" data-fr="Tokenomics" data-en="Tokenomics">Tokenomics</a>
+                    <a href="#how" class="nav-item" data-fr="Comment obtenir" data-en="How to get">How to get</a>
+                    <a href="#links" class="nav-item" data-fr="Liens" data-en="Links">Links</a>
+                    <a href="#mexc" class="nav-item" data-fr="MEXC" data-en="MEXC">MEXC</a>
+                    <a class="btn-mexc" style="width: auto; padding: 8px 18px; font-size: 14px;"
+                        href="https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9"
+                        target="_blank" rel="noopener noreferrer">
+                        🚀 <span class="translatable-text" data-fr="Acheter LUMA (DEX)" data-en="Buy LUMA (DEX)">Acheter LUMA (DEX)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="market-bar">
+            <div class="market-inner">
+                <div class="market-item">
+                    <span class="market-symbol">ETHEREUM</span>
+                    <span class="market-price-value">$3,030.36</span>
+                    <span class="market-change down">5.87%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BINANCE COIN</span>
+                    <span class="market-price-value">$600.32</span>
+                    <span class="market-change down">4.38%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">SOLANA</span>
+                    <span class="market-price-value">$152.45</span>
+                    <span class="market-change down">5.55%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">RIPPLE</span>
+                    <span class="market-price-value">$0.5212</span>
+                    <span class="market-change down">5.00%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">LITECOIN</span>
+                    <span class="market-price-value">$91.56</span>
+                    <span class="market-change down">9.02%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">DOGECOIN</span>
+                    <span class="market-price-value">$0.1562</span>
+                    <span class="market-change down">5.60%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">TRON</span>
+                    <span class="market-price-value">$0.128</span>
+                    <span class="market-change up">1.57%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BITCOIN</span>
+                    <span class="market-price-value">$67,800</span>
+                    <span class="market-change down">6.78%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">ETHEREUM</span>
+                    <span class="market-price-value">$3,030.36</span>
+                    <span class="market-change down">5.87%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BINANCE COIN</span>
+                    <span class="market-price-value">$600.32</span>
+                    <span class="market-change down">4.38%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">SOLANA</span>
+                    <span class="market-price-value">$152.45</span>
+                    <span class="market-change down">5.55%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">RIPPLE</span>
+                    <span class="market-price-value">$0.5212</span>
+                    <span class="market-change down">5.00%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">LITECOIN</span>
+                    <span class="market-price-value">$91.56</span>
+                    <span class="market-change down">9.02%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">DOGECOIN</span>
+                    <span class="market-price-value">$0.1562</span>
+                    <span class="market-change down">5.60%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">TRON</span>
+                    <span class="market-price-value">$0.128</span>
+                    <span class="market-change up">1.57%</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-symbol">BITCOIN</span>
+                    <span class="market-price-value">$67,800</span>
+                    <span class="market-change down">6.78%</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hero-section">
+        <div class="content-shell">
+            <div class="main-block">
+                <h1 class="hero-title" id="what" data-fr="QU'EST-CE QUE LUMA ?" data-en="WHAT IS LUMA?">QU'EST-CE QUE LUMA ?</h1>
+                
+                <div class="text-section">
+                    <div class="text-left">
+                        <div class="sub-title" data-fr="LUMA EN UNE PHRASE" data-en="LUMA IN ONE SENTENCE">LUMA EN UNE PHRASE</div>
+                        
+                        <div class="big-text translatable-text" data-fr="LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS." data-en="LUMA IS A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE.">LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.</div>
+                        
+                        <p class="body-text translatable-text" data-fr="LUMA vit sur la BNB Smart Chain en tant que jeton BEP-20. C'est un actif symbolique pour les personnes qui aiment l'espace, les mèmes et l'idée d'un corridor entre la Lune et Mars. Aucune promesse, seulement une histoire partagée et un contrat intelligent ouvert." data-en="LUMA lives on BNB Smart Chain as a BEP-20 token. It is a symbolic asset for people who like space, memes and the idea of a corridor between the Moon and Mars. No promises, only a shared story and open smart contract.">LUMA vit sur la BNB Smart Chain en tant que jeton BEP-20. C'est un actif symbolique pour les personnes qui aiment l'espace, les mèmes et l'idée d'un corridor entre la Lune et Mars. Aucune promesse, seulement une histoire partagée et un contrat intelligent ouvert.</p>
+                    </div>
+                    
+                    <div class="text-right price-card">
+                         <div class="sub-title" data-fr="PRIX ACTUEL (DEX)" data-en="CURRENT PRICE (DEX)">PRIX ACTUEL (DEX)</div>
+                         
+                         <div class="main-price">$0.000002315</div>
+                         
+                         <div class="price-change-badge-hero">+0.00% (24h)</div>
+                         
+                         <p class="note-text translatable-text" data-fr="Prix et changement sur 24h à partir du pool LUMA / WBNB sur GeckoTerminal (si les données sont disponibles)." data-en="Price and 24h change from the LUMA / WBNB pool on GeckoTerminal (if data is available).">Prix et changement sur 24h à partir du pool LUMA / WBNB sur GeckoTerminal (si les données sont disponibles).</p>
+                         <p class="pool-info">
+                             Pool: LUMA / WBNB (DEX)
+                         </p>
+                         
+                         <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" 
+                            target="_blank" rel="noopener noreferrer" class="btn-mexc">
+                            <span class="translatable-text" data-fr="Ouvrir sur MEXC" data-en="Open on MEXC">Ouvrir sur MEXC</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <main class="page">
+        
+        <section class="section" id="tokenomics">
+            <div>
+                <h2 data-fr="LUMA REPRÉSENTE LE CORRIDOR LUNE → MARS" data-en="LUMA REPRESENTS THE MOON → MARS CORRIDOR">LUMA REPRÉSENTE LE CORRIDOR LUNE → MARS</h2>
+                <p class="translatable-text" data-fr="Dans l'histoire de LUMA, la Lune est notre base avancée : l'endroit où l'infrastructure est construite et le carburant est produit. Mars est l'horizon rouge : poussière, risque et nouvelles colonies. LUMA est un minuscule drapeau numérique qui dit : « J'aime cet avenir »." data-en="In the LUMA story, the Moon is our advanced base: the place where infrastructure is built and fuel is produced. Mars is the red horizon: dust, risk and new colonies. LUMA is a tiny digital flag that says: “I like this future”.">Dans l'histoire de LUMA, la Lune est notre base avancée : l'endroit où l'infrastructure est construite et le carburant est produit. Mars est l'horizon rouge : poussière, risque et nouvelles colonies. LUMA est un minuscule drapeau numérique qui dit : « J'aime cet avenir ».</p>
+                <p class="translatable-text" data-fr="L'offre totale de 225 384 400 LUMA est symbolique. Le jeton ne représente pas d'actions, de dettes ou de droits de revenus. C'est simplement un jeton communautaire utilisé pour l'expérimentation, les jeux, les collections ou les récompenses." data-en="The total supply of 225,384,400 LUMA is symbolic. The token does not represent shares, debt or revenue rights. It is simply a community token used for experimentation, games, collections or rewards.">L'offre totale de 225 384 400 LUMA est symbolique. Le jeton ne représente pas d'actions, de dettes ou de droits de revenus. C'est simplement un jeton communautaire utilisé pour l'expérimentation, les jeux, les collections ou les récompenses.</p>
+            </div>
+
+            <div class="section-card">
+                <ul>
+                    <li class="translatable-text" data-fr="<strong>Réseau &amp; standard</strong> Jeton BEP-20 sur BNB Smart Chain, compatible avec MetaMask et la plupart des portefeuilles BSC." data-en="<strong>Network &amp; standard</strong> BEP-20 token on BNB Smart Chain, compatible with MetaMask and most BSC wallets.">
+                        <strong>Réseau &amp; standard</strong>
+                        Jeton BEP-20 sur BNB Smart Chain, compatible avec MetaMask et la plupart des portefeuilles BSC.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>Offre Fixe</strong> 225,384,400 LUMA offre maximale définie dans le contrat intelligent." data-en="<strong>Fixed supply</strong> 225,384,400 LUMA maximum supply defined in the smart contract.">
+                        <strong>Offre Fixe</strong>
+                        225,384,400 LUMA offre maximale définie dans le contrat intelligent.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>Fonction de 'Burn'</strong> Tout détenteur peut brûler du LUMA, réduisant de façon permanente l'offre en circulation." data-en="<strong>Burn function</strong> Any holder can burn LUMA, permanently reducing circulating supply.">
+                        <strong>Fonction de 'Burn'</strong>
+                        Tout détenteur peut brûler du LUMA, réduisant de façon permanente l'offre en circulation.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>Base OpenZeppelin</strong> Contrat construit sur des composants OpenZeppelin bien connus pour un comportement standard ERC-20/BEP-20." data-en="<strong>OpenZeppelin base</strong> Contract built on well-known OpenZeppelin components for standard ERC-20/BEP-20 behaviour.">
+                        <strong>Base OpenZeppelin</strong>
+                        Contrat construit sur des composants OpenZeppelin bien connus pour un comportement standard ERC-20/BEP-20.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="how">
+            <div>
+                <h2 data-fr="COMMENT OBTENIR ET DÉTENIR LUMA" data-en="HOW TO GET AND HOLD LUMA">COMMENT OBTENIR ET DÉTENIR LUMA</h2>
+                <p class="translatable-text" data-fr="LUMA n'est pas listé sur tous les échanges. Il se trouve principalement sur les échanges décentralisés (DEX) de la BNB Smart Chain, et est également disponible sur la plateforme MEXC." data-en="LUMA is not listed on every exchange. It mainly lives on decentralised exchanges (DEX) on BNB Smart Chain, and is also available on the MEXC platform.">LUMA n'est pas listé sur tous les échanges. Il se trouve principalement sur les échanges décentralisés (DEX) de la BNB Smart Chain, et est également disponible sur la plateforme MEXC.</p>
+                <p class="translatable-text" data-fr="Vérifiez toujours deux fois l'adresse du contrat. Si une adresse est différente, ce n'est pas le même jeton." data-en="Always double-check the contract address. If an address is different, it is not the same token.">Vérifiez toujours deux fois l'adresse du contrat. Si une adresse est différente, ce n'est pas le même jeton.</p>
+            </div>
+
+            <div class="section-card">
+                <ul>
+                    <li class="translatable-text" data-fr="<strong>1. Installer un portefeuille BSC</strong> MetaMask, Trust Wallet ou tout portefeuille compatible avec la BNB Smart Chain." data-en="<strong>1. Install a BSC wallet</strong> MetaMask, Trust Wallet or any wallet compatible with BNB Smart Chain.">
+                        <strong>1. Installer un portefeuille BSC</strong>
+                        MetaMask, Trust Wallet ou tout portefeuille compatible avec la BNB Smart Chain.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>2. Ajouter le jeton LUMA</strong> Utiliser l'adresse du contrat <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code> et 18 décimales." data-en="<strong>2. Add the LUMA token</strong> Use the contract address <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code> and 18 decimals.">
+                        <strong>2. Ajouter le jeton LUMA</strong>
+                        Utiliser l'adresse du contrat
+                        <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code> et 18 décimales.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>3. Obtenir du BNB</strong> Vous avez besoin de BNB pour payer les frais de transaction et pour échanger contre du LUMA sur DEX." data-en="<strong>3. Get some BNB</strong> You need BNB to pay transaction fees and to swap into LUMA on DEX.">
+                        <strong>3. Obtenir du BNB</strong>
+                        Vous avez besoin de BNB pour payer les frais de transaction et pour échanger contre du LUMA sur DEX.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>4. Échanger sur un DEX</strong> Utiliser ApeSpace ou un autre DEX BSC, sélectionner le contrat LUMA officiel et confirmer votre échange." data-en="<strong>4. Swap on a DEX</strong> Use ApeSpace or another BSC DEX, select the official LUMA contract and confirm your trade.">
+                        <strong>4. Échanger sur un DEX</strong>
+                        Utiliser ApeSpace ou un autre DEX BSC, sélectionner le contrat LUMA officiel et confirmer votre échange.
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>5. Ou échanger sur MEXC</strong> Vous pouvez aussi échanger LUMA sur MEXC en utilisant leur interface DEX." data-en="<strong>5. Or trade on MEXC</strong> You can also trade LUMA on MEXC using their DEX interface.">
+                        <strong>5. Ou échanger sur MEXC</strong>
+                        Vous pouvez aussi échanger LUMA sur MEXC en utilisant leur interface DEX.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="mexc">
+            <div>
+                <h2 data-fr="ÉCHANGER LUMA SUR MEXC" data-en="TRADE LUMA ON MEXC">ÉCHANGER LUMA SUR MEXC</h2>
+                <p class="translatable-text" data-fr="Pour le prix en direct, le carnet d'ordres et les échanges, vous pouvez utiliser l'interface MEXC DEX. Elle affiche le pool LUMA sur BNB Smart Chain avec des données de marché en temps réel." data-en="For live price, order book and swaps, you can use the MEXC DEX interface. It shows the LUMA pool on BNB Smart Chain with real-time market data.">Pour le prix en direct, le carnet d'ordres et les échanges, vous pouvez utiliser l'interface MEXC DEX. Elle affiche le pool LUMA sur BNB Smart Chain avec des données de marché en temps réel.</p>
+                <p class="translatable-text" data-fr="Vérifiez toujours que le contrat du jeton est <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code>." data-en="Always verify that the token contract is <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code>.">Vérifiez toujours que le contrat du jeton est
+                    <code>0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9</code>.</p>
+                <div style="margin-top:20px;">
+                    <a class="btn-mexc" style="width: auto; padding: 14px 24px;"
+                         href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
+                         target="_blank" rel="noopener noreferrer">
+                        🚀 <span class="translatable-text" data-fr="OUVRIR LUMA SUR MEXC (DEX)" data-en="OPEN LUMA ON MEXC (DEX)">OUVRIR LUMA SUR MEXC (DEX)</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="section-card" style="display: flex; align-items: center; justify-content: center; text-align: center;">
+                 <div style="max-width:300px;">
+                     <div style="font-size: 60px; margin-bottom: 10px;">🚀</div>
+                     <p class="translatable-text" style="color: var(--text-main); font-size: 16px;" data-fr="LUMA est le corridor symbolique entre la Lune et Mars. Échangez sur MEXC pour des données de marché en temps réel." data-en="LUMA is the symbolic corridor between the Moon and Mars. Trade on MEXC for real-time market data.">LUMA est le corridor symbolique entre la Lune et Mars. Échangez sur MEXC pour des données de marché en temps réel.</p>
+                 </div>
+            </div>
+        </section>
+
+        <section class="section" id="links">
+            <div>
+                <h2 data-fr="LIENS ET RESSOURCES OFFICIELS" data-en="OFFICIAL LINKS AND RESOURCES">LIENS ET RESSOURCES OFFICIELS</h2>
+                <p class="translatable-text" data-fr="Ces liens pointent vers le contrat officiel, le pool de liquidité principal actuel et les échanges. Marquez-les et utilisez-les comme référence." data-en="These links point to the official contract, current main liquidity pool and exchanges. Bookmark them and use them as your reference.">Ces liens pointent vers le contrat officiel, le pool de liquidité principal actuel et les échanges. Marquez-les et utilisez-les comme référence.</p>
+            </div>
+
+            <div class="section-card section-links">
+                <ul>
+                    <li>
+                        <strong>BscScan</strong>
+                        <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
+                           target="_blank" rel="noopener noreferrer">
+                            https://bscscan.com/token/0xEA6C...EECc9
+                        </a>
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>Pool GeckoTerminal</strong>" data-en="<strong>GeckoTerminal pool</strong>">
+                        <strong>Pool GeckoTerminal</strong>
+                        <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
+                           target="_blank" rel="noopener noreferrer">
+                            <span class="translatable-text" data-fr="Données LUMA / WBNB en direct (DEX)" data-en="Live LUMA / WBNB data (DEX)">Données LUMA / WBNB en direct (DEX)</span>
+                        </a>
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>Pool ApeSpace (DEX)</strong>" data-en="<strong>ApeSpace pool (DEX)</strong>">
+                        <strong>Pool ApeSpace (DEX)</strong>
+                        <a href="https://apespace.io/bsc/0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9"
+                           target="_blank" rel="noopener noreferrer">
+                            <span class="translatable-text" data-fr="Échanger BNB ↔ LUMA" data-en="Swap BNB ↔ LUMA">Échanger BNB ↔ LUMA</span>
+                        </a>
+                    </li>
+                    <li class="translatable-text" data-fr="<strong>MEXC DEX</strong>" data-en="<strong>MEXC DEX</strong>">
+                        <strong>MEXC DEX</strong>
+                        <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
+                           target="_blank" rel="noopener noreferrer">
+                           <span class="translatable-text" data-fr="Échanger LUMA sur MEXC" data-en="Trade LUMA on MEXC">Échanger LUMA sur MEXC</span>
+                        </a>
+                    </li>
+                    <li>
+                        <strong>X (Twitter)</strong>
+                        <a href="https://x.com/LMars26424" target="_blank" rel="noopener noreferrer">
+                            @LMars26424
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div>
+             © <span id="year">2025</span> Lunar&amp;Mars (LUMA). <span class="translatable-text" data-fr="Marque du projet uniquement – le contrat intelligent est ouvert et sans permission." data-en="Project brand only – smart contract is open and permissionless.">Marque du projet uniquement – le contrat intelligent est ouvert et sans permission.</span>
+        </div>
+        <div>
+             LUMA <span class="translatable-text" data-fr="est un jeton communautaire symbolique, non un conseil financier ou d'investissement." data-en="is a symbolic community token, not financial or investment advice.">est un jeton communautaire symbolique, non un conseil financier ou d'investissement.</span>
+        </div>
+    </footer>
+    
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // LOGIQUE DE TRADUCTION
+        const translations = {
+            'fr': {
+                'page-title': 'Lunar&Mars (LUMA) – Qu\'est-ce que LUMA ?'
+            },
+            'en': {
+                'page-title': 'Lunar&Mars (LUMA) – What is LUMA?'
+            }
+        };
+
+        function setLanguage(lang) {
+            const body = document.body;
+            body.setAttribute('data-lang', lang);
+
+            // Gérer les classes actives du sélecteur
+            document.getElementById('lang-fr').classList.remove('active');
+            document.getElementById('lang-en').classList.remove('active');
+            document.getElementById('lang-' + lang).classList.add('active');
+
+            // Traduire le titre de la page
+            document.getElementById('page-title').textContent = translations[lang]['page-title'];
+
+            // Traduire les éléments ayant l'attribut data-lang
+            document.querySelectorAll('[data-fr][data-en]').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                // Pour les liens de navigation, on change le contenu du lien
+                if (el.tagName === 'A' && el.classList.contains('nav-item')) {
+                     el.textContent = text;
+                } else if (el.tagName === 'H2' || el.tagName === 'H1') {
+                     el.textContent = text;
+                } else if (el.classList.contains('translatable-text')) {
+                    // Pour le texte à l'intérieur des balises (p, span, li)
+                    el.innerHTML = text;
+                }
+            });
+
+            // Gérer les autres éléments de texte
+            document.querySelectorAll('.translatable-text').forEach(el => {
+                const translation = el.getAttribute('data-' + lang);
+                if (translation) {
+                    el.innerHTML = translation;
+                }
+            });
+            
+            // Recharger la navigation pour le contenu des liens (qui n'ont pas d'attribut de texte)
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.textContent = el.getAttribute('data-' + lang);
+            });
+        }
+        
+        // Initialiser la langue par défaut (français)
+        setLanguage('fr');
+    </script>
 </body>
 </html>
