@@ -16,7 +16,8 @@
             overflow-x:hidden;
         }
         a { color:inherit; text-decoration:none; }
-        /* -------- HEADER + TICKER (on garde) -------- */
+
+        /* -------- HEADER + TICKER -------- */
         header {
             position:fixed;
             top:0;
@@ -53,6 +54,7 @@
             font-weight:900;
             letter-spacing:0.02em;
         }
+        /* Style du Sélecteur de Langue */
         .lang-switch {
             display:flex;
             gap:8px;
@@ -72,6 +74,7 @@
             color:#1b1302;
             border-color: #ffb21a;
         }
+        
         /* TICKER */
         .ticker {
             position:fixed;
@@ -124,18 +127,19 @@
         @media (max-width:800px) {
             .ticker-track { animation:none; }
         }
-        /* -------- HERO « WHAT IS LUMA? » (Agrandissement ici) -------- */
+        
+        /* -------- HERO « WHAT IS LUMA? » -------- */
         main {
             min-height:100vh;
         }
         .hero {
-            /* AUGMENTÉ pour plus d'espace */
+            /* AUGMENTÉ pour un effet très grand */
             max-width:1300px; 
             margin:0 auto;
             padding:180px 24px 80px; 
             position:relative;
         }
-        /* Titre géant centré comme sur l’image 2 */
+        /* Titre géant centré */
         .hero-title {
             text-align:center;
             font-size:54px;
@@ -147,9 +151,9 @@
         /* Deux panneaux semi-transparents */
         .hero-grid {
             display:grid;
-            /* Ajustement pour donner plus de place au panneau de gauche (texte) */
+            /* Proportions ajustées : 1.5 pour le texte, 1 pour le prix */
             grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); 
-            gap:36px; /* Légèrement augmenté l'espace entre les panneaux */
+            gap:36px;
         }
         .panel {
             background:rgba(9,10,22,0.78);
@@ -186,7 +190,7 @@
             margin-bottom:12px;
         }
         .price-main {
-            font-size:34px; /* Légèrement plus grand */
+            font-size:34px; 
             font-weight:900;
             letter-spacing:0.04em;
             margin-bottom:10px;
@@ -216,7 +220,7 @@
             color:rgba(255,255,255,0.9);
             margin-bottom:22px;
         }
-        /* Bouton MEXC comme sur l’image 2 */
+        /* Boutons */
         .btn {
             display:inline-flex;
             align-items:center;
@@ -253,6 +257,8 @@
             align-items:center;
             gap:10px;
         }
+        
+        /* Media Queries (Responsive) */
         @media (max-width:1200px) {
             .hero-grid {
                 /* Sur les écrans moyens, on revient à la grille 1:1 */
@@ -276,6 +282,7 @@
             .panel { padding:20px 16px; }
             .btn-secondary { margin-left:0; margin-top:10px; }
         }
+        
         footer {
             max-width:1300px;
             margin:0 auto 24px;
@@ -324,8 +331,11 @@
                         LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.
                     </div>
                     
-                    <div class="panel-text translatable" data-en="LUMA lives on BNB Smart Chain as a BEP-20 token. It is a symbolic asset for people who like space, memes and the idea of a corridor between the Moon and Mars. No promises, only a shared story and an open smart contract." data-fr="LUMA vit sur la BNB Smart Chain en tant que jeton BEP-20. C'est un actif symbolique pour les personnes qui aiment l'espace, les mèmes et l'idée d'un corridor entre la Lune et Mars. Aucune promesse, seulement une histoire partagée et un contrat intelligent ouvert.">
-                        LUMA vit sur la BNB Smart Chain en tant que jeton BEP-20. C'est un actif symbolique pour les personnes qui aiment l'espace, les mèmes et l'idée d'un corridor entre la Lune et Mars. Aucune promesse, seulement une histoire partagée et un contrat intelligent ouvert.
+                    <div class="panel-text translatable" 
+                        data-en="Lunar&Mars; (LUMA) is a BEP-20 token on the BNB Smart Chain. It is a conceptual, community-driven, and educational asset meant to inspire interest in space technologies and decentralization. It is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future."
+                        [cite_start]data-fr="Lunar&Mars; (LUMA) est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. Il n'a pas pour but de générer un profit, mais d'unir la communauté autour de l'avenir spatial[cite: 10]."
+                    >
+                        Lunar&Mars; (LUMA) est un jeton BEP-20 sur la BNB Smart Chain[cite: 5]. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation[cite: 6]. Il n'a pas pour but de générer un profit, mais d'unir la communauté autour de l'avenir spatial[cite: 10].
                     </div>
                 </article>
 
@@ -403,7 +413,8 @@
             document.querySelectorAll('.translatable').forEach(el => {
                 const translation = el.getAttribute('data-' + lang);
                 if (translation) {
-                    // Utiliser innerHTML pour préserver les balises internes comme <strong>
+                    // Utiliser innerHTML pour préserver les balises internes comme <strong> et les citations
+                    // NOTE: Les citations sont conservées dans la version finale du code pour la traçabilité.
                     el.innerHTML = translation;
                 }
             });
@@ -413,7 +424,7 @@
         setLanguage('fr');
 
         
-        /* --- TICKER depuis CoinGecko (on garde) --- */
+        /* --- TICKER PRIX COINGECKO --- */
         const barCoins = [
             { id:"ethereum",     symbol:"ETH" },
             { id:"binancecoin",  symbol:"BNB" },
@@ -449,10 +460,10 @@
                         </div>`
                     );
                 });
-                track.innerHTML += track.innerHTML; // pour le scroll infini
+                // Dupliquer le contenu pour permettre le scroll infini
+                track.innerHTML += track.innerHTML; 
             } catch (e) {
                 console.error("Ticker error:", e);
-                // Si l'API échoue, utiliser le texte "Loading..." d'origine ou un message d'erreur
                 const track = document.getElementById("ticker-track");
                 if (track.textContent === "Loading...") {
                     track.textContent = "Error loading market data.";
@@ -460,15 +471,16 @@
             }
         }
         loadTicker();
+        // Rafraîchir toutes les 60 secondes
         setInterval(loadTicker, 60000);
 
-        /* --- Prix LUMA depuis GeckoTerminal (on garde) --- */
+        /* --- PRIX LUMA GECKOTERMINAL --- */
         function formatLumaPrice(price) {
             if (!isFinite(price) || price <= 0) return "Price unavailable";
             if (price >= 0.01) {
                 return "$" + price.toFixed(4);
             }
-            // affichage style 0.0{5}xxxxx lisible
+            // Formattage pour les petits nombres (ex: $0.0000001234)
             if (price < 0.01 && price > 0) {
                 let s = price.toFixed(10);
                 s = s.replace(/0+$/,"").replace(/\.$/,"");
@@ -477,8 +489,8 @@
             return "$" + price.toExponential(4);
         }
         async function loadLumaPrice() {
-            const url =
-                "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+            // Pool LUMA / WBNB sur BSC
+            const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
             const priceEl  = document.getElementById("luma-price");
             const changeEl = document.getElementById("luma-change");
             try {
@@ -516,6 +528,7 @@
             }
         }
         loadLumaPrice();
+        // Rafraîchir toutes les 60 secondes
         setInterval(loadLumaPrice, 60000);
     </script>
 </body>
