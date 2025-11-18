@@ -79,17 +79,12 @@
       width: 40px;
       height: 40px;
       border-radius: 12px;
-      background: radial-gradient(circle at 30% 20%, #ffffff, #ffeac0 45%, #ffb21a 75%, #ff4b6a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
     }
 
     .brand-logo img {
-      width: 70%;
-      height: 70%;
-      border-radius: 999px;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
 
@@ -371,11 +366,7 @@
       margin-top: 6px;
     }
 
-    .sim-buttons .btn-primary {
-      width: 100%;
-      justify-content: center;
-    }
-
+    .sim-buttons .btn-primary,
     .sim-buttons .btn-outline {
       width: 100%;
       justify-content: center;
@@ -542,7 +533,7 @@
         </p>
       </section>
 
-      <!-- MIDDLE: current price -->
+      <!-- MIDDLE: current price (GeckoTerminal) -->
       <section class="card">
         <div class="card-title" data-i18n="card-mid-title">
           CURRENT PRICE (DEX)
@@ -554,15 +545,15 @@
           0.00% (24h)
         </div>
         <div class="price-note" data-i18n="card-mid-note">
-          Price and 24h change pulled from the LUMA / WBNB pair on Dexscreener
+          Price and 24h change from the LUMA / WBNB pool on GeckoTerminal
           (if data is available).
         </div>
         <div style="margin-top:14px; font-size:12px;">
-          <div><strong>Pair:</strong> LUMA / WBNB</div>
+          <div><strong>Pool:</strong> LUMA / WBNB</div>
           <div>
-            <a href="https://dexscreener.com/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
+            <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
                target="_blank" rel="noopener noreferrer">
-              Open live chart
+              Open on GeckoTerminal
             </a>
           </div>
         </div>
@@ -705,10 +696,10 @@
             </a>
           </li>
           <li>
-            <strong>Dexscreener pair</strong>
-            <a href="https://dexscreener.com/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
+            <strong>GeckoTerminal pool</strong>
+            <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
                target="_blank" rel="noopener noreferrer">
-              Live LUMA / WBNB chart
+              Live LUMA / WBNB data
             </a>
           </li>
           <li>
@@ -758,7 +749,7 @@
           "LUMA lives on BNB Smart Chain as a BEP-20 token. It is a symbolic asset for people who like space, memes and the idea of a corridor between the Moon and Mars. No promises, only a shared story and an open smart contract.",
         "card-mid-title": "CURRENT PRICE (DEX)",
         "card-mid-note":
-          "Price and 24h change pulled from the LUMA / WBNB pair on Dexscreener (if data is available).",
+          "Price and 24h change from the LUMA / WBNB pool on GeckoTerminal (if data is available).",
         "card-right-title": "START WITH A SMALL AMOUNT",
         "card-right-heading": "Imagine you join with",
         "card-right-caption":
@@ -812,7 +803,7 @@
           "LUMA vit sur la BNB Smart Chain comme jeton BEP-20. C’est un actif symbolique pour ceux qui aiment l’espace, les memes et l’idée d’un corridor entre la Lune et Mars. Aucune promesse, seulement une histoire partagée et un smart contract ouvert.",
         "card-mid-title": "PRIX ACTUEL (DEX)",
         "card-mid-note":
-          "Prix et variation 24 h tirés de la paire LUMA / WBNB sur Dexscreener (si les données sont disponibles).",
+          "Prix et variation 24 h issus de la pool LUMA / WBNB sur GeckoTerminal (si les données sont disponibles).",
         "card-right-title": "COMMENCER PETIT",
         "card-right-heading": "Imagine que tu entres avec",
         "card-right-caption":
@@ -821,7 +812,7 @@
         "btn-learn": "En savoir plus sur BscScan",
         "sec1-title": "LUMA représente le corridor Lune → Mars",
         "sec1-p1":
-          "Dans l’histoire de LUMA, la Lune est notre base avancée : l’endroit où l’on construit, ravitaille et prépare les missions. Mars est l’horizon rouge : poussière, risque et nouvelles colonies. LUMA est un petit drapeau numérique qui dit : « j’aime ce futur ». ",
+          "Dans l’histoire de LUMA, la Lune est notre base avancée : l’endroit où l’on construit, ravitaille et prépare les missions. Mars est l’horizon rouge : poussière, risque et nouvelles colonies. LUMA est un petit drapeau numérique qui dit : « j’aime ce futur ».",
         "sec1-p2":
           "L’offre totale de 225 384 400 LUMA est symbolique. Le jeton ne représente ni actions, ni dette, ni droits sur des revenus. C’est un jeton communautaire utilisé pour expérimenter, jouer, collectionner ou récompenser.",
         "tok-item-1":
@@ -932,28 +923,42 @@
     loadMarketBar();
     setInterval(loadMarketBar, 60000);
 
-    /* --- LUMA live price from Dexscreener (if available) --- */
+    /* --- LUMA live price from GeckoTerminal --- */
     async function loadLumaPrice() {
-      const url = "https://api.dexscreener.com/latest/dex/pairs/bsc/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+      const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
       const priceEl  = document.getElementById("luma-price");
       const changeEl = document.getElementById("luma-change");
 
       try {
         const res  = await fetch(url);
         const data = await res.json();
-        const pair = data?.pairs?.[0] || data?.pair || null;
+        const attr = data?.data?.attributes;
 
-        if (!pair || !pair.priceUsd) {
+        if (!attr) {
           priceEl.textContent  = "Price unavailable";
           changeEl.textContent = "N/A (24h)";
           changeEl.classList.remove("up", "down");
           return;
         }
 
-        const price  = Number(pair.priceUsd);
-        const change = Number(pair.priceChange?.h24 ?? 0);
+        const price =
+          Number(attr.base_token_price_usd ??
+                 attr.quote_token_price_usd ??
+                 attr.price_usd ??
+                 0);
 
-        priceEl.textContent = "$" + price.toFixed(5);
+        const change =
+          Number(
+            (attr.price_change_percentage && attr.price_change_percentage.h24) ??
+            attr.price_change_percentage_24h ??
+            0
+          );
+
+        if (!isFinite(price) || price <= 0) {
+          priceEl.textContent  = "Price unavailable";
+        } else {
+          priceEl.textContent = "$" + price.toFixed(5);
+        }
 
         const isUp = change >= 0;
         const badgeClass = isUp ? "up" : "down";
