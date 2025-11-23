@@ -540,17 +540,52 @@
         <section id="tokenomics" class="tokenomics-section">
             <div class="tokenomics-card">
                 <h2 class="tokenomics-title translatable"
-                    data-en="Tokenomics & Contract"
-                    data-fr="Tokenomics & Contrat">
-                    Tokenomics & Contrat
+                    data-en="Tokenomics & Security"
+                    data-fr="Tokenomics & Sécurité">
+                    Tokenomics & Sécurité
                 </h2>
                 <div class="tokenomics-grid">
                     <div>
                         <p><strong>Total supply :</strong> 225 384 400 LUMA</p>
+                        
+                        <div style="margin-top:10px; margin-bottom:16px; background:rgba(230, 75, 95, 0.1); border:1px solid rgba(230, 75, 95, 0.4); border-radius:12px; padding:12px; text-align:center;">
+                            <div style="color:#e64b5f; font-weight:800; font-size:13px; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px;">
+                                🔥 MAJOR EVENT: 20% BURN
+                            </div>
+                            <div id="burn-timer" style="display:flex; justify-content:center; gap:10px; font-weight:700; font-size:18px; color:#fff;">
+                                <div><span id="days">00</span><span style="font-size:10px; display:block; color:rgba(255,255,255,0.5);">Jours</span></div>
+                                <div>:</div>
+                                <div><span id="hours">00</span><span style="font-size:10px; display:block; color:rgba(255,255,255,0.5);">Heures</span></div>
+                                <div>:</div>
+                                <div><span id="minutes">00</span><span style="font-size:10px; display:block; color:rgba(255,255,255,0.5);">Min</span></div>
+                                <div>:</div>
+                                <div><span id="seconds">00</span><span style="font-size:10px; display:block; color:rgba(255,255,255,0.5);">Sec</span></div>
+                            </div>
+                            <div style="font-size:11px; color:rgba(230, 75, 95, 0.8); margin-top:4px;">
+                                November 25, 2025
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 14px;">
+                            <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               style="width:fit-content; display:inline-flex; align-items:center; gap:6px; background:rgba(46, 204, 113, 0.2); border:1px solid #2ecc71; color:#2ecc71; padding:6px 12px; border-radius:8px; font-weight:700; font-size:12px; text-decoration:none;">
+                                🔒 LOCK #1 (20% Supply)
+                            </a>
+                            
+                            <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               style="width:fit-content; display:inline-flex; align-items:center; gap:6px; background:rgba(46, 204, 113, 0.2); border:1px solid #2ecc71; color:#2ecc71; padding:6px 12px; border-radius:8px; font-weight:700; font-size:12px; text-decoration:none;">
+                                🔒 LOCK #2 (Additional Record)
+                            </a>
+                        </div>
+
                         <p class="translatable"
-                           data-en="Tax (3% per transaction): 1% Burn · 1% Liquidity · 1% Dev wallet."
-                           data-fr="Taxe (3 % par transaction) : 1 % Burn · 1 % Liquidité · 1 % Portefeuille Dev.">
-                            Taxe (3 % par transaction) : 1 % Burn · 1 % Liquidité · 1 % Portefeuille Dev.
+                           data-en="Tax (3%): 1% Dev · 1% Liquidity · 1% Burn."
+                           data-fr="Taxe (3%) : 1% Dev · 1% Liquidité · 1% Burn.">
+                            Taxe (3%) : 1% Dev · 1% Liquidité · 1% Burn.
                         </p>
                         <p><strong>Contract:</strong>
                             <br>
@@ -559,9 +594,9 @@
                     </div>
                     <div class="tokenomics-note">
                         <span class="tokenomics-badge translatable"
-                              data-en="Symbolic, community-driven project. Not financial advice."
-                              data-fr="Projet symbolique et communautaire. Aucun conseil financier.">
-                            Projet symbolique et communautaire. Aucun conseil financier.
+                              data-en="Security: Locks active + massive burn countdown."
+                              data-fr="Sécurité : Verrous actifs + compte à rebours du burn.">
+                            Sécurité : Verrous actifs + compte à rebours du burn.
                         </span>
                     </div>
                 </div>
@@ -732,6 +767,43 @@
         }
         loadLumaPrice();
         setInterval(loadLumaPrice, 60000);
+
+        /* --- COMPTE À REBOURS BURN --- */
+        // Date cible : 25 Novembre 2025 à 12:00 PM EST
+        const burnDate = new Date("November 25, 2025 12:00:00 EST").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = burnDate - now;
+
+            // Calculs
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Affichage dans les éléments HTML
+            const dEl = document.getElementById("days");
+            const hEl = document.getElementById("hours");
+            const mEl = document.getElementById("minutes");
+            const sEl = document.getElementById("seconds");
+
+            if(dEl && hEl && mEl && sEl) {
+                dEl.innerHTML = days < 10 ? "0" + days : days;
+                hEl.innerHTML = hours < 10 ? "0" + hours : hours;
+                mEl.innerHTML = minutes < 10 ? "0" + minutes : minutes;
+                sEl.innerHTML = seconds < 10 ? "0" + seconds : seconds;
+            }
+
+            // Si le compte à rebours est fini
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                const timerContainer = document.getElementById("burn-timer");
+                if(timerContainer) {
+                    timerContainer.innerHTML = "<div style='color:#e64b5f;'>BURN COMPLETED!</div>";
+                }
+            }
+        }, 1000);
     </script>
 </body>
 </html>
