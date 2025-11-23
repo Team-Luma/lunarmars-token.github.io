@@ -5,7 +5,7 @@
     <title id="page-title" data-en="Lunar&Mars (LUMA)" data-fr="Lunar&Mars (LUMA)">Lunar&Mars (LUMA)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="luma-logo.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -16,18 +16,12 @@
         }
         a { color:inherit; text-decoration:none; }
 
-        /* -------- HEADER + TICKER -------- */
+        /* -------- ANCIEN HEADER & TICKER (RESTAURÉS) -------- */
         header {
             position:fixed;
-            top:0;
-            left:0;
-            right:0;
-            z-index:1000;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:20px;
-            padding:10px 24px;
+            top:0; left:0; right:0; z-index:1000;
+            display:flex; align-items:center; justify-content:space-between;
+            gap:20px; padding:10px 24px;
             background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.6));
             backdrop-filter:blur(16px);
             border-bottom:1px solid rgba(255,255,255,0.15);
@@ -37,18 +31,18 @@
         .brand-logo img { width:100%; height:100%; object-fit:cover; }
         .brand-name { font-size:24px; font-weight:900; letter-spacing:0.02em; }
 
-        /* MENU */
         .nav { display:flex; gap:16px; font-size:12px; text-transform:uppercase; }
         .nav a { padding:4px 8px; border-radius:999px; border:1px solid transparent; color:#f5f5ff; opacity:0.85; }
         .nav a:hover { border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.55); opacity:1; }
 
-        /* LANGUE */
         .lang-switch { display:flex; gap:8px; }
         .lang-switch button { background:#000; color:#fff; border:1px solid rgba(255,255,255,0.35); padding:4px 10px; border-radius:999px; cursor:pointer; font-size:11px; transition: all 0.2s; }
         .lang-switch button.active { background:#ffb21a; color:#1b1302; border-color: #ffb21a; }
         
-        /* TICKER */
-        .ticker { position:fixed; top:74px; left:0; right:0; z-index:900; background:#f7f7fb; border-bottom:1px solid #e0e0ef; overflow:hidden; }
+        .ticker {
+            position:fixed; top:74px; left:0; right:0; z-index:900;
+            background:#f7f7fb; border-bottom:1px solid #e0e0ef; overflow:hidden;
+        }
         .ticker-inner { padding:6px 0; white-space:nowrap; }
         .ticker-track { display:inline-flex; gap:22px; padding:0 24px; animation:scroll 38s linear infinite; }
         .ticker-item { font-size:13px; color:#222; font-weight:600; }
@@ -58,153 +52,105 @@
         .ticker-change.down { color:#e64b5f; border-color:rgba(230,75,95,0.4); background:rgba(230,75,95,0.08); }
         @keyframes scroll { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
         @media (max-width:800px) { .ticker-track { animation:none; } .nav { display:none; } }
-        
-        /* -------- MAIN STYLES -------- */
-        main { min-height:100vh; padding-top: 160px; padding-bottom: 60px; }
 
-        /* COMMON PANEL STYLE */
-        .panel-box {
-            background:rgba(13, 14, 28, 0.85);
-            border-radius:24px;
-            border:1px solid rgba(255,255,255,0.12);
-            box-shadow:0 24px 60px rgba(0,0,0,0.65);
-            backdrop-filter:blur(12px);
-            padding:30px;
+        /* -------- ANCIEN STYLE HERO (RESTAURÉ) -------- */
+        main { min-height:100vh; }
+        .hero { max-width:1300px; margin:0 auto; padding:180px 24px 80px; position:relative; }
+        .hero-title { text-align:center; font-size:54px; font-weight:900; letter-spacing:0.08em; margin-bottom:30px; text-shadow:0 0 18px rgba(0,0,0,0.9); }
+        .hero-grid { display:grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap:36px; }
+        
+        .panel {
+            background:rgba(9,10,22,0.78); border-radius:24px; border:1px solid rgba(255,255,255,0.18);
+            padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(10px);
         }
-
-        /* HERO SECTION */
-        .hero { max-width:1200px; margin:0 auto 60px; padding:0 24px; }
-        .hero-title { text-align:center; font-size:54px; font-weight:900; letter-spacing:0.08em; margin-bottom:40px; text-shadow:0 0 18px rgba(0,0,0,0.9); }
-        .hero-grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:30px; }
+        .panel-title-small { font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.8); margin-bottom:12px; }
+        .panel-heading { font-size:30px; font-weight:900; line-height:1.1; margin-bottom:16px; }
+        .panel-text { font-size:15px; color:rgba(255,255,255,0.85); line-height:1.7; }
         
-        .panel-title-small { font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:10px; font-weight: 700; }
-        .panel-heading { font-size:28px; font-weight:900; line-height:1.1; margin-bottom:16px; }
-        .panel-text { font-size:15px; color:rgba(255,255,255,0.8); line-height:1.6; }
+        .scroll-content { max-height: 250px; overflow-y: auto; padding-right: 15px; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent; }
+        .scroll-content::-webkit-scrollbar { width: 8px; }
+        .scroll-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        .scroll-content::-webkit-scrollbar-track { background: transparent; }
         
-        /* HERO - Buttons */
-        .hero-btns { display:flex; flex-wrap:wrap; gap:10px; margin-top: 20px; }
-        .btn { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; padding:12px 24px; border:none; cursor:pointer; font-size:15px; font-weight:700; text-decoration:none; transition: transform 0.1s; }
-        .btn:active { transform: scale(0.98); }
-        .btn-primary { background:#ffb21a; color:#000; box-shadow:0 10px 30px rgba(255,178,26,0.4); }
-        .btn-dark { background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); }
-        .btn-dark:hover { background:rgba(255,255,255,0.2); }
-
-        /* HERO - Price */
-        .price-main { font-size:36px; font-weight:900; letter-spacing:-0.02em; margin-bottom:5px; font-family: 'JetBrains Mono', monospace; }
-        .price-change { font-size:13px; padding:4px 10px; border-radius:6px; font-weight: 700; display:inline-block; margin-bottom:15px;}
-        .price-change.up { background:rgba(46, 204, 113, 0.2); color:#2ecc71; }
-        .price-change.down { background:rgba(231, 76, 60, 0.2); color:#e74c3c; }
-
-        /* -------- NOUVEAU DESIGN TOKENOMICS (DASHBOARD) -------- */
-        .tokenomics-section { max-width:1200px; margin:0 auto 60px; padding:0 24px; }
+        .price-label { font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:#f3f3ff; margin-bottom:12px; }
+        .price-main { font-size:34px; font-weight:900; letter-spacing:0.04em; margin-bottom:10px; }
+        .price-change { display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:4px 10px; border-radius:999px; background:#2c3f2c; color:#46d47b; margin-bottom:10px; }
+        .price-change.down { background:#4a2730; color:#ff7b8f; }
+        .price-note { font-size:12px; color:rgba(255,255,255,0.78); margin-bottom:14px; }
+        .price-pool { font-size:12px; color:rgba(255,255,255,0.9); margin-bottom:22px; }
         
-        /* Le titre centré au dessus */
-        .section-title { text-align:center; font-size:28px; font-weight:900; margin-bottom:30px; text-transform: uppercase; letter-spacing: 0.05em; }
-        
-        /* La grille Dashboad */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
-            gap: 24px;
-        }
+        .btn { display:inline-flex; align-items:center; justify-content:center; border-radius:999px; padding:12px 28px; border:none; cursor:pointer; font-size:16px; font-weight:700; white-space:nowrap; text-decoration:none; }
+        .btn-mexc { background:#ffb21a; color:#1b1302; box-shadow:0 16px 45px rgba(255,178,26,0.7); }
+        .btn-mexc:hover { transform:translateY(-1px); box-shadow:0 22px 60px rgba(255,178,26,0.9); }
+        .btn-secondary { background:rgba(0,0,0,0.55); color:#fff; border:1px solid rgba(255,255,255,0.35); font-size:14px; padding:10px 20px; }
+        .panel-buttons { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
 
-        /* Carte Gauche : Le Burn (Design Digital) */
+        /* -------- NOUVEAU STYLE TOKENOMICS "MISSION CONTROL" (CONSERVÉ) -------- */
+        .tokenomics-section { max-width:1300px; margin:0 auto 60px; padding:0 24px; }
+        .section-title { text-align:center; font-size:28px; font-weight:900; margin-bottom:30px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.9); }
+        
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
         .burn-card {
             background: linear-gradient(145deg, rgba(23, 10, 10, 0.9), rgba(36, 12, 12, 0.9));
-            border: 1px solid rgba(230, 75, 95, 0.3);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .burn-card::before {
-            content:''; position:absolute; top:0; left:0; width:100%; height:4px; background:#e64b5f;
-            box-shadow: 0 0 20px #e64b5f;
+            border: 1px solid rgba(230, 75, 95, 0.3); border-radius: 24px;
+            padding: 30px; text-align: center; position: relative; overflow: hidden;
+            box-shadow:0 20px 55px rgba(0,0,0,0.75);
         }
         .burn-title { color:#e64b5f; font-weight:800; font-size:14px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
         
-        /* Le Timer Digital */
-        .digital-timer {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .time-box {
-            background: rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 10px 14px;
-            min-width: 65px;
-        }
+        .digital-timer { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+        .time-box { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 14px; min-width: 65px; }
         .time-val { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #fff; display: block; line-height: 1; }
         .time-label { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 6px; display: block; }
-
         .burn-date { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 10px; }
 
-        /* Carte Droite : Les Infos Techniques */
         .info-card {
-            background: rgba(13, 14, 28, 0.85);
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.12);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            background: rgba(9,10,22,0.9); border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.16); padding: 30px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow:0 20px 55px rgba(0,0,0,0.75);
         }
-
         .supply-row { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; margin-bottom:15px; }
-        .supply-label { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; }
-        .supply-val { font-size:16px; font-weight:700; }
+        .supply-label { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; font-weight: 600; }
+        .supply-val { font-size:16px; font-weight:800; }
 
-        /* Boutons Locks alignés */
         .locks-row { display:flex; gap:10px; margin-bottom:20px; }
         .lock-btn {
-            flex:1;
-            background: rgba(46, 204, 113, 0.15);
-            border: 1px solid rgba(46, 204, 113, 0.4);
-            color: #2ecc71;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.2s;
+            flex:1; background: rgba(46, 204, 113, 0.15); border: 1px solid rgba(46, 204, 113, 0.4);
+            color: #2ecc71; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700;
+            text-align: center; transition: all 0.2s;
         }
         .lock-btn:hover { background: rgba(46, 204, 113, 0.25); box-shadow: 0 0 15px rgba(46, 204, 113, 0.2); }
 
-        /* Contrat Box */
         .contract-box {
-            background: rgba(0,0,0,0.4);
-            padding: 12px;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: rgba(255,255,255,0.7);
-            word-break: break-all;
-            border: 1px dashed rgba(255,255,255,0.2);
-            text-align: center;
+            background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.7);
+            word-break: break-all; border: 1px dashed rgba(255,255,255,0.2); text-align: center;
         }
-
         .tax-list { margin-top:15px; font-size:13px; color:rgba(255,255,255,0.8); display:flex; justify-content: space-around;}
+        .tax-item { text-align: center; }
         .tax-item span { display:block; font-size:18px; font-weight:700; color:#ffb21a; }
-        
-        /* SECTION LIENS */
-        .links-section { max-width:1200px; margin:0 auto 40px; padding:0 24px; }
-        .links-grid { display:flex; flex-wrap:wrap; gap:12px; }
-        .link-item { background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:99px; font-size:13px; border:1px solid transparent; transition:0.2s; }
-        .link-item:hover { border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.1); }
 
-        /* FOOTER */
-        footer { max-width:1200px; margin:0 auto; padding:20px; text-align:center; font-size:12px; color:rgba(255,255,255,0.4); }
-
-        @media (max-width:900px) {
-            .hero-grid { grid-template-columns: 1fr; }
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .hero { padding-top: 140px; }
-            .hero-title { font-size: 36px; }
+        /* SECTION LIENS (STYLE ANCIEN POUR HARMONIE) */
+        .links-section { max-width:1300px; margin:0 auto 40px; padding:0 24px; }
+        .links-card {
+            background:rgba(9,10,22,0.9); border-radius:24px; border:1px solid rgba(255,255,255,0.16);
+            padding:20px 24px; box-shadow:0 18px 45px rgba(0,0,0,0.7);
         }
+        .links-title { font-size:18px; font-weight:800; margin-bottom:12px; }
+        .links-chips { display:flex; flex-wrap:wrap; gap:10px; font-size:13px; }
+        .link-chip { padding:8px 14px; border-radius:999px; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.25); }
+
+        /* Media Queries */
+        @media (max-width:1200px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width:960px) {
+            .hero { padding-top:170px; }
+            .hero-grid { grid-template-columns:minmax(0,1fr); }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+        
+        footer { max-width:1300px; margin:0 auto 24px; padding:12px 24px; font-size:11px; color:rgba(255,255,255,0.75); text-align:center; text-shadow:0 0 10px rgba(0,0,0,0.8); }
     </style>
 </head>
 
@@ -212,13 +158,13 @@
 
     <header>
         <div class="brand">
-            <div class="brand-logo"><img src="luma-logo.png" alt="LUMA" /></div>
+            <div class="brand-logo"><img src="luma-logo.png" alt="LUMA logo" /></div>
             <div class="brand-name">Lunar&Mars</div>
         </div>
         <nav class="nav">
-            <a href="#hero">Projet</a>
-            <a href="#tokenomics">Tokenomics</a>
-            <a href="#links">Liens</a>
+            <a href="#hero" class="translatable" data-en="About" data-fr="À propos">À propos</a>
+            <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
+            <a href="#links" class="translatable" data-en="Links" data-fr="Liens">Liens</a>
         </nav>
         <div class="lang-switch">
             <button id="lang-en" onclick="setLanguage('en')">EN</button>
@@ -232,46 +178,52 @@
 
     <main>
         <section class="hero" id="hero">
-            <h1 class="hero-title translatable" data-en="FROM THE MOON TO MARS" data-fr="DE LA LUNE VERS MARS">DE LA LUNE VERS MARS</h1>
-            
+            <h1 class="hero-title translatable" data-en="WHAT IS LUMA?" data-fr="QU'EST-CE QUE LUMA ?">QU'EST-CE QUE LUMA ?</h1>
+
             <div class="hero-grid">
-                <div class="panel-box">
-                    <div class="panel-title-small">MISSION BRIEF</div>
-                    <div class="panel-heading translatable" 
-                         data-en="A SYMBOLIC BRIDGE TO THE FUTURE." 
-                         data-fr="UN PONT SYMBOLIQUE VERS LE FUTUR.">
-                        UN PONT SYMBOLIQUE VERS LE FUTUR.
-                    </div>
-                    <div class="panel-text scroll-content translatable"
-                         data-en="LUMA is not just a token. It represents humanity's next giant leap. A community-driven asset on BNB Smart Chain designed to symbolize the corridor between our lunar presence and the Martian colonies of tomorrow. No taxes, no hidden agendas—just a pure vision."
-                         data-fr="LUMA n'est pas juste un jeton. Il représente le prochain pas de géant de l'humanité. Un actif communautaire sur la BNB Smart Chain conçu pour symboliser le corridor entre notre présence lunaire et les colonies martiennes de demain.">
-                        LUMA n'est pas juste un jeton. Il représente le prochain pas de géant de l'humanité. Un actif communautaire sur la BNB Smart Chain conçu pour symboliser le corridor entre notre présence lunaire et les colonies martiennes de demain.
-                    </div>
-                    <div class="hero-btns">
-                         <a href="LUMA_Whitepaper_v1.pdf" target="_blank" class="btn btn-primary">Whitepaper</a>
-                         <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
-                         <a href="https://x.com/LunarMarsToken" target="_blank" class="btn btn-dark">X (Twitter)</a>
-                    </div>
-                </div>
-
-                <div class="panel-box">
-                    <div class="panel-title-small">MARKET DATA</div>
-                    <div id="luma-price" class="price-main">$-.----</div>
-                    <div id="luma-change" class="price-change">0.00%</div>
+                <article class="panel">
+                    <div class="panel-title-small translatable" data-en="LUMA IN ONE SENTENCE" data-fr="LUMA EN UNE PHRASE">LUMA EN UNE PHRASE</div>
                     
-                    <div style="margin-bottom:20px; font-size:13px; color:rgba(255,255,255,0.5);">
-                        Pool: LUMA / WBNB (PancakeSwap v3)
+                    <div class="panel-heading translatable" data-en="LUMA IS A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE." data-fr="LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.">
+                        LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.
                     </div>
+                    
+                    <div class="panel-text scroll-content">
+                        <span class="translatable" 
+                            data-en="Lunar&amp;Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars. The project's vision is simple: symbolically represent the imaginary corridor between the Moon and Mars. LUMA is not a speculative asset; it is a conceptual, community-driven, and educational token meant to inspire interest in space technologies, decentralization, and future interplanetary projects. It serves as an emblem for those who wish to support, symbolically, the initiatives linked to space exploration and futuristic innovation. The project is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future. It is important to note that LUMA is not a financial instrument for speculation, but a symbolic and community project."
+                            data-fr="Lunar&amp;Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour des technologies spatiales, de la décentralisation et des futurs projets interplanétaires. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire."
+                        >
+                            Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire.
+                        </span>
+                    </div>
+                </article>
 
-                    <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" 
-                       target="_blank" class="btn btn-primary" style="width:100%">
-                       Acheter sur MEXC
-                    </a>
-                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" 
-                       target="_blank" class="btn btn-dark" style="width:100%; margin-top:10px;">
-                       Voir le graphique
-                    </a>
-                </div>
+                <article class="panel">
+                    <div class="price-label translatable" data-en="CURRENT PRICE (DEX)" data-fr="PRIX ACTUEL (DEX)">PRIX ACTUEL (DEX)</div>
+                    
+                    <div id="luma-price" class="price-main">$0.000000000</div>
+                    <div id="luma-change" class="price-change">0.00% (24h)</div>
+                    
+                    <div class="price-note translatable" data-en="Price and 24h change from the LUMA / WBNB pool on GeckoTerminal (if data is available)." data-fr="Prix et changement sur 24h à partir du pool LUMA / WBNB sur GeckoTerminal (si les données sont disponibles).">
+                        Prix et changement sur 24h à partir du pool LUMA / WBNB sur GeckoTerminal (si les données sont disponibles).
+                    </div>
+                    
+                    <div class="price-pool">
+                        <strong class="translatable" data-en="Pool:" data-fr="Pool:">Pool:</strong> LUMA / WBNB (DEX)
+                        <br />
+                        <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" rel="noopener noreferrer">
+                            <span class="translatable" data-en="Open on GeckoTerminal" data-fr="Ouvrir sur GeckoTerminal">Ouvrir sur GeckoTerminal</span>
+                        </a>
+                    </div>
+                    
+                    <div class="panel-buttons">
+                        <a class="btn btn-mexc translatable" href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" rel="noopener noreferrer" data-en="Open on MEXC" data-fr="Ouvrir sur MEXC">Ouvrir sur MEXC</a>
+                        <a class="btn btn-secondary translatable" href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" rel="noopener noreferrer" data-en="View contract" data-fr="Voir le contrat">Voir le contrat</a>
+                        <a class="btn btn-secondary translatable" href="https://t.me/LunarMarsOfficial" target="_blank" rel="noopener noreferrer" data-en="Join Telegram" data-fr="Rejoindre Telegram">Rejoindre Telegram</a>
+                        <a class="btn btn-secondary translatable" href="https://x.com/LunarMarsToken" target="_blank" rel="noopener noreferrer" data-en="X (@LunarMarsToken)" data-fr="X (@LunarMarsToken)">@LunarMarsToken</a>
+                        <a class="btn btn-secondary translatable" href="LUMA_Whitepaper_v1.pdf" target="_blank" rel="noopener noreferrer" data-en="View Whitepaper" data-fr="Voir le Whitepaper">Voir le Whitepaper</a>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -324,25 +276,124 @@
         </section>
 
         <section id="links" class="links-section">
-            <div class="panel-box">
-                <div class="panel-title-small">COMMUNITY LINKS</div>
-                <div class="links-grid">
-                    <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" class="link-item">BscScan</a>
-                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" class="link-item">GeckoTerminal</a>
-                    <a href="LUMA_Whitepaper_v1.pdf" target="_blank" class="link-item">Whitepaper PDF</a>
-                    <a href="https://x.com/LunarMarsToken" target="_blank" class="link-item">X (Twitter)</a>
-                    <a href="https://t.me/LunarMarsOfficial" target="_blank" class="link-item">Telegram</a>
+            <div class="links-card">
+                <h2 class="links-title translatable" data-en="Links & Community" data-fr="Liens & Communauté">Liens & Communauté</h2>
+                <div class="links-chips">
+                    <a class="link-chip" href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" rel="noopener noreferrer">BscScan</a>
+                    <a class="link-chip" href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" rel="noopener noreferrer">GeckoTerminal</a>
+                    <a class="link-chip" href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" rel="noopener noreferrer">MEXC DEX</a>
+                    <a class="link-chip" href="LUMA_Whitepaper_v1.pdf" target="_blank" rel="noopener noreferrer">Whitepaper</a>
+                    <a class="link-chip" href="https://x.com/LunarMarsToken" target="_blank" rel="noopener noreferrer">X – @LunarMarsToken</a>
+                    <a class="link-chip" href="https://t.me/LunarMarsOfficial" target="_blank" rel="noopener noreferrer">Telegram</a>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        LUMA is a symbolic community token. DYOR. 2025.
+        <span class="translatable" data-en="LUMA is a symbolic community token on BNB Smart Chain. Nothing here is financial or investment advice. Follow us on X: @LunarMarsToken." data-fr="LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. Suivez-nous sur X : @LunarMarsToken.">
+            LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. Suivez-nous sur X : @LunarMarsToken.
+        </span>
     </footer>
 
     <script>
-        /* --- TIMER --- */
+        /* --- LOGIQUE DE TRADUCTION --- */
+        function setLanguage(lang) {
+            document.body.setAttribute('data-lang', lang);
+            document.getElementById('lang-en').classList.remove('active');
+            document.getElementById('lang-fr').classList.remove('active');
+            document.getElementById('lang-' + lang).classList.add('active');
+
+            const titleElement = document.getElementById('page-title');
+            if (titleElement) {
+                const newTitle = titleElement.getAttribute('data-' + lang);
+                if (newTitle) { titleElement.textContent = newTitle; }
+            }
+            document.querySelectorAll('.translatable').forEach(el => {
+                const translation = el.getAttribute('data-' + lang);
+                if (translation) { el.innerHTML = translation; }
+            });
+        }
+        setLanguage('fr');
+
+        /* --- ANCIEN TICKER PRIX COINGECKO (RESTAURÉ) --- */
+        const barCoins = [
+            { id:"ethereum",     symbol:"ETH" },
+            { id:"binancecoin",  symbol:"BNB" },
+            { id:"solana",       symbol:"SOL" },
+            { id:"ripple",       symbol:"XRP" },
+            { id:"litecoin",     symbol:"LTC" },
+            { id:"bitcoin-cash", symbol:"BCH" },
+            { id:"dogecoin",     symbol:"DOGE" },
+            { id:"tron",         symbol:"TRX" },
+            { id:"bitcoin",      symbol:"BTC" }
+        ];
+        async function loadTicker() {
+            try {
+                const ids  = barCoins.map(c => c.id).join(",");
+                const url  = "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd&include_24hr_change=true";
+                const res  = await fetch(url);
+                const data = await res.json();
+                const track = document.getElementById("ticker-track");
+                track.innerHTML = "";
+                barCoins.forEach(c => {
+                    const info = data[c.id];
+                    if (!info) return;
+                    const price  = info.usd;
+                    const change = info.usd_24h_change || 0;
+                    const cls    = change >= 0 ? "up" : "down";
+                    const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+                    track.insertAdjacentHTML(
+                        "beforeend",
+                        `<div class="ticker-item">
+                            <span>${c.symbol}</span>
+                            <span>$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
+                            <span class="ticker-change ${cls}">${changeStr}</span>
+                        </div>`
+                    );
+                });
+                track.innerHTML += track.innerHTML; 
+            } catch (e) {
+                console.error("Ticker error:", e);
+            }
+        }
+        loadTicker();
+        setInterval(loadTicker, 60000);
+
+        /* --- PRIX LUMA --- */
+        function formatLumaPrice(price) {
+            if (!isFinite(price) || price <= 0) return "Price unavailable";
+            if (price >= 0.01) { return "$" + price.toFixed(4); }
+            if (price < 0.01 && price > 0) {
+                let s = price.toFixed(10);
+                s = s.replace(/0+$/,"").replace(/\.$/,"");
+                return "$" + s;
+            }
+            return "$" + price.toExponential(4);
+        }
+        async function loadLumaPrice() {
+            const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+            const priceEl  = document.getElementById("luma-price");
+            const changeEl = document.getElementById("luma-change");
+            try {
+                const res  = await fetch(url);
+                const data = await res.json();
+                const attr = data?.data?.attributes;
+                if (!attr) { return; }
+                const price = Number(attr.base_token_price_usd ?? attr.quote_token_price_usd ?? attr.price_usd ?? 0);
+                const change = Number((attr.price_change_percentage && attr.price_change_percentage.h24) ?? attr.price_change_percentage_24h ?? 0);
+                priceEl.textContent = formatLumaPrice(price);
+                const isUp = change >= 0;
+                changeEl.classList.toggle("down", !isUp);
+                changeEl.classList.toggle("up", isUp);
+                const sign = isUp ? "+" : "";
+                changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
+            } catch (e) { console.error("LUMA price error:", e); }
+        }
+        loadLumaPrice();
+        setInterval(loadLumaPrice, 60000);
+
+        /* --- COMPTE À REBOURS BURN (NOUVEAU SCRIPT) --- */
         const burnDate = new Date("November 25, 2025 12:00:00 EST").getTime();
         const timerInterval = setInterval(function() {
             const now = new Date().getTime();
@@ -359,53 +410,11 @@
                 document.getElementById("minutes").innerText = m < 10 ? "0"+m : m;
                 document.getElementById("seconds").innerText = s < 10 ? "0"+s : s;
             }
-
             if (distance < 0) {
                 clearInterval(timerInterval);
-                document.getElementById("burn-timer").innerHTML = "<div style='color:#e64b5f; font-weight:bold;'>BURN COMPLETE</div>";
+                document.getElementById("burn-timer").innerHTML = "<div style='color:#e64b5f; font-weight:bold;'>BURN COMPLETED</div>";
             }
         }, 1000);
-
-        /* --- TRADUCTION --- */
-        function setLanguage(lang) {
-            document.querySelectorAll('.translatable').forEach(el => {
-                const t = el.getAttribute('data-' + lang);
-                if (t) el.innerHTML = t;
-            });
-            document.getElementById('lang-en').classList.remove('active');
-            document.getElementById('lang-fr').classList.remove('active');
-            document.getElementById('lang-' + lang).classList.add('active');
-        }
-
-        /* --- PRIX --- */
-        async function loadTicker() {
-            // Simple ticker code (raccourci pour lisibilité, utilise celui d'avant si besoin complet)
-            const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd&include_24hr_change=true");
-            const data = await res.json();
-            let html = "";
-            for(const [key, val] of Object.entries(data)) {
-                html += `<div class="ticker-item"><span>${key.toUpperCase().substring(0,3)}</span> $${val.usd}</div>`;
-            }
-            const track = document.getElementById("ticker-track");
-            if(track) { track.innerHTML = html + html; } // duplicate for scroll
-        }
-        loadTicker();
-
-        async function loadLumaPrice() {
-            try {
-                const res = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
-                const data = await res.json();
-                const attr = data.data.attributes;
-                const p = parseFloat(attr.base_token_price_usd || 0);
-                const c = parseFloat(attr.price_change_percentage.h24 || 0);
-                
-                document.getElementById("luma-price").innerText = "$" + (p < 0.01 ? p.toFixed(8) : p.toFixed(4));
-                const cEl = document.getElementById("luma-change");
-                cEl.innerText = (c >= 0 ? "+" : "") + c.toFixed(2) + "%";
-                cEl.className = "price-change " + (c >= 0 ? "up" : "down");
-            } catch(e) { console.log(e); }
-        }
-        loadLumaPrice();
     </script>
 </body>
 </html>
