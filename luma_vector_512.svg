@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Orange planet -->
+  <circle cx="256" cy="256" r="210" fill="#F7931A" />
+
+  <!-- Main black orbit stroke -->
+  <path d="M80 280 L472 120" fill="none" stroke="#111111" stroke-width="38" stroke-linecap="round" />
+
+  <!-- Lower orbit stroke -->
+  <path d="M170 430 L460 210" fill="none" stroke="#111111" stroke-width="26" stroke-linecap="round" />
+
+  <!-- White highlight slash on the orbit -->
+  <path d="M240 300 L420 200" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" />
+
+  <!-- White L -->
+  <rect x="215" y="130" width="90" height="260" rx="12" ry="12" fill="#FFFFFF" />
+  <rect x="215" y="300" width="185" height="90" rx="12" ry="12" fill="#FFFFFF" />
+
+  <!-- Three small dots on the right -->
+  <circle cx="400" cy="250" r="8" fill="#111111" />
+  <circle cx="422" cy="308" r="8" fill="#111111" />
+  <circle cx="386" cy="352" r="8" fill="#111111" />
+</svg>
