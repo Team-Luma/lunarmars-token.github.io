@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMA GAME - SURVIVAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #050505;
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden; touch-action: none;
+        }
+
+        #game-container {
+            position: relative;
+            width: 450px; height: 700px;
+            border: 4px solid #ff8c00;
+            box-shadow: 0 0 50px rgba(255, 140, 0, 0.4);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #111; 
+            background-image: url('space_bg.jpg');
+            background-size: cover; background-position: center;
+        }
+        
+        canvas { position: absolute; top: 0; left: 0; cursor: crosshair; }
+
+        #ui-layer {
+            position: absolute; top: 15px; width: 100%; text-align: center;
+            z-index: 10; text-shadow: 0 0 5px #000; pointer-events: none;
+            display: flex; justify-content: center; gap: 20px; align-items: flex-end;
+        }
+        .hud-box { display: flex; flex-direction: column; align-items: center; }
+        .hud-text { font-size: 24px; font-weight: 900; margin-bottom: 2px; color: #fff; }
+        .hud-label { font-size: 10px; color: #ff8c00; font-weight: bold; letter-spacing: 1px;}
+
+        /* --- BARRE DE VIE --- */
+        #health-container {
+            width: 150px; height: 15px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        #health-fill {
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00aa00);
+            transition: width 0.2s ease-out;
+        }
+
+        #menuOverlay {
+            display: none; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95); border: 2px solid #ff8c00;
+            padding: 30px; border-radius: 15px; text-align: center;
+            width: 80%; z-index: 20;
+        }
+        button {
+            background: linear-gradient(45deg, #ff8c00, #ff4500); border: none; color: white;
+            padding: 12px 20px; font-family: 'Orbitron'; font-weight: bold;
+            border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        button:hover { transform: scale(1.02); box-shadow: 0 0 15px #ff8c00; }
+        input { 
+            background: #222; border: 1px solid #ff8c00; color: white; 
+            padding: 10px; text-align: center; font-family: 'Orbitron'; width: 70%;
+            border-radius: 20px; outline: none;
+        }
+        .lb-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; font-size: 14px; color: #ddd;}
+        .lb-score { color: #ff8c00; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="ui-layer">
+            <div class="hud-box">
+                <span class="hud-label">VITALITÉ</span>
+                <div id="health-container"><div id="health-fill"></div></div>
+            </div>
+            <div class="hud-box"><span class="hud-label">SCORE</span><span class="hud-text" id="score">0</span></div>
+            <div class="hud-box"><span class="hud-label">WAVE</span><span class="hud-text" id="wave">1</span></div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="menuOverlay">
+            <h2 style="color:#ff3333; margin:0 0 10px 0;">MISSION FAILED</h2>
+            <p style="color:#fff;">Score: <span id="finalScore" style="color:#ff8c00; font-weight:bold; font-size:24px;">0</span></p>
+            <div id="inputSection" style="margin-top: 20px;">
+                <input type="text" id="pName" placeholder="TON NOM" maxlength="10">
+                <button id="submitBtn">ENREGISTRER</button>
+            </div>
+            <div id="lbBox" style="margin-top:20px; text-align:left;"></div>
+            <button id="restartBtn" onclick="restart()">REJOUER</button>
+        </div>
+
+        <!-- BOX WALLET -->
+        <div id="walletBox" style="
+            position:absolute;
+            bottom:15px;
+            left:50%;
+            transform:translateX(-50%);
+            z-index:25;
+            text-align:center;
+        ">
+            <button id="connectBtn" style="width:auto; padding:6px 14px; font-size:10px;">
+                CONNECT WALLET
+            </button>
+            <div id="walletStatus" style="color:#fff; font-size:10px; margin-top:4px;">
+                Not connected
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 450; canvas.height = 700;
+
+        // Variables Jeu
+        let state = "PLAY";
+        let score = 0, wave = 1, frame = 0, diff = 1;
+        let maxHealth = 100;
+        let currentHealth = 100;
+
+        // Wallet + faucet
+        let currentAccount = null;
+        let tokensDestroyed = 0;
+
+        function shorten(addr) {
+            return addr.slice(0, 6) + "..." + addr.slice(-4);
+        }
+
+        // Image LUMA
+        const lumaTokenImg = new Image();
+        lumaTokenImg.src = 'luma_token.png';
+
+        // Joueur
+        let p = { 
+            x: 225, y: 600, w: 60, h: 90, speed: 8,
+            dx: 0 
+        };
+
+        let mouse = { x: 225, y: 300 };
+        let isClick = false;
+        let isSpace = false;
+
+        let bullets = [], tokens = [], particles = [];
+
+        // --- CONTRÔLES ---
+        document.addEventListener('keydown', e => {
+            let k = e.key.toLowerCase();
+            if(k=='a'||k=='q'||k=='arrowleft') p.dx = -p.speed;
+            if(k=='d'||k=='arrowright') p.dx = p.speed;
+            if(e.code === 'Space') isSpace = true;
+        });
+        document.addEventListener('keyup', e => {
+            let k = e.key.toLowerCase();
+            if(['a','q','d','arrowleft','arrowright'].includes(k)) p.dx = 0;
+            if(e.code === 'Space') isSpace = false;
+        });
+
+        function getMouse(e) {
+            let rect = canvas.getBoundingClientRect();
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        }
+        window.addEventListener('mousemove', e => mouse = getMouse(e));
+        window.addEventListener('mousedown', () => isClick = true);
+        window.addEventListener('mouseup', () => isClick = false);
+        window.addEventListener('touchmove', e => mouse = getMouse(e.touches[0]));
+        window.addEventListener('touchstart', () => isClick = true);
+        window.addEventListener('touchend', () => isClick = false);
+
+        // ---------- CONNEXION WALLET ----------
+        async function connectWallet() {
+            try {
+                if (!window.ethereum) {
+                    alert("Un wallet Web3 (MetaMask) est requis.");
+                    return;
+                }
+
+                const accounts = await window.ethereum.request({
+                    method: "eth_requestAccounts"
+                });
+
+                if (!accounts || !accounts.length) return;
+
+                currentAccount = accounts[0];
+                const ws = document.getElementById("walletStatus");
+                if (ws) ws.innerText = "Connected: " + shorten(currentAccount);
+            } catch (e) {
+                console.error(e);
+                alert("Erreur lors de la connexion au wallet.");
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("connectBtn");
+            if (btn) btn.onclick = connectWallet;
+        });
+
+        // --- CLASSES ---
+        class Bullet {
+            constructor(x, y) {
+                this.x=x; this.y=y; this.s=15; this.dx=0; this.dy=-this.s;
+            }
+            update() { this.x+=this.dx; this.y+=this.dy; }
+            draw() {
+                ctx.fillStyle = "white"; ctx.shadowBlur=15; ctx.shadowColor="#00f3ff";
+                ctx.fillRect(this.x-3, this.y-12, 6, 24); ctx.shadowBlur=0;
+            }
+        }
+
+        class Token {
+            constructor(tier, type) {
+                this.tier = tier;
+                this.type = type; // 'enemy' (LUMA) ou 'healer' (MILLOW)
+                this.r = tier==3?35 : tier==2?25 : 15;
+                this.x = Math.random()*(canvas.width-40)+20; this.y = -50;
+                
+                let baseSpeed = (Math.random() * 1.5 + 0.5); 
+                this.dy = baseSpeed * diff; 
+                this.dx = (Math.random()-0.5) * 0.8 * diff;
+            }
+            update() { this.y+=this.dy; this.x+=this.dx; }
+            draw() {
+                ctx.save(); ctx.translate(this.x, this.y);
+                
+                if (this.type === 'healer') {
+                    ctx.fillStyle = "#00ff00"; ctx.shadowBlur = 10; ctx.shadowColor = "#00ff00";
+                    ctx.beginPath(); ctx.arc(0, 0, this.r, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = "black"; ctx.font = "bold "+(this.r)+"px Arial"; 
+                    ctx.textAlign = "center"; ctx.textBaseline="middle"; ctx.shadowBlur = 0;
+                    ctx.fillText("M", 0, 2);
+                } else {
+                    ctx.drawImage(lumaTokenImg, -this.r, -this.r, this.r*2, this.r*2);
+                }
+                ctx.restore();
+            }
+        }
+
+        class Part {
+            constructor(x, y, c) {
+                this.x=x; this.y=y; this.c=c; this.life=1; 
+                this.dx=(Math.random()-0.5)*8; this.dy=(Math.random()-0.5)*8;
+            }
+            update() { this.x+=this.dx; this.y+=this.dy; this.life-=0.04; }
+            draw() { 
+                ctx.globalAlpha=Math.max(0,this.life); ctx.fillStyle=this.c; 
+                ctx.beginPath(); ctx.arc(this.x, this.y, 4, 0, 6.28); ctx.fill(); ctx.globalAlpha=1; 
+            }
+        }
+
+        // --- GESTION DE LA VIE ---
+        function updateHealth(amount) {
+            currentHealth += amount;
+            if (currentHealth > maxHealth) currentHealth = maxHealth;
+            if (currentHealth <= 0) {
+                currentHealth = 0;
+                gameOver();
+            }
+            let pct = (currentHealth / maxHealth) * 100;
+            document.getElementById('health-fill').style.width = pct + "%";
+            
+            if(pct < 30) document.getElementById('health-fill').style.background = "#ff0000";
+            else document.getElementById('health-fill').style.background = "linear-gradient(90deg, #00ff00, #00aa00)";
+        }
+
+        // --- BOUCLE ---
+        function loop() {
+            if(state !== "PLAY") return;
+            requestAnimationFrame(loop);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            frame++;
+
+            // Joueur
+            p.x += p.dx; 
+            if(p.x < p.w/2) p.x = p.w/2;
+            if(p.x > canvas.width - p.w/2) p.x = canvas.width - p.w/2;
+
+            // Tir
+            if((isClick || isSpace) && frame%8==0) bullets.push(new Bullet(p.x, p.y - p.h/2));
+
+            // Spawns
+            if(frame%(110-wave*4)==0 || frame==1) {
+                let type = Math.random() < 0.1 ? 'healer' : 'enemy';
+                tokens.push(new Token(3, type)); 
+            }
+            if(frame%1200==0) { wave++; diff+=0.15; document.getElementById('wave').innerText=wave; }
+
+            // Fusée
+            ctx.save(); ctx.translate(p.x, p.y); 
+            ctx.scale(1.5, 1.5); 
+            ctx.fillStyle = "white"; ctx.beginPath(); ctx.ellipse(0, 0, 12, 30, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = "#ff3333";
+            ctx.beginPath(); ctx.moveTo(-10, 10); ctx.lineTo(-20, 30); ctx.lineTo(-8, 25); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(10, 10); ctx.lineTo(20, 30); ctx.lineTo(8, 25); ctx.fill();
+            if(Math.random()>0.3) {
+                ctx.fillStyle = "#ff8c00"; ctx.beginPath(); ctx.moveTo(-6, 28); ctx.lineTo(0, 45+Math.random()*10); ctx.lineTo(6, 28); ctx.fill();
+            }
+            ctx.fillStyle = "#00f3ff"; ctx.beginPath(); ctx.arc(0, -8, 6, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+
+            // Particules & balles
+            particles.forEach((pt,i) => { pt.update(); pt.draw(); if(pt.life<=0) particles.splice(i,1); });
+            
+            bullets.forEach((b,Bi) => {
+                b.update(); b.draw();
+                if(b.x<0||b.x>450||b.y<0||b.y>700) bullets.splice(Bi,1);
+            });
+
+            tokens.forEach((t,Ti) => {
+                t.update(); t.draw();
+                
+                // Collision joueur
+                if(Math.dist(t.x, t.y, p.x, p.y) < t.r + 25) {
+                    if (t.type === 'healer') {
+                        updateHealth(20); 
+                        score += 500; 
+                        for(let k=0;k<8;k++) particles.push(new Part(t.x, t.y, "#00ff00"));
+                    } else {
+                        updateHealth(-20); 
+                        for(let k=0;k<8;k++) particles.push(new Part(t.x, t.y, "#ff0000"));
+                    }
+                    document.getElementById('score').innerText=score;
+                    tokens.splice(Ti, 1);
+                    return;
+                }
+
+                // Sortie écran
+                if(t.y > 750) {
+                    tokens.splice(Ti, 1);
+                    return;
+                }
+
+                // Collision balles
+                bullets.forEach((b,Bi) => {
+                    if(Math.dist(b.x, b.y, t.x, t.y) < t.r) {
+                        bullets.splice(Bi,1);
+                        
+                        if (t.type === 'enemy') {
+                            tokensDestroyed++;   // compteur pour faucet
+                            score += t.tier*100; 
+                            for(let k=0;k<6;k++) particles.push(new Part(t.x, t.y, "#ff8c00"));
+                            if(t.tier>1) {
+                                tokens.push(new Token(t.tier-1, 'enemy')); tokens[tokens.length-1].x = t.x; tokens[tokens.length-1].y = t.y;
+                                tokens.push(new Token(t.tier-1, 'enemy')); tokens[tokens.length-1].x = t.x; tokens[tokens.length-1].y = t.y;
+                            }
+                        } else {
+                            score += 50; 
+                            for(let k=0;k<6;k++) particles.push(new Part(t.x, t.y, "#00ff00"));
+                        }
+                        
+                        document.getElementById('score').innerText=score;
+                        tokens.splice(Ti,1);
+                    }
+                });
+            });
+        }
+
+        Math.dist = (x1,y1,x2,y2) => Math.sqrt((x1-x2)**2 + (y1-y2)**2);
+
+        function gameOver() {
+            state = "OVER";
+            document.getElementById('menuOverlay').style.display = 'block';
+            document.getElementById('finalScore').innerText = score;
+            document.getElementById('inputSection').style.display = 'block';
+            loadLB();
+
+            if (currentAccount) {
+                sendScoreToBackend();
+            }
+        }
+
+        async function sendScoreToBackend() {
+            try {
+                if (!window.ethereum || !currentAccount) return;
+
+                const msg = `LUMA_ARCADE_RESULT:${currentAccount}:${tokensDestroyed}:${wave}`;
+                const signature = await window.ethereum.request({
+                    method: "personal_sign",
+                    params: [msg, currentAccount]
+                });
+
+                const res = await fetch("http://localhost:3001/api/submit-score", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        walletAddress: currentAccount,
+                        tokensDestroyed,
+                        wave,
+                        signature
+                    })
+                });
+
+                const data = await res.json();
+                console.log("Backend response:", data);
+
+                if (data.ok) {
+                    alert(
+                        "LUMA faucet reward sent!\n" +
+                        "Units: " + data.units + "\n" +
+                        "Tx: " + data.txHash
+                    );
+                } else {
+                    console.warn("Reward error:", data);
+                }
+            } catch (e) {
+                console.error("sendScoreToBackend error:", e);
+            }
+        }
+
+        document.getElementById('submitBtn').onclick = () => {
+            let n = document.getElementById('pName').value.toUpperCase() || "ANONYME";
+            let lb = JSON.parse(localStorage.getItem('LUMA_V12')||'[]');
+            lb.push({n,s:score}); lb.sort((a,b)=>b.s-a.s); lb.splice(5);
+            localStorage.setItem('LUMA_V12', JSON.stringify(lb));
+            document.getElementById('inputSection').style.display='none'; loadLB();
+        };
+
+        function loadLB() {
+            let lb = JSON.parse(localStorage.getItem('LUMA_V12')||'[]');
+            let h = lb.map((e,i)=>`<div class='lb-row'><span>${i+1}. ${e.n}</span><span class='lb-score'>${e.s}</span></div>`).join('');
+            document.getElementById('lbBox').innerHTML = h || "<p style='color:#777;text-align:center'>Vide</p>";
+        }
+
+        function restart() {
+            score=0; wave=1; diff=1; tokens=[]; bullets=[]; particles=[];
+            currentHealth = 100; updateHealth(0);
+            tokensDestroyed = 0;
+            document.getElementById('score').innerText="0";
+            document.getElementById('menuOverlay').style.display='none';
+            p.x=225; p.y=600; state="PLAY"; loop();
+        }
+
+        lumaTokenImg.onload = () => { loop(); };
+    </script>
+</body>
+</html>
