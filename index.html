@@ -213,6 +213,8 @@
                         <a href="LUMA_Whitepaper_v1.pdf" target="_blank" class="btn btn-primary">Whitepaper</a>
                         <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
                         <a href="https://x.com/LunarMarsToken" target="_blank" class="btn btn-dark">X (Twitter)</a>
+                        <!-- Nouveau bouton pour ouvrir le jeu -->
+                        <button type="button" class="btn btn-primary" onclick="openGamePopup()">Jeu LUMA</button>
                     </div>
                 </article>
 
@@ -426,16 +428,20 @@
             }
         }, 1000);
 
-        /* --- OUVERTURE DU JEU EN POP-UP --- */
+        /* --- OUVERTURE DU JEU --- */
+        function openGamePopup() {
+            window.open(
+                'game/luma-game.html',
+                'LUMA_ARCADE',
+                'width=500,height=750,resizable=yes,scrollbars=no'
+            );
+        }
+
         const gameLink = document.getElementById('open-game-nav');
         if (gameLink) {
             gameLink.addEventListener('click', function (e) {
                 e.preventDefault();
-                window.open(
-                    'game/luma-game.html',
-                    'LUMA_ARCADE',
-                    'width=500,height=750,resizable=yes,scrollbars=no'
-                );
+                openGamePopup();
             });
         }
     </script>
