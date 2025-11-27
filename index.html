@@ -21,7 +21,6 @@
             position:fixed; top:0; left:0; right:0; z-index:1000;
             display:flex; align-items:center; justify-content:space-between;
             gap:20px; 
-            /* AJUSTEMENT ICI : Padding réduit de 10px à 8px pour remonter le tout */
             padding:8px 24px;
             background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.6));
             backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,0.15);
@@ -41,7 +40,6 @@
         
         /* TICKER DÉFILANT */
         .ticker {
-            /* AJUSTEMENT ICI : top passé de 74px à 69px pour coller au header */
             position:fixed; top:69px; left:0; right:0; z-index:900;
             background:#f7f7fb; border-bottom:1px solid #e0e0ef; overflow:hidden;
         }
@@ -59,12 +57,10 @@
         main { min-height:100vh; }
         .hero { max-width:1300px; margin:0 auto; padding:180px 24px 80px; position:relative; }
         
-        /* Titre Original */
         .hero-title { text-align:center; font-size:54px; font-weight:900; letter-spacing:0.08em; margin-bottom:30px; text-shadow:0 0 18px rgba(0,0,0,0.9); }
         
         .hero-grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:36px; }
         
-        /* Panel Gauche (Style Original "Glass") */
         .panel {
             background:rgba(9,10,22,0.78); border-radius:24px; border:1px solid rgba(255,255,255,0.18);
             padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(10px);
@@ -78,9 +74,8 @@
         .scroll-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
         .scroll-content::-webkit-scrollbar-track { background: transparent; }
 
-        /* Panel Droite (Nouveau Style "Market Data") */
         .panel-box-right {
-            background:rgba(13, 14, 28, 0.95); /* Plus sombre comme le nouveau */
+            background:rgba(13, 14, 28, 0.95);
             border-radius:24px; border:1px solid rgba(255,255,255,0.12);
             padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(12px);
             display: flex; flex-direction: column; justify-content: center;
@@ -92,7 +87,6 @@
         .price-change.up { background:rgba(46, 204, 113, 0.2); color:#2ecc71; }
         .price-change.down { background:rgba(231, 76, 60, 0.2); color:#e74c3c; }
         
-        /* Boutons (Nouveau Style appliqué partout) */
         .hero-btns { display:flex; flex-wrap:wrap; gap:10px; }
         .btn { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; padding:12px 24px; border:none; cursor:pointer; font-size:15px; font-weight:700; text-decoration:none; transition: transform 0.1s; }
         .btn:active { transform: scale(0.98); }
@@ -101,7 +95,7 @@
         .btn-dark { background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); }
         .btn-dark:hover { background:rgba(255,255,255,0.2); }
 
-        /* -------- 3. MISSION CONTROL (NOUVEAU STYLE VALIDÉ) -------- */
+        /* -------- 3. MISSION CONTROL -------- */
         .tokenomics-section { max-width:1300px; margin:0 auto 60px; padding:0 24px; }
         .section-title { text-align:center; font-size:28px; font-weight:900; margin-bottom:30px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.9); }
         
@@ -148,7 +142,7 @@
         .tax-item { text-align: center; }
         .tax-item span { display:block; font-size:18px; font-weight:700; color:#ffb21a; }
 
-        /* SECTION LIENS (STYLE ANCIEN POUR HARMONIE) */
+        /* SECTION LIENS */
         .links-section { max-width:1300px; margin:0 auto 40px; padding:0 24px; }
         .links-card {
             background:rgba(9,10,22,0.9); border-radius:24px; border:1px solid rgba(255,255,255,0.16);
@@ -157,6 +151,34 @@
         .links-title { font-size:18px; font-weight:800; margin-bottom:12px; }
         .links-chips { display:flex; flex-wrap:wrap; gap:10px; font-size:13px; }
         .link-chip { padding:8px 14px; border-radius:999px; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.25); }
+
+        /* SECTION JEU LUMA ARCADE */
+        .game-section {
+            max-width: 1300px;
+            margin: 0 auto 60px;
+            padding: 0 24px;
+            text-align: center;
+        }
+
+        .game-section h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .game-section p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 20px;
+        }
+
+        .game-frame {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.8);
+        }
 
         /* Media Queries */
         @media (max-width:1200px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
@@ -180,6 +202,7 @@
         <nav class="nav">
             <a href="#hero" class="translatable" data-en="About" data-fr="À propos">À propos</a>
             <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
+            <a href="#game" class="translatable" data-en="Game" data-fr="Jeu">Jeu</a>
             <a href="#links" class="translatable" data-en="Links" data-fr="Liens">Liens</a>
         </nav>
         <div class="lang-switch">
@@ -287,6 +310,23 @@
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- SECTION JEU LUMA ARCADE -->
+        <section id="game" class="game-section">
+            <h2 class="translatable" data-en="LUMA ARCADE" data-fr="LUMA ARCADE">LUMA ARCADE</h2>
+            <p class="translatable"
+               data-en="Help LUMA survive and collect tokens!"
+               data-fr="Aidez LUMA à survivre et à collecter des jetons !">
+               Aidez LUMA à survivre et à collecter des jetons !
+            </p>
+
+            <iframe
+                src="luma-game.html"
+                width="450"
+                height="720"
+                class="game-frame">
+            </iframe>
         </section>
 
         <section id="links" class="links-section">
