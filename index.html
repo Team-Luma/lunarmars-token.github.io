@@ -104,16 +104,12 @@
         .burn-card {
             background: linear-gradient(145deg, rgba(23, 10, 10, 0.9), rgba(36, 12, 12, 0.9));
             border: 1px solid rgba(230, 75, 95, 0.3); border-radius: 24px;
-            padding: 30px; text-align: center; position: relative; overflow: hidden;
+            padding: 30px; text-align: left; position: relative; overflow: hidden;
             box-shadow:0 20px 55px rgba(0,0,0,0.75);
         }
-        .burn-title { color:#e64b5f; font-weight:800; font-size:14px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
-        
-        .digital-timer { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
-        .time-box { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 14px; min-width: 65px; }
-        .time-val { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #fff; display: block; line-height: 1; }
-        .time-label { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 6px; display: block; }
-        .burn-date { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 10px; }
+        .burn-title { color:#e64b5f; font-weight:800; font-size:14px; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+        .burn-card p { font-size:13px; color:rgba(255,255,255,0.82); margin:4px 0; }
+        .burn-card a { font-size:12px; color:#ffb21a; text-decoration:underline; }
 
         .info-card {
             background: rgba(9,10,22,0.9); border-radius: 24px;
@@ -125,7 +121,7 @@
         .supply-label { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; font-weight: 600; }
         .supply-val { font-size:16px; font-weight:800; }
 
-        .locks-row { display:flex; gap:10px; margin-bottom:20px; }
+        .locks-row { display:flex; gap:10px; margin-bottom:14px; }
         .lock-btn {
             flex:1; background: rgba(46, 204, 113, 0.15); border: 1px solid rgba(46, 204, 113, 0.4);
             color: #2ecc71; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700;
@@ -174,7 +170,6 @@
         <nav class="nav">
             <a href="#hero" class="translatable" data-en="About" data-fr="À propos">À propos</a>
             <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
-            <!-- Lien qui ouvre le jeu en pop-up -->
             <a href="#" id="open-game-nav" class="translatable" data-en="Game" data-fr="Jeu">Jeu</a>
             <a href="#links" class="translatable" data-en="Links" data-fr="Liens">Liens</a>
         </nav>
@@ -213,7 +208,6 @@
                         <a href="LUMA_Whitepaper_v1.pdf" target="_blank" class="btn btn-primary">Whitepaper</a>
                         <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
                         <a href="https://x.com/LunarMarsToken" target="_blank" class="btn btn-dark">X (Twitter)</a>
-                        <!-- Nouveau bouton pour ouvrir le jeu -->
                         <button type="button" class="btn btn-primary" onclick="openGamePopup()">Jeu LUMA</button>
                     </div>
                 </article>
@@ -243,20 +237,30 @@
             <h2 class="section-title">Mission Control</h2>
             
             <div class="dashboard-grid">
+                <!-- BURN / LOCK / OWNERSHIP SUMMARY -->
                 <div class="burn-card">
-                    <div class="burn-title">🔥 NEXT IGNITION: 20% BURN</div>
-                    
-                    <div class="digital-timer" id="burn-timer">
-                        <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">Jours</span></div>
-                        <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">Heures</span></div>
-                        <div class="time-box"><span class="time-val" id="minutes">00</span><span class="time-label">Min</span></div>
-                        <div class="time-box"><span class="time-val" id="seconds">00</span><span class="time-label">Sec</span></div>
-                    </div>
-                    
-                    <div class="burn-date">Programmé : 01 Decembre 2025</div>
-                    <div style="margin-top:15px; font-size:13px; color:rgba(255,255,255,0.7);">
-                        Réduction massive de l'offre (Supply Shock)
-                    </div>
+                    <div class="burn-title">🔥 LUMA SECURITY STATUS</div>
+                    <p><strong>🔥 Burn&nbsp;10&nbsp;% :</strong> 22&nbsp;538&nbsp;440 LUMA brûlés de façon permanente.</p>
+                    <p>
+                        Tx Burn : 
+                        <a href="https://bscscan.com/tx/0x4b8a548ebe8a599c66b59915d7413549a601ae5c2e6c5e7c0c0baf9214f15a17" target="_blank">
+                            voir sur BscScan
+                        </a>
+                    </p>
+                    <p><strong>🔒 Supply verrouillé ≈ 10&nbsp;% :</strong> 22&nbsp;219&nbsp;850 LUMA lockés sur PinkLock V2.</p>
+                    <p>
+                        Lock #1 : 
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank">record 1389151</a><br/>
+                        Lock #2 : 
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank">record 1391827</a>
+                    </p>
+                    <p><strong>🧾 Ownership renoncé :</strong> contrat désormais immuable, sans propriétaire, sans mint.</p>
+                    <p>
+                        Tx Ownership : 
+                        <a href="https://bscscan.com/tx/0xfdbae1139fdbbba8c5ffe63c4b7b90cee096fc0147ae27ef035fa2c68970e772" target="_blank">
+                            voir sur BscScan
+                        </a>
+                    </p>
                 </div>
 
                 <div class="info-card">
@@ -267,21 +271,22 @@
 
                     <div class="locks-row">
                         <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank" class="lock-btn">
-                            🔒 LOCK #1 (20%)
+                            🔒 PinkLock #1
                         </a>
                         <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank" class="lock-btn">
-                            🔒 LOCK #2
+                            🔒 PinkLock #2
                         </a>
                     </div>
 
                     <div class="contract-box">
-                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
+                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9<br/>
+                        Ownership: Renounced – Immutable Contract
                     </div>
 
                     <div class="tax-list">
                         <div class="tax-item"><span>0%</span> Dev</div>
                         <div class="tax-item"><span>0%</span> Liq</div>
-                        <div class="tax-item"><span>0%</span> Burn</div>
+                        <div class="tax-item"><span>0%</span> Tax</div>
                     </div>
                 </div>
             </div>
@@ -328,7 +333,7 @@
         }
         setLanguage('fr');
 
-        /* --- ANCIEN TICKER RESTAURÉ --- */
+        /* --- TICKER --- */
         const barCoins = [
             { id:"ethereum",     symbol:"ETH" },
             { id:"binancecoin",  symbol:"BNB" },
@@ -404,29 +409,6 @@
         }
         loadLumaPrice();
         setInterval(loadLumaPrice, 60000);
-
-        /* --- COMPTE À REBOURS MISSION CONTROL --- */
-        const burnDate = new Date("Decembre 01, 2025 12:00:00 EST").getTime();
-        const timerInterval = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = burnDate - now;
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const dEl = document.getElementById("days");
-            if(dEl) {
-                dEl.innerText = d < 10 ? "0"+d : d;
-                document.getElementById("hours").innerText = h < 10 ? "0"+h : h;
-                document.getElementById("minutes").innerText = m < 10 ? "0"+m : m;
-                document.getElementById("seconds").innerText = s < 10 ? "0"+s : s;
-            }
-            if (distance < 0) {
-                clearInterval(timerInterval);
-                document.getElementById("burn-timer").innerHTML = "<div style='color:#e64b5f; font-weight:bold;'>BURN COMPLETED</div>";
-            }
-        }, 1000);
 
         /* --- OUVERTURE DU JEU --- */
         function openGamePopup() {
