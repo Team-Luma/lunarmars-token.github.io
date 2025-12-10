@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="Luma-noel-logo.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+    <!-- Google Analytics 4 – ID LUMA -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z4L8P2YSD7');
+    </script>
+
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -273,7 +283,8 @@
                     </div>
 
                     <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" 
-                       target="_blank" class="btn btn-primary" style="width:100%">
+                       target="_blank" class="btn btn-primary" style="width:100%"
+                       onclick="gtag('event','click_buy_luma_mexc',{event_category:'cta',event_label:'mexc'});">
                        Acheter sur MEXC
                     </a>
                     <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" 
@@ -298,6 +309,7 @@
                 <div style="display: flex; justify-content: center; margin-bottom: 14px;">
                     <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56"
                        target="_blank"
+                       onclick="gtag('event','click_buy_luma_pancake',{event_category:'cta',event_label:'pancakeswap'});"
                        style="display: inline-block; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 1rem; background: linear-gradient(135deg,#f97316,#e11d48); color: #fff; box-shadow: 0 0 18px rgba(249,115,22,0.4);">
                         🚀 Buy LUMA on PancakeSwap
                     </a>
@@ -526,8 +538,36 @@
         loadLumaPrice();
         setInterval(loadLumaPrice, 60000);
 
-        /* --- BOUTON "Add LUMA to MetaMask" --- */
+        /* --- BOUTON "Add LUMA to MetaMask" – AVEC SWITCH BSC + EVENT GA4 --- */
         const addBtn = document.getElementById('add-luma-metamask');
+
+        async function switchToBSC() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }] // BSC Mainnet
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: '0x38',
+                            chainName: 'BNB Smart Chain',
+                            nativeCurrency: {
+                                name: 'BNB',
+                                symbol: 'BNB',
+                                decimals: 18
+                            },
+                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                            blockExplorerUrls: ['https://bscscan.com']
+                        }]
+                    });
+                } else {
+                    throw switchError;
+                }
+            }
+        }
 
         if (addBtn) {
             addBtn.addEventListener('click', async () => {
@@ -537,6 +577,8 @@
                 }
 
                 try {
+                    await switchToBSC();
+
                     const wasAdded = await window.ethereum.request({
                         method: 'wallet_watchAsset',
                         params: {
@@ -552,17 +594,25 @@
 
                     if (wasAdded) {
                         console.log('LUMA ajouté à MetaMask');
+                        if (typeof gtag === 'function') {
+                            gtag('event','add_luma_metamask_success',{event_category:'wallet',event_label:'metamask'});
+                        }
                     } else {
                         console.log('LUMA non ajouté par l’utilisateur');
                     }
                 } catch (err) {
                     console.error('Erreur MetaMask', err);
+                    alert("Une erreur est survenue avec MetaMask. Consultez la console pour les détails.");
                 }
             });
         }
 
         /* --- OUVERTURE DU JEU --- */
         function openGamePopup() {
+            if (typeof gtag === 'function') {
+                gtag('event','open_luma_game',{event_category:'engagement',event_label:'game_popup'});
+            }
+
             window.open(
                 'game/luma-game.html',
                 'LUMA_ARCADE',
