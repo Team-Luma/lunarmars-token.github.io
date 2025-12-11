@@ -497,9 +497,9 @@
                 ">
                     <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Transferts</h3>
                     <div id="stat-tx-24h" style="font-size:32px; font-weight:900; margin-top:8px;">
-                        …
+                        —
                     </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts</p>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts (info à venir)</p>
                 </div>
 
                 <!-- MARKET CAP -->
@@ -515,7 +515,7 @@
                     <div id="stat-mcap" style="font-size:32px; font-weight:900; margin-top:8px;">
                         —
                     </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Calcul dynamique à venir</p>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Calculé en direct : prix × supply</p>
                 </div>
 
                 <!-- TOTAL SUPPLY -->
@@ -536,7 +536,7 @@
             </div>
 
             <p style="text-align:center; margin-top:20px; font-size:11px; opacity:0.6;">
-                Données BscScan consultées le 09 déc. 2025.
+                Données chargées en direct via BscScan & GeckoTerminal.
             </p>
         </section>
 
@@ -548,6 +548,7 @@
                 <!-- BURN / LOCK / OWNERSHIP SUMMARY -->
                 <div class="burn-card">
                     <div class="burn-title">🔥 LUMA SECURITY STATUS</div>
+
                     <p><strong>🔥 Burn&nbsp;10&nbsp;% :</strong> 22&nbsp;538&nbsp;440 LUMA brûlés de façon permanente.</p>
                     <p>
                         Tx Burn :
@@ -555,6 +556,7 @@
                             voir sur BscScan
                         </a>
                     </p>
+
                     <p><strong>🔒 Supply verrouillé ≈ 10&nbsp;% :</strong> 22&nbsp;219&nbsp;850 LUMA lockés sur PinkLock V2.</p>
                     <p>
                         Lock #1 :
@@ -562,6 +564,15 @@
                         Lock #2 :
                         <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank">record 1391827</a>
                     </p>
+
+                    <p><strong>💧 Liquidité LUMA/WBNB verrouillée :</strong> LP tokens lockés pour 1 an sur PinkLock.</p>
+                    <p>
+                        LP Lock :
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1408517" target="_blank">
+                            voir le lock LP (record 1408517)
+                        </a>
+                    </p>
+
                     <p><strong>🧾 Ownership renoncé :</strong> contrat désormais immuable, sans propriétaire, sans mint.</p>
                     <p>
                         Tx Ownership :
@@ -768,6 +779,10 @@
 
     <script>
         const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
+        const BSCSCAN_API_KEY  = 'SWCM6WAEYSX4YJS3SZP6EFXKQPM74K6N1Y';
+
+        let lumaPriceUsd = null;
+        let lumaSupply   = null;
 
         /* --- LOGIQUE DE TRADUCTION --- */
         function setLanguage(lang) {
@@ -800,6 +815,7 @@
             { id:"tron",         symbol:"TRX" },
             { id:"bitcoin",      symbol:"BTC" }
         ];
+
         async function loadTicker() {
             try {
                 const ids  = barCoins.map(c => c.id).join(",");
@@ -808,6 +824,7 @@
                 const data = await res.json();
                 const track = document.getElementById("ticker-track");
                 track.innerHTML = "";
+
                 barCoins.forEach(c => {
                     const info = data[c.id];
                     if (!info) return;
@@ -824,6 +841,23 @@
                         </div>`
                     );
                 });
+
+                // Insère LUMA au début si prix dispo
+                if (typeof window.lumaPriceForTicker === "number" && typeof window.lumaChangeForTicker === "number") {
+                    const lp  = window.lumaPriceForTicker;
+                    const chg = window.lumaChangeForTicker;
+                    const cls = chg >= 0 ? "up" : "down";
+                    const changeStr = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%";
+                    track.insertAdjacentHTML(
+                        "afterbegin",
+                        `<div class="ticker-item">
+                            <span>LUMA</span>
+                            <span>$${lp.toLocaleString("en-US",{maximumFractionDigits:8})}</span>
+                            <span class="ticker-change ${cls}">${changeStr}</span>
+                        </div>`
+                    );
+                }
+
                 track.innerHTML += track.innerHTML;
             } catch (e) {
                 console.error("Ticker error:", e);
@@ -843,6 +877,16 @@
             }
             return "$" + price.toExponential(4);
         }
+
+        function updateMarketCap() {
+            const mcapEl = document.getElementById('stat-mcap');
+            if (!mcapEl) return;
+            if (lumaPriceUsd && lumaSupply) {
+                const mcap = lumaPriceUsd * lumaSupply;
+                mcapEl.textContent = "$" + mcap.toLocaleString("en-US", { maximumFractionDigits: 0 });
+            }
+        }
+
         async function loadLumaPrice() {
             const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
             const priceEl  = document.getElementById("luma-price");
@@ -854,25 +898,71 @@
                 if (!attr) { return; }
                 const price = Number(attr.base_token_price_usd ?? attr.quote_token_price_usd ?? attr.price_usd ?? 0);
                 const change = Number((attr.price_change_percentage && attr.price_change_percentage.h24) ?? attr.price_change_percentage_24h ?? 0);
-                priceEl.textContent = formatLumaPrice(price);
-                const isUp = change >= 0;
-                changeEl.classList.toggle("down", !isUp);
-                changeEl.classList.toggle("up", isUp);
-                const sign = isUp ? "+" : "";
-                changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
+
+                lumaPriceUsd = price;
+                window.lumaPriceForTicker  = price;
+                window.lumaChangeForTicker = change;
+
+                if (priceEl) {
+                    priceEl.textContent = formatLumaPrice(price);
+                }
+                if (changeEl) {
+                    const isUp = change >= 0;
+                    changeEl.classList.toggle("down", !isUp);
+                    changeEl.classList.toggle("up", isUp);
+                    const sign = isUp ? "+" : "";
+                    changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
+                }
+
+                updateMarketCap();
+                // Recharge le ticker avec LUMA maintenant dispo
+                loadTicker();
             } catch (e) { console.error("LUMA price error:", e); }
         }
         loadLumaPrice();
         setInterval(loadLumaPrice, 60000);
 
-        /* --- STATS LUMA (valeurs BscScan au 09-12-2025) --- */
-        function updateLumaStats() {
-            document.getElementById('stat-holders').textContent = "362";
-            document.getElementById('stat-tx-24h').textContent  = "665";
-            document.getElementById('stat-mcap').textContent    = "—";
-            document.getElementById('stat-supply').textContent  = "202 845 959 LUMA";
+        /* --- STATS LUMA LIVE (holders, supply) --- */
+        async function loadLumaOnchainStats() {
+            const holdersEl = document.getElementById('stat-holders');
+            const supplyEl  = document.getElementById('stat-supply');
+            const txEl      = document.getElementById('stat-tx-24h');
+
+            try {
+                const holdersUrl = `https://api.bscscan.com/api?module=token&action=tokenholdercount&contractaddress=${CONTRACT_ADDRESS}&apikey=${BSCSCAN_API_KEY}`;
+                const supplyUrl  = `https://api.bscscan.com/api?module=stats&action=tokensupply&contractaddress=${CONTRACT_ADDRESS}&apikey=${BSCSCAN_API_KEY}`;
+
+                const [holdersRes, supplyRes] = await Promise.all([
+                    fetch(holdersUrl),
+                    fetch(supplyUrl)
+                ]);
+
+                const holdersData = await holdersRes.json();
+                const supplyData  = await supplyRes.json();
+
+                if (holdersData.status === "1" && holdersEl) {
+                    const count = Number(holdersData.result);
+                    holdersEl.textContent = count.toLocaleString("en-US");
+                }
+
+                if (supplyData.status === "1" && supplyEl) {
+                    const raw = Number(supplyData.result); // 18 décimales
+                    const supply = raw / 1e18;
+                    lumaSupply = supply;
+                    supplyEl.textContent = supply.toLocaleString("en-US", { maximumFractionDigits: 0 }) + " LUMA";
+                    updateMarketCap();
+                }
+
+                if (txEl) {
+                    // On pourra brancher une vraie stat plus tard
+                    txEl.textContent = "—";
+                }
+            } catch (e) {
+                console.error("LUMA stats error:", e);
+            }
         }
-        updateLumaStats();
+        loadLumaOnchainStats();
+        setInterval(loadLumaOnchainStats, 300000); // toutes les 5 minutes
 
         /* --- BOUTON "Add LUMA to MetaMask" --- */
         const addBtn = document.getElementById('add-luma-metamask');
