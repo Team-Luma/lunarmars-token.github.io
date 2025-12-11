@@ -1,1016 +1,1087 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <title id="page-title" data-en="Lunar&Mars (LUMA)" data-fr="Lunar&Mars (LUMA)">Lunar&Mars (LUMA)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="Luma-noel-logo.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <title id="page-title" data-en="Lunar&Mars (LUMA) | Cosmic Relay" data-fr="Lunar&Mars (LUMA) | Relais Cosmique">Lunar&Mars (LUMA) | Relais Cosmique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="Luma-noel-logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
-    <!-- Google Analytics 4 - LUMA -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-Z4L8P2YSD7');
-    </script>
 
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            background:#000 url("Luma-fond-christmas.jpg") center/cover fixed no-repeat;
-            color:#fff;
-            overflow-x:hidden;
-        }
-        a { color:inherit; text-decoration:none; }
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Z4L8P2YSD7');
+    </script>
 
-        /* -------- CHRISTMAS BANNER & SNOW -------- */
-        .christmas-banner {
-            background: linear-gradient(90deg, #b30000, #008000);
-            color: #fff;
-            text-align: center;
-            padding: 10px 15px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            font-size: 0.95rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-            margin-top: 106px; /* espace sous header + ticker */
+    <style>
+        /* Définitions des couleurs pour cohérence V3 */
+        :root {
+            --color-luma-primary: #ffb21a; 
+            --color-luma-secondary: #00e0ff;
+            --color-luma-success: #2ecc71;
+            --color-luma-danger: #e74c3c;
+            --font-display: 'Orbitron', sans-serif;
+            --color-panel-bg: rgba(9,10,22,0.78);
         }
 
-        .snow-container {
-            pointer-events: none;
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 9999;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background:#000 url("Luma-fond-christmas.jpg") center/cover fixed no-repeat;
+            color:#fff;
+            overflow-x:hidden;
+        }
+        a { color:inherit; text-decoration:none; }
 
-        .snowflake {
+        /* -------- CHRISTMAS BANNER & SNOW (Styles inchangés) -------- */
+        .christmas-banner {
+            background: linear-gradient(90deg, #b30000, #008000);
+            color: #fff;
+            text-align: center;
+            padding: 10px 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            margin-top: 106px; 
+        }
+
+        .snow-container {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            text-shadow: 0 0 6px rgba(255,255,255,0.9);
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10px); }
+            100% { transform: translateY(110vh); }
+        }
+
+        /* -------- 1. HEADER & TICKER (Styles inchangés) -------- */
+        header {
+            position:fixed; top:0; left:0; right:0; z-index:1000;
+            display:flex; align-items:center; justify-content:space-between;
+            gap:20px;
+            padding:8px 24px;
+            background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.6));
+            backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,0.15);
+        }
+        .brand { display:flex; align-items:center; gap:12px; }
+        .brand-logo { width:52px; height:52px; border-radius:16px; overflow:hidden; background:#000; }
+        .brand-logo img { width:100%; height:100%; object-fit:cover; }
+        .brand-name { font-size:24px; font-weight:900; letter-spacing:0.02em; }
+
+        .nav { display:flex; gap:16px; font-size:12px; text-transform:uppercase; }
+        .nav a {
+            padding:4px 8px; border-radius:999px; border:1px solid transparent;
+            color:#f5f5ff; opacity:0.85; cursor:pointer;
+        }
+        .nav a:hover { border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.55); opacity:1; }
+
+        .lang-switch { display:flex; gap:8px; }
+        .lang-switch button {
+            background:#000; color:#fff; border:1px solid rgba(255,255,255,0.35);
+            padding:4px 10px; border-radius:999px; cursor:pointer; font-size:11px; transition: all 0.2s;
+        }
+        .lang-switch button.active { background:#ffb21a; color:#1b1302; border-color: #ffb21a; }
+
+        /* TICKER DÉFILANT (Styles inchangés) */
+        .ticker {
+            position:fixed; top:69px; left:0; right:0; z-index:900;
+            background:#f7f7fb; border-bottom:1px solid #e0e0ef; overflow:hidden;
+        }
+        .ticker-inner { padding:6px 0; white-space:nowrap; }
+        .ticker-track { display:inline-flex; gap:22px; padding:0 24px; animation:scroll 38s linear infinite; }
+        .ticker-item { font-size:13px; color:#222; font-weight:600; }
+        .ticker-item span { margin-right:4px; }
+        .ticker-change { font-size:11px; padding:2px 6px; border-radius:999px; border:1px solid transparent; }
+        .ticker-change.up { color:#1a9c4d; border-color:rgba(1,156,77,0.35); background:rgba(26,156,77,0.08); }
+        .ticker-change.down { color:#e64b5f; border-color:rgba(230,75,95,0.4); background:rgba(230,75,95,0.08); }
+
+        @keyframes scroll {
+            0% { transform:translateX(0); }
+            100% { transform:translateX(-50%); }
+        }
+
+        /* -------- NOUVEAU STYLE CORRIDOR LUNE -> MARS (V3) -------- */
+        .cosmic-corridor {
+            text-align: center; 
+            padding: 20px 0 30px; 
+            position: relative;
+            z-index: 10;
+        }
+        .corridor-title { 
+            font-family: var(--font-display); 
+            font-size: 2rem; 
+            letter-spacing: 0.1em; 
+            margin-bottom: 25px; 
+            color: var(--color-luma-secondary); 
+            text-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
+        }
+        .visual-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; 
+            position: relative;
+        }
+        .planet { 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            /* Utilisation d'images de remplacement pour l'exemple */
+            background-size: cover; 
+            background-position: center;
+        }
+        .earth { 
+            background-image: url('https://i.imgur.com/eBq2M4w.png'); 
+            box-shadow: 0 0 20px rgba(0, 100, 255, 0.8); 
+        }
+        .moon { 
+            width: 50px; 
+            height: 50px;
+            background-image: url('https://i.imgur.com/8Q85N9D.png'); 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7); 
+        }
+        .mars { 
+            background-image: url('https://i.imgur.com/M6L5jH4.png'); 
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8); 
+        }
+        
+        .connector-line {
             position: absolute;
-            top: -10px;
-            color: #fff;
-            text-shadow: 0 0 6px rgba(255,255,255,0.9);
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
+            top: 50%;
+            width: 90%; 
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 224, 255, 0.5) 0%, var(--color-luma-primary) 50%, rgba(255, 69, 0, 0.5) 100%);
+            z-index: -1;
+            box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
         }
+        .corridor-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 500px; /* Taille fixe pour le corridor visuel */
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @media (max-width: 600px) {
+            .corridor-wrapper { width: 90%; }
+            .planet { width: 50px; height: 50px; }
+            .moon { width: 40px; height: 40px; }
+            .corridor-title { font-size: 1.5rem; }
+        }
+        
+        
+        /* -------- 2. HERO (Styles inchangés) -------- */
+        main { min-height:100vh; }
+        .hero { max-width:1300px; margin:0 auto; padding:180px 24px 80px; position:relative; } /* Padding ajusté */
 
-        @keyframes fall {
-            0% { transform: translateY(-10px); }
-            100% { transform: translateY(110vh); }
-        }
+        .hero-title {
+            text-align:center; font-size:54px; font-weight:900;
+            letter-spacing:0.08em; margin-bottom:30px;
+            text-shadow:0 0 18px rgba(0,0,0,0.9);
+        }
 
-        /* -------- 1. HEADER & TICKER -------- */
-        header {
-            position:fixed; top:0; left:0; right:0; z-index:1000;
-            display:flex; align-items:center; justify-content:space-between;
-            gap:20px;
-            padding:8px 24px;
-            background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.6));
-            backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,0.15);
-        }
-        .brand { display:flex; align-items:center; gap:12px; }
-        .brand-logo { width:52px; height:52px; border-radius:16px; overflow:hidden; background:#000; }
-        .brand-logo img { width:100%; height:100%; object-fit:cover; }
-        .brand-name { font-size:24px; font-weight:900; letter-spacing:0.02em; }
+        .hero-grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:36px; }
 
-        .nav { display:flex; gap:16px; font-size:12px; text-transform:uppercase; }
-        .nav a {
-            padding:4px 8px; border-radius:999px; border:1px solid transparent;
-            color:#f5f5ff; opacity:0.85; cursor:pointer;
-        }
-        .nav a:hover { border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.55); opacity:1; }
+        .panel {
+            background:var(--color-panel-bg); border-radius:24px; border:1px solid rgba(255,255,255,0.18);
+            padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(10px);
+        }
+        .panel-title-small {
+            font-size:13px; letter-spacing:0.18em; text-transform:uppercase;
+            color:rgba(255,255,255,0.8); margin-bottom:12px;
+        }
+        .panel-heading { font-size:30px; font-weight:900; line-height:1.1; margin-bottom:16px; }
+        .panel-text { font-size:15px; color:rgba(255,255,255,0.85); line-height:1.7; }
 
-        .lang-switch { display:flex; gap:8px; }
-        .lang-switch button {
-            background:#000; color:#fff; border:1px solid rgba(255,255,255,0.35);
-            padding:4px 10px; border-radius:999px; cursor:pointer; font-size:11px; transition: all 0.2s;
-        }
-        .lang-switch button.active { background:#ffb21a; color:#1b1302; border-color: #ffb21a; }
+        .scroll-content {
+            max-height: 200px; overflow-y: auto; padding-right: 15px; margin-bottom: 20px;
+            scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        .scroll-content::-webkit-scrollbar { width: 8px; }
+        .scroll-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        .scroll-content::-webkit-scrollbar-track { background: transparent; }
 
-        /* TICKER DÉFILANT */
-        .ticker {
-            position:fixed; top:69px; left:0; right:0; z-index:900;
-            background:#f7f7fb; border-bottom:1px solid #e0e0ef; overflow:hidden;
-        }
-        .ticker-inner { padding:6px 0; white-space:nowrap; }
-        .ticker-track { display:inline-flex; gap:22px; padding:0 24px; animation:scroll 38s linear infinite; }
-        .ticker-item { font-size:13px; color:#222; font-weight:600; }
-        .ticker-item span { margin-right:4px; }
-        .ticker-change { font-size:11px; padding:2px 6px; border-radius:999px; border:1px solid transparent; }
-        .ticker-change.up { color:#1a9c4d; border-color:rgba(1,156,77,0.35); background:rgba(26,156,77,0.08); }
-        .ticker-change.down { color:#e64b5f; border-color:rgba(230,75,95,0.4); background:rgba(230,75,95,0.08); }
+        .panel-box-right {
+            background:rgba(13, 14, 28, 0.95);
+            border-radius:24px; border:1px solid rgba(255,255,255,0.12);
+            padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(12px);
+            display: flex; flex-direction: column; justify-content: center;
+        }
 
-        @keyframes scroll {
-            0% { transform:translateX(0); }
-            100% { transform:translateX(-50%); }
-        }
+        .price-label {
+            font-size:12px; letter-spacing:0.15em; text-transform:uppercase;
+            color:rgba(255,255,255,0.6); margin-bottom:10px; font-weight: 700;
+        }
+        .price-main {
+            font-size:38px; font-weight:900; letter-spacing:-0.02em;
+            margin-bottom:5px; font-family: 'JetBrains Mono', monospace;
+        }
+        .price-change {
+            font-size:13px; padding:4px 10px; border-radius:6px;
+            font-weight: 700; display:inline-block; margin-bottom:15px;
+        }
+        .price-change.up { background:rgba(46, 204, 113, 0.2); color:#2ecc71; }
+        .price-change.down { background:rgba(231, 76, 60, 0.2); color:#e74c3c; }
 
-        @media (max-width:800px) {
-            .ticker-track { animation:none; }
-            .nav { display:none; }
-        }
+        .hero-btns { display:flex; flex-wrap:wrap; gap:10px; }
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center;
+            border-radius:12px; padding:12px 24px; border:none; cursor:pointer;
+            font-size:15px; font-weight:700; text-decoration:none; transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background:#ffb21a; color:#000; box-shadow:0 10px 30px rgba(255,178,26,0.4); }
+        .btn-primary:hover { box-shadow:0 15px 40px rgba(255,178,26,0.6); }
+        .btn-dark { background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); }
+        .btn-dark:hover { background:rgba(255,255,255,0.2); }
 
-        /* -------- 2. HERO -------- */
-        main { min-height:100vh; }
-        .hero { max-width:1300px; margin:0 auto; padding:180px 24px 80px; position:relative; }
+        /* -------- 3. SECTIONS GLOBALES (Styles inchangés) -------- */
+        .tokenomics-section { max-width:1300px; margin:0 auto 60px; padding:0 24px; }
+        .section-title {
+            text-align:center; font-size:28px; font-weight:900;
+            margin-bottom:30px; text-transform: uppercase;
+            letter-spacing: 0.05em; color: rgba(255,255,255,0.9);
+        }
 
-        .hero-title {
-            text-align:center; font-size:54px; font-weight:900;
-            letter-spacing:0.08em; margin-bottom:30px;
-            text-shadow:0 0 18px rgba(0,0,0,0.9);
-        }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
-        .hero-grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:36px; }
+        .burn-card {
+            background: linear-gradient(145deg, rgba(23, 10, 10, 0.9), rgba(36, 12, 12, 0.9));
+            border: 1px solid rgba(230, 75, 95, 0.3); border-radius: 24px;
+            padding: 30px; text-align: left; position: relative; overflow: hidden;
+            box-shadow:0 20px 55px rgba(0,0,0,0.75);
+        }
+        .burn-title {
+            color:#e64b5f; font-weight:800; font-size:14px;
+            letter-spacing:2px; text-transform:uppercase; margin-bottom:14px;
+        }
+        .burn-card p { font-size:13px; color:rgba(255,255,255,0.82); margin:4px 0; }
+        .burn-card a { font-size:12px; color:#ffb21a; text-decoration:underline; }
 
-        .panel {
-            background:rgba(9,10,22,0.78); border-radius:24px; border:1px solid rgba(255,255,255,0.18);
-            padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(10px);
-        }
-        .panel-title-small {
-            font-size:13px; letter-spacing:0.18em; text-transform:uppercase;
-            color:rgba(255,255,255,0.8); margin-bottom:12px;
-        }
-        .panel-heading { font-size:30px; font-weight:900; line-height:1.1; margin-bottom:16px; }
-        .panel-text { font-size:15px; color:rgba(255,255,255,0.85); line-height:1.7; }
+        .info-card {
+            background: rgba(9,10,22,0.9); border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.16); padding: 30px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow:0 20px 55px rgba(0,0,0,0.75);
+        }
+        .supply-row {
+            display:flex; justify-content:space-between; align-items:center;
+            border-bottom:1px solid rgba(255,255,255,0.1);
+            padding-bottom:15px; margin-bottom:15px;
+        }
+        .supply-label { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; font-weight: 600; }
+        .supply-val { font-size:16px; font-weight:800; }
 
-        .scroll-content {
-            max-height: 200px; overflow-y: auto; padding-right: 15px; margin-bottom: 20px;
-            scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-        }
-        .scroll-content::-webkit-scrollbar { width: 8px; }
-        .scroll-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
-        .scroll-content::-webkit-scrollbar-track { background: transparent; }
+        .locks-row { display:flex; gap:10px; margin-bottom:14px; }
+        .lock-btn {
+            flex:1; background: rgba(46, 204, 113, 0.15);
+            border: 1px solid rgba(46, 204, 113, 0.4);
+            color: #2ecc71; padding: 10px; border-radius: 8px;
+            font-size: 12px; font-weight: 700;
+            text-align: center; transition: all 0.2s; text-decoration:none;
+        }
+        .lock-btn:hover {
+            background: rgba(46, 204, 113, 0.25);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
+        }
 
-        .panel-box-right {
-            background:rgba(13, 14, 28, 0.95);
-            border-radius:24px; border:1px solid rgba(255,255,255,0.12);
-            padding:30px; box-shadow:0 24px 60px rgba(0,0,0,0.65); backdrop-filter:blur(12px);
-            display: flex; flex-direction: column; justify-content: center;
-        }
+        .contract-box {
+            background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            word-break: break-all; border: 1px dashed rgba(255,255,255,0.2); text-align: center;
+            margin-bottom:10px;
+        }
+        .tax-list {
+            margin-top:15px; font-size:13px; color:rgba(255,255,255,0.8);
+            display:flex; justify-content: space-around;
+        }
+        .tax-item { text-align: center; }
+        .tax-item span { display:block; font-size:18px; font-weight:700; color:#ffb21a; }
 
-        .price-label {
-            font-size:12px; letter-spacing:0.15em; text-transform:uppercase;
-            color:rgba(255,255,255,0.6); margin-bottom:10px; font-weight: 700;
-        }
-        .price-main {
-            font-size:38px; font-weight:900; letter-spacing:-0.02em;
-            margin-bottom:5px; font-family: 'JetBrains Mono', monospace;
-        }
-        .price-change {
-            font-size:13px; padding:4px 10px; border-radius:6px;
-            font-weight: 700; display:inline-block; margin-bottom:15px;
-        }
-        .price-change.up { background:rgba(46, 204, 113, 0.2); color:#2ecc71; }
-        .price-change.down { background:rgba(231, 76, 60, 0.2); color:#e74c3c; }
+        /* SECTION LIENS */
+        .links-section { max-width:1300px; margin:0 auto 40px; padding:0 24px; }
+        .links-card {
+            background:rgba(9,10,22,0.9); border-radius:24px; border:1px solid rgba(255,255,255,0.16);
+            padding:20px 24px; box-shadow:0 18px 45px rgba(0,0,0,0.7);
+        }
+        .links-title { font-size:18px; font-weight:800; margin-bottom:12px; }
+        .links-chips { display:flex; flex-wrap:wrap; gap:10px; font-size:13px; }
+        .link-chip {
+            padding:8px 14px; border-radius:999px;
+            background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.25);
+        }
 
-        .hero-btns { display:flex; flex-wrap:wrap; gap:10px; }
-        .btn {
-            display:inline-flex; align-items:center; justify-content:center;
-            border-radius:12px; padding:12px 24px; border:none; cursor:pointer;
-            font-size:15px; font-weight:700; text-decoration:none; transition: transform 0.1s;
-        }
-        .btn:active { transform: scale(0.98); }
-        .btn-primary { background:#ffb21a; color:#000; box-shadow:0 10px 30px rgba(255,178,26,0.4); }
-        .btn-primary:hover { box-shadow:0 15px 40px rgba(255,178,26,0.6); }
-        .btn-dark { background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); }
-        .btn-dark:hover { background:rgba(255,255,255,0.2); }
+        /* SECTIONS ÉVÉNEMENTS / ROADMAP / FAQ */
+        .cards-grid {
+            max-width:1300px; margin:0 auto 40px; padding:0 24px;
+            display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:20px;
+        }
+        .card-block {
+            background:rgba(9,10,22,0.9); border-radius:20px;
+            border:1px solid rgba(255,255,255,0.16);
+            padding:20px 22px; box-shadow:0 14px 40px rgba(0,0,0,0.65);
+        }
+        .card-block h3 { font-size:17px; font-weight:800; margin-bottom:8px; color:#ffb21a; }
+        .card-tag {
+            display:inline-block; font-size:11px; padding:2px 8px;
+            border-radius:999px; border:1px solid rgba(255,255,255,0.25);
+            margin-bottom:8px; opacity:0.85;
+        }
+        .card-date { font-size:12px; opacity:0.75; margin-bottom:8px; }
+        .card-block p { font-size:13px; line-height:1.5; opacity:0.9; }
 
-        /* -------- 3. SECTIONS GLOBALES -------- */
-        .tokenomics-section { max-width:1300px; margin:0 auto 60px; padding:0 24px; }
-        .section-title {
-            text-align:center; font-size:28px; font-weight:900;
-            margin-bottom:30px; text-transform: uppercase;
-            letter-spacing: 0.05em; color: rgba(255,255,255,0.9);
-        }
+        .faq-item { margin-bottom:16px; }
+        .faq-q { font-weight:700; font-size:14px; margin-bottom:4px; }
+        .faq-a { font-size:13px; opacity:0.9; }
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        /* Media Queries */
+        @media (max-width:1200px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width:960px) {
+            .hero { padding-top:190px; }
+            .hero-grid { grid-template-columns:minmax(0,1fr); }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .christmas-banner { margin-top:112px; font-size:0.85rem; padding:8px 10px; }
+        }
 
-        .burn-card {
-            background: linear-gradient(145deg, rgba(23, 10, 10, 0.9), rgba(36, 12, 12, 0.9));
-            border: 1px solid rgba(230, 75, 95, 0.3); border-radius: 24px;
-            padding: 30px; text-align: left; position: relative; overflow: hidden;
-            box-shadow:0 20px 55px rgba(0,0,0,0.75);
-        }
-        .burn-title {
-            color:#e64b5f; font-weight:800; font-size:14px;
-            letter-spacing:2px; text-transform:uppercase; margin-bottom:14px;
-        }
-        .burn-card p { font-size:13px; color:rgba(255,255,255,0.82); margin:4px 0; }
-        .burn-card a { font-size:12px; color:#ffb21a; text-decoration:underline; }
-
-        .info-card {
-            background: rgba(9,10,22,0.9); border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.16); padding: 30px;
-            display: flex; flex-direction: column; justify-content: center;
-            box-shadow:0 20px 55px rgba(0,0,0,0.75);
-        }
-        .supply-row {
-            display:flex; justify-content:space-between; align-items:center;
-            border-bottom:1px solid rgba(255,255,255,0.1);
-            padding-bottom:15px; margin-bottom:15px;
-        }
-        .supply-label { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; font-weight: 600; }
-        .supply-val { font-size:16px; font-weight:800; }
-
-        .locks-row { display:flex; gap:10px; margin-bottom:14px; }
-        .lock-btn {
-            flex:1; background: rgba(46, 204, 113, 0.15);
-            border: 1px solid rgba(46, 204, 113, 0.4);
-            color: #2ecc71; padding: 10px; border-radius: 8px;
-            font-size: 12px; font-weight: 700;
-            text-align: center; transition: all 0.2s; text-decoration:none;
-        }
-        .lock-btn:hover {
-            background: rgba(46, 204, 113, 0.25);
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
-        }
-
-        .contract-box {
-            background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace; font-size: 11px;
-            color: rgba(255,255,255,0.7);
-            word-break: break-all; border: 1px dashed rgba(255,255,255,0.2); text-align: center;
-            margin-bottom:10px;
-        }
-        .tax-list {
-            margin-top:15px; font-size:13px; color:rgba(255,255,255,0.8);
-            display:flex; justify-content: space-around;
-        }
-        .tax-item { text-align: center; }
-        .tax-item span { display:block; font-size:18px; font-weight:700; color:#ffb21a; }
-
-        /* SECTION LIENS */
-        .links-section { max-width:1300px; margin:0 auto 40px; padding:0 24px; }
-        .links-card {
-            background:rgba(9,10,22,0.9); border-radius:24px; border:1px solid rgba(255,255,255,0.16);
-            padding:20px 24px; box-shadow:0 18px 45px rgba(0,0,0,0.7);
-        }
-        .links-title { font-size:18px; font-weight:800; margin-bottom:12px; }
-        .links-chips { display:flex; flex-wrap:wrap; gap:10px; font-size:13px; }
-        .link-chip {
-            padding:8px 14px; border-radius:999px;
-            background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.25);
-        }
-
-        /* SECTIONS ÉVÉNEMENTS / ROADMAP / FAQ */
-        .cards-grid {
-            max-width:1300px; margin:0 auto 40px; padding:0 24px;
-            display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:20px;
-        }
-        .card-block {
-            background:rgba(9,10,22,0.9); border-radius:20px;
-            border:1px solid rgba(255,255,255,0.16);
-            padding:20px 22px; box-shadow:0 14px 40px rgba(0,0,0,0.65);
-        }
-        .card-block h3 { font-size:17px; font-weight:800; margin-bottom:8px; color:#ffb21a; }
-        .card-tag {
-            display:inline-block; font-size:11px; padding:2px 8px;
-            border-radius:999px; border:1px solid rgba(255,255,255,0.25);
-            margin-bottom:8px; opacity:0.85;
-        }
-        .card-date { font-size:12px; opacity:0.75; margin-bottom:8px; }
-        .card-block p { font-size:13px; line-height:1.5; opacity:0.9; }
-
-        .faq-item { margin-bottom:16px; }
-        .faq-q { font-weight:700; font-size:14px; margin-bottom:4px; }
-        .faq-a { font-size:13px; opacity:0.9; }
-
-        /* Media Queries */
-        @media (max-width:1200px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
-        @media (max-width:960px) {
-            .hero { padding-top:190px; }
-            .hero-grid { grid-template-columns:minmax(0,1fr); }
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .christmas-banner { margin-top:112px; font-size:0.85rem; padding:8px 10px; }
-        }
-
-        footer {
-            max-width:1300px; margin:0 auto 24px; padding:12px 24px;
-            font-size:11px; color:rgba(255,255,255,0.75); text-align:center;
-            text-shadow:0 0 10px rgba(0,0,0,0.8);
-        }
-    </style>
+        footer {
+            max-width:1300px; margin:0 auto 24px; padding:12px 24px;
+            font-size:11px; color:rgba(255,255,255,0.75); text-align:center;
+            text-shadow:0 0 10px rgba(0,0,0,0.8);
+        }
+    </style>
 </head>
 
 <body data-lang="fr">
 
-    <!-- Neige globale -->
-    <div class="snow-container"></div>
+        <div class="snow-container"></div>
 
-    <header>
-        <div class="brand">
-            <div class="brand-logo"><img src="Luma-noel-logo.png" alt="LUMA logo" /></div>
-            <div class="brand-name">Lunar&Mars</div>
-        </div>
-        <nav class="nav">
-            <a href="#hero" class="translatable" data-en="About" data-fr="À propos">À propos</a>
-            <a href="#luma-stats" class="translatable" data-en="Stats" data-fr="Statistiques">Statistiques</a>
-            <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
-            <a href="#events" class="translatable" data-en="Events" data-fr="Événements">Événements</a>
-            <a href="#roadmap" class="translatable" data-en="Roadmap" data-fr="Feuille de route">Feuille de route</a>
-            <a href="#faq" class="translatable" data-en="FAQ" data-fr="FAQ">FAQ</a>
-            <a href="#" id="open-game-nav" class="translatable" data-en="Game" data-fr="Jeu">Jeu</a>
-            <a href="#links" class="translatable" data-en="Links" data-fr="Liens">Liens</a>
-        </nav>
-        <div class="lang-switch">
-            <button id="lang-en" onclick="setLanguage('en')">EN</button>
-            <button id="lang-fr" onclick="setLanguage('fr')" class="active">FR</button>
-        </div>
-    </header>
+    <header>
+        <div class="brand">
+            <div class="brand-logo"><img src="Luma-noel-logo.png" alt="LUMA logo" /></div>
+            <div class="brand-name">Lunar&Mars</div>
+        </div>
+        <nav class="nav">
+            <a href="#hero" class="translatable" data-en="About" data-fr="À propos">À propos</a>
+            <a href="#luma-stats" class="translatable" data-en="Stats" data-fr="Statistiques">Statistiques</a>
+            <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
+            <a href="#events" class="translatable" data-en="Events" data-fr="Événements">Événements</a>
+            <a href="#roadmap" class="translatable" data-en="Roadmap" data-fr="Feuille de route">Feuille de route</a>
+            <a href="#faq" class="translatable" data-en="FAQ" data-fr="FAQ">FAQ</a>
+            <a href="#" id="open-game-nav" class="translatable" data-en="Game" data-fr="Jeu">Jeu</a>
+            <a href="#links" class="translatable" data-en="Links" data-fr="Liens">Liens</a>
+        </nav>
+        <div class="lang-switch">
+            <button id="lang-en" onclick="setLanguage('en')">EN</button>
+            <button id="lang-fr" onclick="setLanguage('fr')" class="active">FR</button>
+        </div>
+    </header>
 
-    <div class="ticker">
-        <div class="ticker-inner"><div class="ticker-track" id="ticker-track">Loading...</div></div>
-    </div>
+    <div class="ticker">
+        <div class="ticker-inner"><div class="ticker-track" id="ticker-track">Loading...</div></div>
+    </div>
 
-    <!-- Bandeau Noël -->
-    <div class="christmas-banner">
-        🎅✨ LUMA Christmas Airdrop – Santa is flying to every Lumian & Lumienne wallet! 🎄🚀
-    </div>
+        <div class="christmas-banner">
+        🎅✨ LUMA Christmas Airdrop – Santa is flying to every Lumian & Lumienne wallet! 🎄🚀
+    </div>
 
-    <main>
-        <!-- HERO -->
-        <section class="hero" id="hero">
-            <h1 class="hero-title translatable" data-en="WHAT IS LUMA?" data-fr="QU'EST-CE QUE LUMA ?">QU'EST-CE QUE LUMA ?</h1>
+    <main>
+                <section class="hero" id="hero">
+            <h1 class="hero-title translatable" data-en="WHAT IS LUMA?" data-fr="QU'EST-CE QUE LUMA ?">QU'EST-CE QUE LUMA ?</h1>
 
-            <div class="hero-grid">
-                <article class="panel">
-                    <div class="panel-title-small translatable" data-en="LUMA IN ONE SENTENCE" data-fr="LUMA EN UNE PHRASE">LUMA EN UNE PHRASE</div>
-
-                    <div class="panel-heading translatable" data-en="LUMA IS A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE." data-fr="LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.">
-                        LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.
-                    </div>
-
-                    <div class="panel-text scroll-content">
-                        <span class="translatable"
-                            data-en="Lunar&amp;Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars. The project's vision is simple: symbolically represent the imaginary corridor between the Moon and Mars. LUMA is not a speculative asset; it is a conceptual, community-driven, and educational token meant to inspire interest in space technologies, decentralization, and future interplanetary projects. It serves as an emblem for those who wish to support, symbolically, the initiatives linked to space exploration and futuristic innovation. The project is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future. It is important to note that LUMA is not a financial instrument for speculation, but a symbolic and community project."
-                            data-fr="Lunar&amp;Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour des technologies spatiales, de la décentralisation et des futurs projets interplanétaires. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire."
-                        >
-                            Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire.
-                        </span>
-                    </div>
-
-                    <div class="hero-btns">
-                        <a href="LUMA_Whitepaper_v1.pdf" target="_blank" class="btn btn-primary">Whitepaper</a>
-                        <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
-                        <a href="https://x.com/LunarMarsToken" target="_blank" class="btn btn-dark">X (Twitter)</a>
-                        <button type="button" class="btn btn-primary" onclick="openGamePopup()">Jeu LUMA</button>
-                    </div>
-                </article>
-
-                <div class="panel-box-right">
-                    <div class="price-label">MARKET DATA</div>
-                    <div id="luma-price" class="price-main">$0.000000000</div>
-                    <div id="luma-change" class="price-change">0.00%</div>
-
-                    <div style="margin-bottom:20px; font-size:13px; color:rgba(255,255,255,0.5);">
-                        Pool: LUMA / WBNB (PancakeSwap v3)
-                    </div>
-
-                    <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
-                       target="_blank" class="btn btn-primary" style="width:100%">
-                       Acheter sur MEXC
-                    </a>
-                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
-                       target="_blank" class="btn btn-dark" style="width:100%; margin-top:10px;">
-                       Voir le graphique
-                    </a>
+            <section class="cosmic-corridor">
+                <p class="corridor-title">LUMA COSMIC RELAY: ORBITAL STATUS</p>
+                <div class="corridor-wrapper">
+                    <div class="connector-line"></div>
+                    <img src="https://i.imgur.com/eBq2M4w.png" alt="Earth" class="planet earth" />
+                    <img src="https://i.imgur.com/8Q85N9D.png" alt="Moon" class="planet moon" />
+                    <img src="https://i.imgur.com/M6L5jH4.png" alt="Mars" class="planet mars" />
                 </div>
-            </div>
-        </section>
+            </section>
+                        <div class="hero-grid">
+                <article class="panel">
+                    <div class="panel-title-small translatable" data-en="LUMA IN ONE SENTENCE" data-fr="LUMA EN UNE PHRASE">LUMA EN UNE PHRASE</div>
 
-        <!-- LUMA HUB – Accès rapide -->
-        <section id="luma-hub" style="max-width: 1300px; margin: 0 auto 50px; padding: 0 24px;">
-            <div style="max-width: 800px; margin: 0 auto; padding: 24px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.18); background: rgba(5,8,22,0.92); box-shadow: 0 24px 60px rgba(0,0,0,0.75);">
-                <h2 style="text-align: center; margin-bottom: 16px; font-size: 1.8rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;">
-                    LUMA – Accès rapide
-                </h2>
-                <p style="text-align: center; margin-bottom: 24px; font-size: 0.98rem; line-height: 1.6; color: rgba(255,255,255,0.9);">
-                    Un seul endroit pour tout&nbsp;: acheter LUMA, l’ajouter dans MetaMask, vérifier le contrat et suivre le prix.
-                </p>
+                    <div class="panel-heading translatable" data-en="LUMA IS A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE." data-fr="LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.">
+                        LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.
+                    </div>
 
-                <!-- Bouton principal : achat direct PancakeSwap -->
-                <div style="display: flex; justify-content: center; margin-bottom: 14px;">
-                    <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56"
-                       target="_blank"
-                       style="display: inline-block; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 1rem; background: linear-gradient(135deg,#f97316,#e11d48); color: #fff; box-shadow: 0 0 18px rgba(249,115,22,0.4);">
-                        🚀 Buy LUMA on PancakeSwap
-                    </a>
-                </div>
+                    <div class="panel-text scroll-content">
+                        <span class="translatable"
+                            data-en="Lunar&amp;Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars. The project's vision is simple: symbolically represent the imaginary corridor between the Moon and Mars. LUMA is not a speculative asset; it is a conceptual, community-driven, and educational token meant to inspire interest in space technologies, decentralization, and future interplanetary projects. It serves as an emblem for those who wish to support, symbolically, the initiatives linked to space exploration and futuristic innovation. The project is not intended to generate profit, but rather to unite a community around a shared vision of a space-oriented future. It is important to note that LUMA is not a financial instrument for speculation, but a symbolic and community project."
+                            data-fr="Lunar&amp;Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour des technologies spatiales, de la décentralisation et des futurs projets interplanétaires. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire."
+                        >
+                            Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il s'agit d'un jeton conceptuel, communautaire et éducatif, destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. Il sert d'emblème pour ceux qui souhaitent encourager ou soutenir, de manière symbolique, les initiatives liées à l'exploration spatiale et aux innovations futuristes. Le projet n'a pas pour but de générer un profit, mais d'unir une communauté autour d'une vision commune de l'avenir spatial. Il est important de noter que LUMA n'est pas un instrument financier destiné à la spéculation, mais un projet symbolique et communautaire.
+                        </span>
+                    </div>
 
-                <!-- Bouton : Ajouter à MetaMask -->
-                <div style="display:flex; justify-content:center; margin-bottom: 16px;">
-                    <button id="add-luma-metamask"
-                            style="padding:10px 20px; border-radius:999px; border:1px solid rgba(255,255,255,0.3);
-                                   background:rgba(0,0,0,0.6); color:#fff; font-size:0.9rem; cursor:pointer;">
-                        🦊 Add LUMA to MetaMask
-                    </button>
-                </div>
+                    <div class="hero-btns">
+                        <a href="LUMA_Whitepaper_v1.pdf" target="_blank" class="btn btn-primary">Whitepaper</a>
+                        <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
+                        <a href="https://x.com/LunarMarsToken" target="_blank" class="btn btn-dark">X (Twitter)</a>
+                        <button type="button" class="btn btn-primary" onclick="openGamePopup()">Jeu LUMA</button>
+                    </div>
+                </article>
 
-                <!-- Contrat + copie -->
-                <p style="margin-top: 10px; font-size: 0.8rem; color:#a1a1aa; text-align: center;">
-                    Contract address (BNB Smart Chain)&nbsp;:<br>
-                    <code style="font-size: 0.8rem; word-break: break-all;">
-                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
-                    </code>
-                </p>
-                <div style="margin-top: 8px; text-align:center;">
-                    <button id="copy-contract"
-                            style="padding:8px 16px; border-radius:999px; border:1px solid rgba(255,255,255,0.4);
-                                   background:rgba(0,0,0,0.7); color:#fff; font-size:0.8rem; cursor:pointer;">
-                        📋 Copier l’adresse du contrat
-                    </button>
-                </div>
-                <p id="copy-feedback"
-                   style="display:none; margin-top:6px; font-size:0.75rem; color:#4ade80; text-align:center;">
-                    Adresse copiée dans le presse-papiers.
-                </p>
+                <div class="panel-box-right">
+                    <div class="price-label">MARKET DATA</div>
+                    <div id="luma-price" class="price-main">$0.000000000</div>
+                    <div id="luma-change" class="price-change">0.00%</div>
 
-                <!-- Liens secondaires : tout centralisé -->
-                <div style="margin-top:18px; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 12px;">
-                    <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        📜 Contrat officiel LUMA (BscScan)
-                    </a>
+                    <div style="margin-bottom:20px; font-size:13px; color:rgba(255,255,255,0.5);">
+                        Pool: LUMA / WBNB (PancakeSwap v3)
+                    </div>
 
-                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        📈 Suivre le prix & la liquidité
-                    </a>
+                    <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
+                       target="_blank" class="btn btn-primary" style="width:100%">
+                       Acheter sur MEXC
+                    </a>
+                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
+                       target="_blank" class="btn btn-dark" style="width:100%; margin-top:10px;">
+                       Voir le graphique
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                    <a href="https://t.me/LunarMarsOfficial"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        💬 Rejoindre la communauté Telegram
-                    </a>
+                <section id="luma-hub" style="max-width: 1300px; margin: 0 auto 50px; padding: 0 24px;">
+            <div style="max-width: 800px; margin: 0 auto; padding: 24px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.18); background: rgba(5,8,22,0.92); box-shadow: 0 24px 60px rgba(0,0,0,0.75);">
+                <h2 style="text-align: center; margin-bottom: 16px; font-size: 1.8rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;">
+                    LUMA – Accès rapide
+                </h2>
+                <p style="text-align: center; margin-bottom: 24px; font-size: 0.98rem; line-height: 1.6; color: rgba(255,255,255,0.9);">
+                    Un seul endroit pour tout&nbsp;: acheter LUMA, l’ajouter dans MetaMask, vérifier le contrat et suivre le prix.
+                </p>
 
-                    <a href="https://x.com/LunarMarsToken"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        🧡 Profil officiel X (LUMA)
-                    </a>
-                </div>
-            </div>
-        </section>
+                                <div style="display: flex; justify-content: center; margin-bottom: 14px;">
+                    <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56"
+                       target="_blank"
+                       style="display: inline-block; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 1rem; background: linear-gradient(135deg,#f97316,#e11d48); color: #fff; box-shadow: 0 0 18px rgba(249,115,22,0.4);">
+                        🚀 Buy LUMA on PancakeSwap
+                    </a>
+                </div>
 
-        <!-- STATS LUMA -->
-        <section id="luma-stats" class="tokenomics-section">
-            <h2 class="section-title">LUMA – Statistiques Officielles</h2>
+                                <div style="display:flex; justify-content:center; margin-bottom: 16px;">
+                    <button id="add-luma-metamask"
+                            style="padding:10px 20px; border-radius:999px; border:1px solid rgba(255,255,255,0.3);
+                                   background:rgba(0,0,0,0.6); color:#fff; font-size:0.9rem; cursor:pointer;">
+                        🦊 Add LUMA to MetaMask
+                    </button>
+                </div>
 
-            <div style="
-                max-width: 1100px;
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-                gap: 20px;
-            ">
-                <!-- HOLDERS -->
-                <div style="
-                    background: rgba(9,10,22,0.9);
-                    padding: 24px;
-                    border-radius: 20px;
-                    border: 1px solid rgba(255,255,255,0.15);
-                    text-align: center;
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
-                ">
-                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Holders</h3>
-                    <div id="stat-holders" style="font-size:32px; font-weight:900; margin-top:8px;">
-                        600+
-                    </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Source : BscScan</p>
-                </div>
+                                <p style="margin-top: 10px; font-size: 0.8rem; color:#a1a1aa; text-align: center;">
+                    Contract address (BNB Smart Chain)&nbsp;:<br>
+                    <code style="font-size: 0.8rem; word-break: break-all;">
+                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
+                    </code>
+                </p>
+                <div style="margin-top: 8px; text-align:center;">
+                    <button id="copy-contract"
+                            style="padding:8px 16px; border-radius:999px; border:1px solid rgba(255,255,255,0.4);
+                                   background:rgba(0,0,0,0.7); color:#fff; font-size:0.8rem; cursor:pointer;">
+                        📋 Copier l’adresse du contrat
+                    </button>
+                </div>
+                <p id="copy-feedback"
+                   style="display:none; margin-top:6px; font-size:0.75rem; color:#4ade80; text-align:center;">
+                    Adresse copiée dans le presse-papiers.
+                </p>
 
-                <!-- TRANSFERS -->
-                <div style="
-                    background: rgba(9,10,22,0.9);
-                    padding: 24px;
-                    border-radius: 20px;
-                    border: 1px solid rgba(255,255,255,0.15);
-                    text-align: center;
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
-                ">
-                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Transferts</h3>
-                    <div id="stat-tx-24h" style="font-size:32px; font-weight:900; margin-top:8px;">
-                        —
-                    </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts (info à venir)</p>
-                </div>
+                                <div style="margin-top:18px; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 12px;">
+                    <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
+                       target="_blank"
+                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
+                        📜 Contrat officiel LUMA (BscScan)
+                    </a>
 
-                <!-- MARKET CAP -->
-                <div style="
-                    background: rgba(9,10,22,0.9);
-                    padding: 24px;
-                    border-radius: 20px;
-                    border: 1px solid rgba(255,255,255,0.15);
-                    text-align: center;
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
-                ">
-                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Market Cap</h3>
-                    <div id="stat-mcap" style="font-size:32px; font-weight:900; margin-top:8px;">
-                        —
-                    </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Calculé en direct : prix × supply</p>
-                </div>
+                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
+                       target="_blank"
+                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
+                        📈 Suivre le prix & la liquidité
+                    </a>
 
-                <!-- TOTAL SUPPLY -->
-                <div style="
-                    background: rgba(9,10,22,0.9);
-                    padding: 24px;
-                    border-radius: 20px;
-                    border: 1px solid rgba(255,255,255,0.15);
-                    text-align: center;
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
-                ">
-                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Total Supply</h3>
-                    <div id="stat-supply" style="font-size:28px; font-weight:900; margin-top:8px;">
-                        202 845 959 LUMA
-                    </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Après burn initial</p>
-                </div>
-            </div>
+                    <a href="https://t.me/LunarMarsOfficial"
+                       target="_blank"
+                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
+                        💬 Rejoindre la communauté Telegram
+                    </a>
 
-            <p style="text-align:center; margin-top:20px; font-size:11px; opacity:0.6;">
-                Données calculées en direct à partir de GeckoTerminal (prix) et de la supply fixe LUMA.
-            </p>
-        </section>
+                    <a href="https://x.com/LunarMarsToken"
+                       target="_blank"
+                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
+                        🧡 Profil officiel X (LUMA)
+                    </a>
+                </div>
+            </div>
+        </section>
 
-        <!-- TOKENOMICS / MISSION CONTROL -->
-        <section id="tokenomics" class="tokenomics-section">
-            <h2 class="section-title">Mission Control</h2>
+                <section id="luma-stats" class="tokenomics-section">
+            <h2 class="section-title">LUMA – Statistiques Officielles</h2>
 
-            <div class="dashboard-grid">
-                <!-- BURN / LOCK / OWNERSHIP SUMMARY -->
-                <div class="burn-card">
-                    <div class="burn-title">🔥 LUMA SECURITY STATUS</div>
+            <div style="
+                max-width: 1100px;
+                margin: 0 auto;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 20px;
+            ">
+                                <div style="
+                    background: rgba(9,10,22,0.9);
+                    padding: 24px;
+                    border-radius: 20px;
+                    border: 1px solid rgba(255,255,255,0.15);
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+                ">
+                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Holders</h3>
+                    <div id="stat-holders" style="font-size:32px; font-weight:900; margin-top:8px;">
+                        600+
+                    </div>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Source : BscScan</p>
+                </div>
 
-                    <p><strong>🔥 Burn&nbsp;10&nbsp;% :</strong> 22&nbsp;538&nbsp;440 LUMA brûlés de façon permanente.</p>
-                    <p>
-                        Tx Burn :
-                        <a href="https://bscscan.com/tx/0x4b8a548ebe8a599c66b59915d7413549a601ae5c2e6c5e7c0c0baf9214f15a17" target="_blank">
-                            voir sur BscScan
-                        </a>
-                    </p>
+                                <div style="
+                    background: rgba(9,10,22,0.9);
+                    padding: 24px;
+                    border-radius: 20px;
+                    border: 1px solid rgba(255,255,255,0.15);
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+                ">
+                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Transferts</h3>
+                    <div id="stat-tx-24h" style="font-size:32px; font-weight:900; margin-top:8px;">
+                        —
+                    </div>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts (info à venir)</p>
+                </div>
 
-                    <p><strong>🔒 Supply verrouillé ≈ 10&nbsp;% :</strong> 22&nbsp;219&nbsp;850 LUMA lockés sur PinkLock V2.</p>
-                    <p>
-                        Lock #1 :
-                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank">record 1389151</a><br/>
-                        Lock #2 :
-                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank">record 1391827</a>
-                    </p>
+                                <div style="
+                    background: rgba(9,10,22,0.9);
+                    padding: 24px;
+                    border-radius: 20px;
+                    border: 1px solid rgba(255,255,255,0.15);
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+                ">
+                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Market Cap</h3>
+                    <div id="stat-mcap" style="font-size:32px; font-weight:900; margin-top:8px;">
+                        —
+                    </div>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Calculé en direct : prix × supply</p>
+                </div>
 
-                    <p><strong>💧 Liquidité LUMA/WBNB verrouillée :</strong> LP tokens lockés pour 1 an sur PinkLock.</p>
-                    <p>
-                        LP Lock :
-                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1408517" target="_blank">
-                            voir le lock LP (record 1408517)
-                        </a>
-                    </p>
+                                <div style="
+                    background: rgba(9,10,22,0.9);
+                    padding: 24px;
+                    border-radius: 20px;
+                    border: 1px solid rgba(255,255,255,0.15);
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+                ">
+                    <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Total Supply</h3>
+                    <div id="stat-supply" style="font-size:28px; font-weight:900; margin-top:8px;">
+                        202 845 959 LUMA
+                    </div>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Après burn initial</p>
+                </div>
+            </div>
 
-                    <p><strong>🧾 Ownership renoncé :</strong> contrat désormais immuable, sans propriétaire, sans mint.</p>
-                    <p>
-                        Tx Ownership :
-                        <a href="https://bscscan.com/tx/0xfdbae1139fdbbba8c5ffe63c4b7b90cee096fc0147ae27ef035fa2c68970e772" target="_blank">
-                            voir sur BscScan
-                        </a>
-                    </p>
-                </div>
+            <p style="text-align:center; margin-top:20px; font-size:11px; opacity:0.6;">
+                Données calculées en direct à partir de GeckoTerminal (prix) et de la supply fixe LUMA.
+            </p>
+        </section>
 
-                <div class="info-card">
-                    <div class="supply-row">
-                        <span class="supply-label">Total Supply</span>
-                        <span class="supply-val">202 845 959 LUMA</span>
-                    </div>
+                <section id="tokenomics" class="tokenomics-section">
+            <h2 class="section-title">Mission Control</h2>
 
-                    <div class="locks-row">
-                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank" class="lock-btn">
-                            🔒 PinkLock #1
-                        </a>
-                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank" class="lock-btn">
-                            🔒 PinkLock #2
-                        </a>
-                    </div>
+            <div class="dashboard-grid">
+                                <div class="burn-card">
+                    <div class="burn-title">🔥 LUMA SECURITY STATUS</div>
 
-                    <div class="contract-box">
-                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9<br/>
-                        Ownership: Renounced – Immutable Contract
-                    </div>
+                    <p><strong>🔥 Burn&nbsp;10&nbsp;% :</strong> 22&nbsp;538&nbsp;440 LUMA brûlés de façon permanente.</p>
+                    <p>
+                        Tx Burn :
+                        <a href="https://bscscan.com/tx/0x4b8a548ebe8a599c66b59915d7413549a601ae5c2e6c5e7c0c0baf9214f15a17" target="_blank">
+                            voir sur BscScan
+                        </a>
+                    </p>
 
-                    <div style="font-size:12px; margin-bottom:10px; text-align:center;">
-                        👀 Top holders en temps réel :
-                        <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9#balances" target="_blank" style="color:#ffb21a; text-decoration:underline;">
-                            voir sur BscScan
-                        </a>
-                    </div>
+                    <p><strong>🔒 Supply verrouillé ≈ 10&nbsp;% :</strong> 22&nbsp;219&nbsp;850 LUMA lockés sur PinkLock V2.</p>
+                    <p>
+                        Lock #1 :
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank">record 1389151</a><br/>
+                        Lock #2 :
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank">record 1391827</a>
+                    </p>
 
-                    <div class="tax-list">
-                        <div class="tax-item"><span>0%</span> Dev</div>
-                        <div class="tax-item"><span>0%</span> Liq</div>
-                        <div class="tax-item"><span>0%</span> Tax</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    <p><strong>💧 Liquidité LUMA/WBNB verrouillée :</strong> LP tokens lockés pour 1 an sur PinkLock.</p>
+                    <p>
+                        LP Lock :
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1408517" target="_blank">
+                            voir le lock LP (record 1408517)
+                        </a>
+                    </p>
 
-        <!-- ÉVÉNEMENTS -->
-        <section id="events">
-            <h2 class="section-title">Événements LUMA</h2>
-            <div class="cards-grid">
-                <div class="card-block">
-                    <span class="card-tag">En cours</span>
-                    <h3>Airdrop de Noël – LUMA Christmas Drop</h3>
-                    <div class="card-date">Décembre 2025</div>
-                    <p>
-                        Distribution spéciale de LUMA aux premiers holders et membres actifs de la communauté.
-                        Objectif&nbsp;: récompenser les pionniers et augmenter le nombre de portefeuilles uniques.
-                    </p>
-                </div>
+                    <p><strong>🧾 Ownership renoncé :</strong> contrat désormais immuable, sans propriétaire, sans mint.</p>
+                    <p>
+                        Tx Ownership :
+                        <a href="https://bscscan.com/tx/0xfdbae1139fdbbba8c5ffe63c4b7b90cee096fc0147ae27ef035fa2c68970e772" target="_blank">
+                            voir sur BscScan
+                        </a>
+                    </p>
+                </div>
 
-                <div class="card-block">
-                    <span class="card-tag">Terminé</span>
-                    <h3>Round 3 – Community Drop</h3>
-                    <div class="card-date">Automne 2025</div>
-                    <p>
-                        Plusieurs vagues de distribution ciblée sur X et Telegram afin de construire un socle de vrais holders,
-                        sans bots, ni airdrop farming massif.
-                    </p>
-                </div>
+                <div class="info-card">
+                    <div class="supply-row">
+                        <span class="supply-label">Total Supply</span>
+                        <span class="supply-val">202 845 959 LUMA</span>
+                    </div>
 
-                <div class="card-block">
-                    <span class="card-tag">À venir</span>
-                    <h3>LUMA Arcade Challenges</h3>
-                    <div class="card-date">2025</div>
-                    <p>
-                        Tournois autour du jeu LUMA&nbsp;: highscore, défis communautaires, récompenses symboliques en LUMA
-                        pour les meilleurs joueurs et créateurs de contenu.
-                    </p>
-                </div>
-            </div>
-        </section>
+                    <div class="locks-row">
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank" class="lock-btn">
+                            🔒 PinkLock #1
+                        </a>
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank" class="lock-btn">
+                            🔒 PinkLock #2
+                        </a>
+                    </div>
 
-        <!-- ROADMAP -->
-        <section id="roadmap">
-            <h2 class="section-title">Feuille de route</h2>
-            <div class="cards-grid">
-                <div class="card-block">
-                    <h3>Phase 1 – Lancement Orbital</h3>
-                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
-                        <li>Déploiement du contrat LUMA sur BNB Smart Chain</li>
-                        <li>Burn initial + locks sur PinkLock</li>
-                        <li>Création des canaux X & Telegram</li>
-                        <li>Publication du Whitepaper v1</li>
-                    </ul>
-                </div>
-                <div class="card-block">
-                    <h3>Phase 2 – Construction de l’équipage</h3>
-                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
-                        <li>Airdrops ciblés pour vrais holders</li>
-                        <li>Lancement du site officiel Lunar&amp;Mars</li>
-                        <li>Intégration du jeu LUMA Arcade</li>
-                        <li>Suivi transparent des stats on-chain</li>
-                    </ul>
-                </div>
-                <div class="card-block">
-                    <h3>Phase 3 – Expansion Lunaire</h3>
-                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
-                        <li>Référencements sur suivis de prix (trackers)</li>
-                        <li>Partenariats communautaires Web3 / mining</li>
-                        <li>Outils pédagogiques sur la décentralisation</li>
-                        <li>Événements en ligne et concours</li>
-                    </ul>
-                </div>
-                <div class="card-block">
-                    <h3>Phase 4 – Corridor Lune → Mars</h3>
-                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
-                        <li>Développement d’un écosystème symbolique entre Moon &amp; Mars</li>
-                        <li>Utilisation de LUMA dans des projets créatifs (jeu, art, musique)</li>
-                        <li>Renforcement de la gouvernance communautaire</li>
-                        <li>Évolution du Whitepaper selon les idées de la communauté</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+                    <div class="contract-box">
+                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9<br/>
+                        Ownership: Renounced – Immutable Contract
+                    </div>
 
-        <!-- FAQ -->
-        <section id="faq">
-            <h2 class="section-title">FAQ – Questions fréquentes</h2>
-            <div class="cards-grid">
-                <div class="card-block">
-                    <div class="faq-item">
-                        <div class="faq-q">LUMA est-il un projet de pump &amp; dump&nbsp;?</div>
-                        <div class="faq-a">
-                            Non. LUMA est un jeton symbolique, communautaire et éducatif.
-                            L’objectif principal est de rassembler des passionnés autour d’une vision Lune → Mars, pas de
-                            promettre un enrichissement rapide.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-q">Sur quelle blockchain est déployé LUMA&nbsp;?</div>
-                        <div class="faq-a">
-                            LUMA est un jeton BEP-20 sur la BNB Smart Chain. Le contrat est public, vérifié et l’ownership est renoncé.
-                        </div>
-                    </div>
-                </div>
+                    <div style="font-size:12px; margin-bottom:10px; text-align:center;">
+                        👀 Top holders en temps réel :
+                        <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9#balances" target="_blank" style="color:#ffb21a; text-decoration:underline;">
+                            voir sur BscScan
+                        </a>
+                    </div>
 
-                <div class="card-block">
-                    <div class="faq-item">
-                        <div class="faq-q">Comment acheter LUMA&nbsp;?</div>
-                        <div class="faq-a">
-                            Connectez votre wallet (ex. MetaMask) au réseau BNB Smart Chain, puis utilisez le bouton
-                            «&nbsp;Buy LUMA on PancakeSwap&nbsp;» ou le lien MEXC DEX sur cette page.
-                            Vérifiez toujours l’adresse du contrat avant d’acheter.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-q">Puis-je ajouter LUMA dans MetaMask facilement&nbsp;?</div>
-                        <div class="faq-a">
-                            Oui, utilisez le bouton «&nbsp;Add LUMA to MetaMask&nbsp;». Votre navigateur doit avoir une extension
-                            compatible (MetaMask). Le jeton apparaîtra ensuite dans votre liste d’actifs.
-                        </div>
-                    </div>
-                </div>
+                    <div class="tax-list">
+                        <div class="tax-item"><span>0%</span> Dev</div>
+                        <div class="tax-item"><span>0%</span> Liq</div>
+                        <div class="tax-item"><span>0%</span> Tax</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <div class="card-block">
-                    <div class="faq-item">
-                        <div class="faq-q">Est-ce un conseil financier&nbsp;?</div>
-                        <div class="faq-a">
-                            Non. Rien sur ce site ou dans les communications LUMA ne constitue un conseil financier ou
-                            d’investissement. Chacun reste responsable de ses propres décisions.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-q">Comment suivre la croissance du projet&nbsp;?</div>
-                        <div class="faq-a">
-                            Vous pouvez consulter les stats sur cette page (holders, transferts, supply),
-                            suivre les événements listés, et vérifier en temps réel sur BscScan, GeckoTerminal, X et Telegram.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <section id="events">
+            <h2 class="section-title">Événements LUMA</h2>
+            <div class="cards-grid">
+                <div class="card-block">
+                    <span class="card-tag">En cours</span>
+                    <h3>Airdrop de Noël – LUMA Christmas Drop</h3>
+                    <div class="card-date">Décembre 2025</div>
+                    <p>
+                        Distribution spéciale de LUMA aux premiers holders et membres actifs de la communauté.
+                        Objectif&nbsp;: récompenser les pionniers et augmenter le nombre de portefeuilles uniques.
+                    </p>
+                </div>
 
-        <!-- LIENS & COMMUNAUTÉ -->
-        <section id="links" class="links-section">
-            <div class="links-card">
-                <h2 class="links-title translatable" data-en="Links & Community" data-fr="Liens & Communauté">Liens & Communauté</h2>
-                <div class="links-chips">
-                    <a class="link-chip" href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" rel="noopener noreferrer">BscScan</a>
-                    <a class="link-chip" href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" rel="noopener noreferrer">GeckoTerminal</a>
-                    <a class="link-chip" href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" rel="noopener noreferrer">MEXC DEX</a>
-                    <a class="link-chip" href="LUMA_Whitepaper_v1.pdf" target="_blank" rel="noopener noreferrer">Whitepaper</a>
-                    <a class="link-chip" href="https://x.com/LunarMarsToken" target="_blank" rel="noopener noreferrer">X – @LunarMarsToken</a>
-                    <a class="link-chip" href="https://t.me/LunarMarsOfficial" target="_blank" rel="noopener noreferrer">Telegram</a>
-                </div>
-            </div>
-        </section>
-    </main>
+                <div class="card-block">
+                    <span class="card-tag">Terminé</span>
+                    <h3>Round 3 – Community Drop</h3>
+                    <div class="card-date">Automne 2025</div>
+                    <p>
+                        Plusieurs vagues de distribution ciblée sur X et Telegram afin de construire un socle de vrais holders,
+                        sans bots, ni airdrop farming massif.
+                    </p>
+                </div>
 
-    <footer>
-        <span class="translatable" data-en="LUMA is a symbolic community token on BNB Smart Chain. Nothing here is financial or investment advice. Follow us on X: @LunarMarsToken." data-fr="LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. Suivez-nous sur X : @LunarMarsToken.">
-            LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. Suivez-nous sur X : @LunarMarsToken.
-        </span>
-    </footer>
+                <div class="card-block">
+                    <span class="card-tag">À venir</span>
+                    <h3>LUMA Arcade Challenges</h3>
+                    <div class="card-date">2025</div>
+                    <p>
+                        Tournois autour du jeu LUMA&nbsp;: highscore, défis communautaires, récompenses symboliques en LUMA
+                        pour les meilleurs joueurs et créateurs de contenu.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <script>
-        const CONTRACT_ADDRESS   = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
-        const TOTAL_SUPPLY_LUMA  = 202845959; // supply fixe
-        let   lumaPriceUsd       = null;
-        let   lumaSupply         = TOTAL_SUPPLY_LUMA;
+                <section id="roadmap">
+            <h2 class="section-title">Feuille de route</h2>
+            <div class="cards-grid">
+                <div class="card-block">
+                    <h3>Phase 1 – Lancement Orbital</h3>
+                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
+                        <li>Déploiement du contrat LUMA sur BNB Smart Chain</li>
+                        <li>Burn initial + locks sur PinkLock</li>
+                        <li>Création des canaux X & Telegram</li>
+                        <li>Publication du Whitepaper v1</li>
+                    </ul>
+                </div>
+                <div class="card-block">
+                    <h3>Phase 2 – Construction de l’équipage</h3>
+                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
+                        <li>Airdrops ciblés pour vrais holders</li>
+                        <li>Lancement du site officiel Lunar&amp;Mars</li>
+                        <li>Intégration du jeu LUMA Arcade</li>
+                        <li>Suivi transparent des stats on-chain</li>
+                    </ul>
+                </div>
+                <div class="card-block">
+                    <h3>Phase 3 – Expansion Lunaire</h3>
+                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
+                        <li>Référencements sur suivis de prix (trackers)</li>
+                        <li>Partenariats communautaires Web3 / mining</li>
+                        <li>Outils pédagogiques sur la décentralisation</li>
+                        <li>Événements en ligne et concours</li>
+                    </ul>
+                </div>
+                <div class="card-block">
+                    <h3>Phase 4 – Corridor Lune → Mars</h3>
+                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
+                        <li>Développement d’un écosystème symbolique entre Moon &amp; Mars</li>
+                        <li>Utilisation de LUMA dans des projets créatifs (jeu, art, musique)</li>
+                        <li>Renforcement de la gouvernance communautaire</li>
+                        <li>Évolution du Whitepaper selon les idées de la communauté</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-        /* --- LOGIQUE DE TRADUCTION --- */
-        function setLanguage(lang) {
-            document.body.setAttribute('data-lang', lang);
-            document.getElementById('lang-en').classList.remove('active');
-            document.getElementById('lang-fr').classList.remove('active');
-            document.getElementById('lang-' + lang).classList.add('active');
+                <section id="faq">
+            <h2 class="section-title">FAQ – Questions fréquentes</h2>
+            <div class="cards-grid">
+                <div class="card-block">
+                    <div class="faq-item">
+                        <div class="faq-q">LUMA est-il un projet de pump &amp; dump&nbsp;?</div>
+                        <div class="faq-a">
+                            Non. LUMA est un jeton symbolique, communautaire et éducatif.
+                            L’objectif principal est de rassembler des passionnés autour d’une vision Lune → Mars, pas de
+                            promettre un enrichissement rapide.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q">Sur quelle blockchain est déployé LUMA&nbsp;?</div>
+                        <div class="faq-a">
+                            LUMA est un jeton BEP-20 sur la BNB Smart Chain. Le contrat est public, vérifié et l’ownership est renoncé.
+                        </div>
+                    </div>
+                </div>
 
-            const titleElement = document.getElementById('page-title');
-            if (titleElement) {
-                const newTitle = titleElement.getAttribute('data-' + lang);
-                if (newTitle) { titleElement.textContent = newTitle; }
-            }
-            document.querySelectorAll('.translatable').forEach(el => {
-                const translation = el.getAttribute('data-' + lang);
-                if (translation) { el.innerHTML = translation; }
-            });
-        }
-        setLanguage('fr');
+                <div class="card-block">
+                    <div class="faq-item">
+                        <div class="faq-q">Comment acheter LUMA&nbsp;?</div>
+                        <div class="faq-a">
+                            Connectez votre wallet (ex. MetaMask) au réseau BNB Smart Chain, puis utilisez le bouton
+                            «&nbsp;Buy LUMA on PancakeSwap&nbsp;» ou le lien MEXC DEX sur cette page.
+                            Vérifiez toujours l’adresse du contrat avant d’acheter.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q">Puis-je ajouter LUMA dans MetaMask facilement&nbsp;?</div>
+                        <div class="faq-a">
+                            Oui, utilisez le bouton «&nbsp;Add LUMA to MetaMask&nbsp;». Votre navigateur doit avoir une extension
+                            compatible (MetaMask). Le jeton apparaîtra ensuite dans votre liste d’actifs.
+                        </div>
+                    </div>
+                </div>
 
-        /* --- TICKER --- */
-        const barCoins = [
-            { id:"ethereum",     symbol:"ETH" },
-            { id:"binancecoin",  symbol:"BNB" },
-            { id:"solana",       symbol:"SOL" },
-            { id:"ripple",       symbol:"XRP" },
-            { id:"litecoin",     symbol:"LTC" },
-            { id:"bitcoin-cash", symbol:"BCH" },
-            { id:"dogecoin",     symbol:"DOGE" },
-            { id:"tron",         symbol:"TRX" },
-            { id:"bitcoin",      symbol:"BTC" }
-        ];
+                <div class="card-block">
+                    <div class="faq-item">
+                        <div class="faq-q">Est-ce un conseil financier&nbsp;?</div>
+                        <div class="faq-a">
+                            Non. Rien sur ce site ou dans les communications LUMA ne constitue un conseil financier ou
+                            d’investissement. Chacun reste responsable de ses propres décisions.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q">Comment suivre la croissance du projet&nbsp;?</div>
+                        <div class="faq-a">
+                            Vous pouvez consulter les stats sur cette page (holders, transferts, supply),
+                            suivre les événements listés, et vérifier en temps réel sur BscScan, GeckoTerminal, X et Telegram.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        async function loadTicker() {
-            try {
-                const ids  = barCoins.map(c => c.id).join(",");
-                const url  = "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd&include_24hr_change=true";
-                const res  = await fetch(url);
-                const data = await res.json();
-                const track = document.getElementById("ticker-track");
-                track.innerHTML = "";
+                <section id="links" class="links-section">
+            <div class="links-card">
+                <h2 class="links-title translatable" data-en="Links & Community" data-fr="Liens & Communauté">Liens & Communauté</h2>
+                <div class="links-chips">
+                    <a class="link-chip" href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" rel="noopener noreferrer">BscScan</a>
+                    <a class="link-chip" href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" rel="noopener noreferrer">GeckoTerminal</a>
+                    <a class="link-chip" href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" rel="noopener noreferrer">MEXC DEX</a>
+                    <a class="link-chip" href="LUMA_Whitepaper_v1.pdf" target="_blank" rel="noopener noreferrer">Whitepaper</a>
+                    <a class="link-chip" href="https://x.com/LunarMarsToken" target="_blank" rel="noopener noreferrer">X – @LunarMarsToken</a>
+                    <a class="link-chip" href="https://t.me/LunarMarsOfficial" target="_blank" rel="noopener noreferrer">Telegram</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-                barCoins.forEach(c => {
-                    const info = data[c.id];
-                    if (!info) return;
-                    const price  = info.usd;
-                    const change = info.usd_24h_change || 0;
-                    const cls    = change >= 0 ? "up" : "down";
-                    const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
-                    track.insertAdjacentHTML(
-                        "beforeend",
-                        `<div class="ticker-item">
-                            <span>${c.symbol}</span>
-                            <span>$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
-                            <span class="ticker-change ${cls}">${changeStr}</span>
-                        </div>`
-                    );
-                });
+    <footer>
+        <span class="translatable" data-en="LUMA is a symbolic community token on BNB Smart Chain. Nothing here is financial or investment advice. Follow us on X: @LunarMarsToken." data-fr="LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. Suivez-nous sur X : @LunarMarsToken.">
+            LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. Suivez-nous sur X : @LunarMarsToken.
+        </span>
+    </footer>
 
-                // Insère LUMA au début si prix dispo
-                if (typeof window.lumaPriceForTicker === "number" && typeof window.lumaChangeForTicker === "number") {
-                    const lp  = window.lumaPriceForTicker;
-                    const chg = window.lumaChangeForTicker;
-                    const cls = chg >= 0 ? "up" : "down";
-                    const changeStr = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%";
-                    track.insertAdjacentHTML(
-                        "afterbegin",
-                        `<div class="ticker-item">
-                            <span>LUMA</span>
-                            <span>$${lp.toLocaleString("en-US",{maximumFractionDigits:8})}</span>
-                            <span class="ticker-change ${cls}">${changeStr}</span>
-                        </div>`
-                    );
-                }
+    <script>
+        const CONTRACT_ADDRESS   = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
+        const BSCSCAN_API_KEY    = 'SWCM6WAEYSX4YJS3SZP6EFXKQPM74K6N1Y';
+        const TOTAL_SUPPLY_LUMA  = 202845959; 
 
-                track.innerHTML += track.innerHTML;
-            } catch (e) {
-                console.error("Ticker error:", e);
-            }
-        }
-        loadTicker();
-        setInterval(loadTicker, 60000);
+        let   lumaPriceUsd       = null;
+        let   lumaSupply         = TOTAL_SUPPLY_LUMA;
 
-        /* --- PRIX LUMA --- */
-        function formatLumaPrice(price) {
-            if (!isFinite(price) || price <= 0) return "Price unavailable";
-            if (price >= 0.01) { return "$" + price.toFixed(4); }
-            if (price < 0.01 && price > 0) {
-                let s = price.toFixed(10);
-                s = s.replace(/0+$/,"").replace(/\.$/,"");
-                return "$" + s;
-            }
-            return "$" + price.toExponential(4);
-        }
+        /* --- LOGIQUE DE TRADUCTION --- */
+        function setLanguage(lang) {
+            document.body.setAttribute('data-lang', lang);
+            document.getElementById('lang-en').classList.remove('active');
+            document.getElementById('lang-fr').classList.remove('active');
+            document.getElementById('lang-' + lang).classList.add('active');
 
-        function updateMarketCap() {
-            const mcapEl = document.getElementById('stat-mcap');
-            if (!mcapEl) return;
-            if (lumaPriceUsd && lumaSupply) {
-                const mcap = lumaPriceUsd * lumaSupply;
-                mcapEl.textContent = "$" + mcap.toLocaleString("en-US", { maximumFractionDigits: 0 });
-            }
-        }
+            const titleElement = document.getElementById('page-title');
+            if (titleElement) {
+                const newTitle = titleElement.getAttribute('data-' + lang);
+                if (newTitle) { titleElement.textContent = newTitle; }
+            }
+            document.querySelectorAll('.translatable').forEach(el => {
+                const translation = el.getAttribute('data-' + lang);
+                if (translation) { el.innerHTML = translation; }
+            });
+        }
+        setLanguage('fr');
 
-        async function loadLumaPrice() {
-            const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
-            const priceEl  = document.getElementById("luma-price");
-            const changeEl = document.getElementById("luma-change");
-            try {
-                const res  = await fetch(url);
-                const data = await res.json();
-                const attr = data?.data?.attributes;
-                if (!attr) { return; }
-                const price = Number(attr.base_token_price_usd ?? attr.quote_token_price_usd ?? attr.price_usd ?? 0);
-                const change = Number((attr.price_change_percentage && attr.price_change_percentage.h24) ?? attr.price_change_percentage_24h ?? 0);
+        /* --- TICKER --- */
+        const barCoins = [
+            { id:"ethereum",     symbol:"ETH" },
+            { id:"binancecoin",  symbol:"BNB" },
+            { id:"solana",       symbol:"SOL" },
+            { id:"ripple",       symbol:"XRP" },
+            { id:"litecoin",     symbol:"LTC" },
+            { id:"bitcoin-cash", symbol:"BCH" },
+            { id:"dogecoin",     symbol:"DOGE" },
+            { id:"tron",         symbol:"TRX" },
+            { id:"bitcoin",      symbol:"BTC" }
+        ];
 
-                lumaPriceUsd = price;
-                window.lumaPriceForTicker  = price;
-                window.lumaChangeForTicker = change;
+        async function loadTicker() {
+            try {
+                const ids  = barCoins.map(c => c.id).join(",");
+                const url  = "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd&include_24hr_change=true";
+                const res  = await fetch(url);
+                const data = await res.json();
+                const track = document.getElementById("ticker-track");
+                track.innerHTML = "";
 
-                if (priceEl) {
-                    priceEl.textContent = formatLumaPrice(price);
-                }
-                if (changeEl) {
-                    const isUp = change >= 0;
-                    changeEl.classList.toggle("down", !isUp);
-                    changeEl.classList.toggle("up", isUp);
-                    const sign = isUp ? "+" : "";
-                    changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
-                }
+                barCoins.forEach(c => {
+                    const info = data[c.id];
+                    if (!info) return;
+                    const price  = info.usd;
+                    const change = info.usd_24h_change || 0;
+                    const cls    = change >= 0 ? "up" : "down";
+                    const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+                    track.insertAdjacentHTML(
+                        "beforeend",
+                        `<div class="ticker-item">
+                            <span>${c.symbol}</span>
+                            <span>$${price.toLocaleString("en-US",{maximumFractionDigits:2})}</span>
+                            <span class="ticker-change ${cls}">${changeStr}</span>
+                        </div>`
+                    );
+                });
 
-                updateMarketCap();
-                loadTicker();
-            } catch (e) { console.error("LUMA price error:", e); }
-        }
-        loadLumaPrice();
-        setInterval(loadLumaPrice, 60000);
+                // Insère LUMA au début si prix dispo
+                if (typeof window.lumaPriceForTicker === "number" && typeof window.lumaChangeForTicker === "number") {
+                    const lp  = window.lumaPriceForTicker;
+                    const chg = window.lumaChangeForTicker;
+                    const cls = chg >= 0 ? "up" : "down";
+                    const changeStr = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%";
+                    track.insertAdjacentHTML(
+                        "afterbegin",
+                        `<div class="ticker-item">
+                            <span>LUMA</span>
+                            <span>$${lp.toLocaleString("en-US",{maximumFractionDigits:8})}</span>
+                            <span class="ticker-change ${cls}">${changeStr}</span>
+                        </div>`
+                    );
+                }
 
-        /* --- BOUTON "Add LUMA to MetaMask" --- */
-        const addBtn = document.getElementById('add-luma-metamask');
-        if (addBtn) {
-            addBtn.addEventListener('click', async () => {
-                if (!window.ethereum) {
-                    alert("MetaMask n'est pas détecté dans ce navigateur.");
-                    return;
-                }
+                track.innerHTML += track.innerHTML;
+            } catch (e) {
+                console.error("Ticker error:", e);
+            }
+        }
+        loadTicker();
+        setInterval(loadTicker, 60000);
 
-                try {
-                    const wasAdded = await window.ethereum.request({
-                        method: 'wallet_watchAsset',
-                        params: {
-                            type: 'ERC20',
-                            options: {
-                                address: CONTRACT_ADDRESS,
-                                symbol: 'LUMA',
-                                decimals: 18,
-                                image: window.location.origin + '/Luma-noel-logo.png'
-                            }
-                        }
-                    });
+        /* --- PRIX LUMA --- */
+        function formatLumaPrice(price) {
+            if (!isFinite(price) || price <= 0) return "Price unavailable";
+            if (price >= 0.01) { return "$" + price.toFixed(4); }
+            if (price < 0.01 && price > 0) {
+                let s = price.toFixed(10);
+                s = s.replace(/0+$/,"").replace(/\.$/,"");
+                return "$" + s;
+            }
+            return "$" + price.toExponential(4);
+        }
 
-                    if (wasAdded) {
-                        console.log('LUMA ajouté à MetaMask');
-                    } else {
-                        console.log('LUMA non ajouté par l’utilisateur');
-                    }
-                } catch (err) {
-                    console.error('Erreur MetaMask', err);
-                }
-            });
-        }
+        function updateMarketCap() {
+            const mcapEl = document.getElementById('stat-mcap');
+            if (!mcapEl) return;
+            if (lumaPriceUsd && lumaSupply) {
+                const mcap = lumaPriceUsd * lumaSupply;
+                mcapEl.textContent = "$" + mcap.toLocaleString("en-US", { maximumFractionDigits: 0 });
+            }
+        }
 
-        /* --- BOUTON COPIE CONTRAT --- */
-        const copyBtn = document.getElementById('copy-contract');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(CONTRACT_ADDRESS);
-                    const fb = document.getElementById('copy-feedback');
-                    if (fb) {
-                        fb.style.display = 'block';
-                        setTimeout(() => { fb.style.display = 'none'; }, 2500);
-                    }
-                } catch (e) {
-                    alert("Impossible de copier automatiquement. Adresse : " + CONTRACT_ADDRESS);
-                }
-            });
-        }
+        async function loadLumaPrice() {
+            const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
+            const priceEl  = document.getElementById("luma-price");
+            const changeEl = document.getElementById("luma-change");
+            try {
+                const res  = await fetch(url);
+                const data = await res.json();
+                const attr = data?.data?.attributes;
+                if (!attr) { return; }
+                const price = Number(attr.base_token_price_usd ?? attr.quote_token_price_usd ?? attr.price_usd ?? 0);
+                const change = Number((attr.price_change_percentage && attr.price_change_percentage.h24) ?? attr.price_change_percentage_24h ?? 0);
 
-        /* --- OUVERTURE DU JEU --- */
-        function openGamePopup() {
-            window.open(
-                'game/luma-game.html',
-                'LUMA_ARCADE',
-                'width=500,height=750,resizable=yes,scrollbars=no'
-            );
-        }
-        const gameLink = document.getElementById('open-game-nav');
-        if (gameLink) {
-            gameLink.addEventListener('click', function (e) {
-                e.preventDefault();
-                openGamePopup();
-            });
-        }
+                lumaPriceUsd = price;
+                window.lumaPriceForTicker  = price;
+                window.lumaChangeForTicker = change;
 
-        /* --- NEIGE DE NOËL --- */
-        (function() {
-            const container = document.querySelector('.snow-container');
-            if (!container) return;
+                if (priceEl) {
+                    priceEl.textContent = formatLumaPrice(price);
+                }
+                if (changeEl) {
+                    const isUp = change >= 0;
+                    changeEl.classList.toggle("down", !isUp);
+                    changeEl.classList.toggle("up", isUp);
+                    const sign = isUp ? "+" : "";
+                    changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
+                }
 
-            function createSnowflake() {
-                const flake = document.createElement('div');
-                flake.classList.add('snowflake');
-                flake.textContent = '❄';
+                updateMarketCap();
+                loadTicker();
+            } catch (e) { console.error("LUMA price error:", e); }
+        }
+        loadLumaPrice();
+        setInterval(loadLumaPrice, 60000);
 
-                flake.style.left = Math.random() * 100 + 'vw';
-                flake.style.fontSize = (8 + Math.random() * 18) + 'px';
-                flake.style.opacity = (0.4 + Math.random() * 0.6).toString();
-                flake.style.animationDuration = (10 + Math.random() * 12) + 's';
+        /* --- BOUTON "Add LUMA to MetaMask" --- */
+        const addBtn = document.getElementById('add-luma-metamask');
+        if (addBtn) {
+            addBtn.addEventListener('click', async () => {
+                if (!window.ethereum) {
+                    alert("MetaMask n'est pas détecté dans ce navigateur.");
+                    return;
+                }
 
-                container.appendChild(flake);
+                try {
+                    const wasAdded = await window.ethereum.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: CONTRACT_ADDRESS,
+                                symbol: 'LUMA',
+                                decimals: 18,
+                                image: window.location.origin + '/Luma-noel-logo.png'
+                            }
+                        }
+                    });
 
-                setTimeout(() => {
-                    flake.remove();
-                }, 25000);
-            }
+                    if (wasAdded) {
+                        console.log('LUMA ajouté à MetaMask');
+                    } else {
+                        console.log('LUMA non ajouté par l’utilisateur');
+                    }
+                } catch (err) {
+                    console.error('Erreur MetaMask', err);
+                }
+            });
+        }
 
-            setInterval(createSnowflake, 200);
-        })();
-    </script>
+        /* --- BOUTON COPIE CONTRAT --- */
+        const copyBtn = document.getElementById('copy-contract');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(CONTRACT_ADDRESS);
+                    const fb = document.getElementById('copy-feedback');
+                    if (fb) {
+                        fb.style.display = 'block';
+                        setTimeout(() => { fb.style.display = 'none'; }, 2500);
+                    }
+                } catch (e) {
+                    alert("Impossible de copier automatiquement. Adresse : " + CONTRACT_ADDRESS);
+                }
+            });
+        }
+
+        /* --- OUVERTURE DU JEU --- */
+        function openGamePopup() {
+            window.open(
+                'game/luma-game.html',
+                'LUMA_ARCADE',
+                'width=500,height=750,resizable=yes,scrollbars=no'
+            );
+        }
+        const gameLink = document.getElementById('open-game-nav');
+        if (gameLink) {
+            gameLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                openGamePopup();
+            });
+        }
+
+        /* --- NEIGE DE NOËL --- */
+        (function() {
+            const container = document.querySelector('.snow-container');
+            if (!container) return;
+
+            function createSnowflake() {
+                const flake = document.createElement('div');
+                flake.classList.add('snowflake');
+                flake.textContent = '❄';
+
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.fontSize = (8 + Math.random() * 18) + 'px';
+                flake.style.opacity = (0.4 + Math.random() * 0.6).toString();
+                flake.style.animationDuration = (10 + Math.random() * 12) + 's';
+
+                container.appendChild(flake);
+
+                setTimeout(() => {
+                    flake.remove();
+                }, 25000);
+            }
+
+            setInterval(createSnowflake, 200);
+        })();
+    </script>
 </body>
 </html>
