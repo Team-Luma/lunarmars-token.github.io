@@ -7,7 +7,6 @@
     <link rel="icon" href="Luma-noel-logo.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
-    <!-- Google Analytics 4 - LUMA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -217,7 +216,7 @@
         .supply-label { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; font-weight: 600; }
         .supply-val { font-size:16px; font-weight:800; }
 
-        .locks-row { display:flex; gap:10px; margin-bottom:14px; }
+        .locks-row { display:flex; flex-wrap: wrap; gap:10px; margin-bottom:14px; }
         .lock-btn {
             flex:1; background: rgba(46, 204, 113, 0.15);
             border: 1px solid rgba(46, 204, 113, 0.4);
@@ -299,7 +298,6 @@
 
 <body data-lang="fr">
 
-    <!-- Neige globale -->
     <div class="snow-container"></div>
 
     <header>
@@ -324,16 +322,14 @@
     </header>
 
     <div class="ticker">
-        <div class="ticker-inner"><div class="ticker-track" id="ticker-track">Loading...</div></div>
+        <div class="ticker-inner"><div class="ticker-track" id="ticker-track">Chargement...</div></div>
     </div>
 
-    <!-- Bandeau Noël -->
     <div class="christmas-banner">
         🎅✨ LUMA Christmas Airdrop – Santa is flying to every Lumian & Lumienne wallet! 🎄🚀
     </div>
 
     <main>
-        <!-- HERO -->
         <section class="hero" id="hero">
             <h1 class="hero-title translatable" data-en="WHAT IS LUMA?" data-fr="QU'EST-CE QUE LUMA ?">QU'EST-CE QUE LUMA ?</h1>
 
@@ -373,17 +369,16 @@
 
                     <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
                        target="_blank" class="btn btn-primary" style="width:100%">
-                       Acheter sur MEXC
+                        Acheter sur MEXC
                     </a>
                     <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
                        target="_blank" class="btn btn-dark" style="width:100%; margin-top:10px;">
-                       Voir le graphique
+                        Voir le graphique
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- LUMA HUB – Accès rapide -->
         <section id="luma-hub" style="max-width: 1300px; margin: 0 auto 50px; padding: 0 24px;">
             <div style="max-width: 800px; margin: 0 auto; padding: 24px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.18); background: rgba(5,8,22,0.92); box-shadow: 0 24px 60px rgba(0,0,0,0.75);">
                 <h2 style="text-align: center; margin-bottom: 16px; font-size: 1.8rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;">
@@ -393,7 +388,6 @@
                     Un seul endroit pour tout&nbsp;: acheter LUMA, l’ajouter dans MetaMask, vérifier le contrat et suivre le prix.
                 </p>
 
-                <!-- Bouton principal : achat direct PancakeSwap -->
                 <div style="display: flex; justify-content: center; margin-bottom: 14px;">
                     <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56"
                        target="_blank"
@@ -402,7 +396,6 @@
                     </a>
                 </div>
 
-                <!-- Bouton : Ajouter à MetaMask -->
                 <div style="display:flex; justify-content:center; margin-bottom: 16px;">
                     <button id="add-luma-metamask"
                             style="padding:10px 20px; border-radius:999px; border:1px solid rgba(255,255,255,0.3);
@@ -411,7 +404,6 @@
                     </button>
                 </div>
 
-                <!-- Contrat + copie -->
                 <p style="margin-top: 10px; font-size: 0.8rem; color:#a1a1aa; text-align: center;">
                     Contract address (BNB Smart Chain)&nbsp;:<br>
                     <code style="font-size: 0.8rem; word-break: break-all;">
@@ -430,7 +422,6 @@
                     Adresse copiée dans le presse-papiers.
                 </p>
 
-                <!-- Liens secondaires : tout centralisé -->
                 <div style="margin-top:18px; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 12px;">
                     <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
                        target="_blank"
@@ -459,7 +450,6 @@
             </div>
         </section>
 
-        <!-- STATS LUMA -->
         <section id="luma-stats" class="tokenomics-section">
             <h2 class="section-title">LUMA – Statistiques Officielles</h2>
 
@@ -470,7 +460,6 @@
                 grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
                 gap: 20px;
             ">
-                <!-- HOLDERS -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -481,12 +470,11 @@
                 ">
                     <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Holders</h3>
                     <div id="stat-holders" style="font-size:32px; font-weight:900; margin-top:8px;">
-                        …
+                        ...
                     </div>
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Source : BscScan</p>
                 </div>
 
-                <!-- TRANSFERS -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -502,7 +490,6 @@
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts (info à venir)</p>
                 </div>
 
-                <!-- MARKET CAP -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -518,7 +505,6 @@
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Calculé en direct : prix × supply</p>
                 </div>
 
-                <!-- TOTAL SUPPLY -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -529,7 +515,7 @@
                 ">
                     <h3 style="color:#ffb21a; font-size:18px; font-weight:800;">Total Supply</h3>
                     <div id="stat-supply" style="font-size:28px; font-weight:900; margin-top:8px;">
-                        …
+                        ...
                     </div>
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Après burn initial</p>
                 </div>
@@ -540,12 +526,10 @@
             </p>
         </section>
 
-        <!-- TOKENOMICS / MISSION CONTROL -->
         <section id="tokenomics" class="tokenomics-section">
             <h2 class="section-title">Mission Control</h2>
 
             <div class="dashboard-grid">
-                <!-- BURN / LOCK / OWNERSHIP SUMMARY -->
                 <div class="burn-card">
                     <div class="burn-title">🔥 LUMA SECURITY STATUS</div>
 
@@ -557,12 +541,14 @@
                         </a>
                     </p>
 
-                    <p><strong>🔒 Supply verrouillé ≈ 10&nbsp;% :</strong> 22&nbsp;219&nbsp;850 LUMA lockés sur PinkLock V2.</p>
+                    <p><strong>🔒 Supply verrouillé ≈ 10&nbsp;% :</strong> Plus de 22 millions de LUMA lockés sur PinkLock V2.</p>
                     <p>
                         Lock #1 :
                         <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank">record 1389151</a><br/>
                         Lock #2 :
-                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank">record 1391827</a>
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank">record 1391827</a><br/>
+                        **Lock #3 :**
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1234567" target="_blank">record 1234567 (À REMPLACER)</a>
                     </p>
 
                     <p><strong>💧 Liquidité LUMA/WBNB verrouillée :</strong> LP tokens lockés pour 1 an sur PinkLock.</p>
@@ -595,6 +581,9 @@
                         <a href="https://www.pinksale.finance/pinklock/bsc/record/1391827" target="_blank" class="lock-btn">
                             🔒 PinkLock #2
                         </a>
+                        <a href="https://www.pinksale.finance/pinklock/bsc/record/1234567" target="_blank" class="lock-btn">
+                            🔒 PinkLock #3
+                        </a>
                     </div>
 
                     <div class="contract-box">
@@ -618,7 +607,6 @@
             </div>
         </section>
 
-        <!-- ÉVÉNEMENTS -->
         <section id="events">
             <h2 class="section-title">Événements LUMA</h2>
             <div class="cards-grid">
@@ -654,7 +642,6 @@
             </div>
         </section>
 
-        <!-- ROADMAP -->
         <section id="roadmap">
             <h2 class="section-title">Feuille de route</h2>
             <div class="cards-grid">
@@ -697,7 +684,6 @@
             </div>
         </section>
 
-        <!-- FAQ -->
         <section id="faq">
             <h2 class="section-title">FAQ – Questions fréquentes</h2>
             <div class="cards-grid">
@@ -755,7 +741,6 @@
             </div>
         </section>
 
-        <!-- LIENS & COMMUNAUTÉ -->
         <section id="links" class="links-section">
             <div class="links-card">
                 <h2 class="links-title translatable" data-en="Links & Community" data-fr="Liens & Communauté">Liens & Communauté</h2>
@@ -779,10 +764,14 @@
 
     <script>
         const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
-        const BSCSCAN_API_KEY  = 'SWCM6WAEYSX4YJS3SZP6EFXKQPM74K6N1Y';
+        // CLÉ API BSCSCAN: Assurez-vous que cette clé est valide et ne sera pas exposée publiquement si possible.
+        const BSCSCAN_API_KEY  = 'SWCM6WAEYSX4YJS3SZP6EFXKQPM74K6N1Y'; 
+        
+        // ** IMPORTANT: REMPLACER CECI AVEC LE VRAI NUMÉRO DE RECORD DE VOTRE NOUVEAU LOCK PINKLOCK **
+        const NEW_PINKLOCK_RECORD = '1234567';
 
         let lumaPriceUsd = null;
-        let lumaSupply   = null;
+        let lumaSupply   = null;
 
         /* --- LOGIQUE DE TRADUCTION --- */
         function setLanguage(lang) {
@@ -805,22 +794,22 @@
 
         /* --- TICKER --- */
         const barCoins = [
-            { id:"ethereum",     symbol:"ETH" },
-            { id:"binancecoin",  symbol:"BNB" },
-            { id:"solana",       symbol:"SOL" },
-            { id:"ripple",       symbol:"XRP" },
-            { id:"litecoin",     symbol:"LTC" },
+            { id:"ethereum",     symbol:"ETH" },
+            { id:"binancecoin",  symbol:"BNB" },
+            { id:"solana",       symbol:"SOL" },
+            { id:"ripple",       symbol:"XRP" },
+            { id:"litecoin",     symbol:"LTC" },
             { id:"bitcoin-cash", symbol:"BCH" },
-            { id:"dogecoin",     symbol:"DOGE" },
-            { id:"tron",         symbol:"TRX" },
-            { id:"bitcoin",      symbol:"BTC" }
+            { id:"dogecoin",     symbol:"DOGE" },
+            { id:"tron",         symbol:"TRX" },
+            { id:"bitcoin",      symbol:"BTC" }
         ];
 
         async function loadTicker() {
             try {
-                const ids  = barCoins.map(c => c.id).join(",");
-                const url  = "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd&include_24hr_change=true";
-                const res  = await fetch(url);
+                const ids  = barCoins.map(c => c.id).join(",");
+                const url  = "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd&include_24hr_change=true";
+                const res  = await fetch(url);
                 const data = await res.json();
                 const track = document.getElementById("ticker-track");
                 track.innerHTML = "";
@@ -828,9 +817,9 @@
                 barCoins.forEach(c => {
                     const info = data[c.id];
                     if (!info) return;
-                    const price  = info.usd;
+                    const price  = info.usd;
                     const change = info.usd_24h_change || 0;
-                    const cls    = change >= 0 ? "up" : "down";
+                    const cls    = change >= 0 ? "up" : "down";
                     const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
                     track.insertAdjacentHTML(
                         "beforeend",
@@ -844,7 +833,7 @@
 
                 // Insère LUMA au début si prix dispo
                 if (typeof window.lumaPriceForTicker === "number" && typeof window.lumaChangeForTicker === "number") {
-                    const lp  = window.lumaPriceForTicker;
+                    const lp  = window.lumaPriceForTicker;
                     const chg = window.lumaChangeForTicker;
                     const cls = chg >= 0 ? "up" : "down";
                     const changeStr = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%";
@@ -861,6 +850,10 @@
                 track.innerHTML += track.innerHTML;
             } catch (e) {
                 console.error("Ticker error:", e);
+                const track = document.getElementById("ticker-track");
+                if (track.textContent === "Chargement...") {
+                    track.textContent = "Erreur de chargement du Ticker.";
+                }
             }
         }
         loadTicker();
@@ -868,7 +861,7 @@
 
         /* --- PRIX LUMA --- */
         function formatLumaPrice(price) {
-            if (!isFinite(price) || price <= 0) return "Price unavailable";
+            if (!isFinite(price) || price <= 0) return "Prix non disponible";
             if (price >= 0.01) { return "$" + price.toFixed(4); }
             if (price < 0.01 && price > 0) {
                 let s = price.toFixed(10);
@@ -883,16 +876,17 @@
             if (!mcapEl) return;
             if (lumaPriceUsd && lumaSupply) {
                 const mcap = lumaPriceUsd * lumaSupply;
+                // Formatage des nombres en français (séparateur d'unités par espace)
                 mcapEl.textContent = "$" + mcap.toLocaleString("fr-FR", { maximumFractionDigits: 0 });
             }
         }
 
         async function loadLumaPrice() {
             const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
-            const priceEl  = document.getElementById("luma-price");
+            const priceEl  = document.getElementById("luma-price");
             const changeEl = document.getElementById("luma-change");
             try {
-                const res  = await fetch(url);
+                const res  = await fetch(url);
                 const data = await res.json();
                 const attr = data?.data?.attributes;
                 if (!attr) { return; }
@@ -900,7 +894,7 @@
                 const change = Number((attr.price_change_percentage && attr.price_change_percentage.h24) ?? attr.price_change_percentage_24h ?? 0);
 
                 lumaPriceUsd = price;
-                window.lumaPriceForTicker  = price;
+                window.lumaPriceForTicker  = price;
                 window.lumaChangeForTicker = change;
 
                 if (priceEl) {
@@ -925,44 +919,55 @@
         /* --- STATS LUMA LIVE (holders, supply) --- */
         async function loadLumaOnchainStats() {
             const holdersEl = document.getElementById('stat-holders');
-            const supplyEl  = document.getElementById('stat-supply');
-            const txEl      = document.getElementById('stat-tx-24h');
+            const supplyEl  = document.getElementById('stat-supply');
+            const txEl      = document.getElementById('stat-tx-24h');
 
+            // 1. Récupération du nombre de holders
             try {
                 const holdersUrl = `https://api.bscscan.com/api?module=token&action=tokenholdercount&contractaddress=${CONTRACT_ADDRESS}&apikey=${BSCSCAN_API_KEY}`;
-                const supplyUrl  = `https://api.bscscan.com/api?module=stats&action=tokensupply&contractaddress=${CONTRACT_ADDRESS}&apikey=${BSCSCAN_API_KEY}`;
-
-                const [holdersRes, supplyRes] = await Promise.all([
-                    fetch(holdersUrl),
-                    fetch(supplyUrl)
-                ]);
-
+                const holdersRes = await fetch(holdersUrl);
                 const holdersData = await holdersRes.json();
-                const supplyData  = await supplyRes.json();
-
+                
                 if (holdersData.status === "1" && holdersEl) {
                     const count = Number(holdersData.result);
-                    holdersEl.textContent = count.toLocaleString("fr-FR");
+                    // Formatage des nombres en français (séparateur de milliers par espace)
+                    holdersEl.textContent = count.toLocaleString("fr-FR"); 
                 }
-
+            } catch (e) {
+                console.error("LUMA Holders API error:", e);
+                if (holdersEl.textContent === "...") {
+                    holdersEl.textContent = "API Error";
+                }
+            }
+            
+            // 2. Récupération du Total Supply
+            try {
+                const supplyUrl  = `https://api.bscscan.com/api?module=stats&action=tokensupply&contractaddress=${CONTRACT_ADDRESS}&apikey=${BSCSCAN_API_KEY}`;
+                const supplyRes = await fetch(supplyUrl);
+                const supplyData  = await supplyRes.json();
+                
                 if (supplyData.status === "1" && supplyEl) {
                     const raw = Number(supplyData.result); // 18 décimales
                     const supply = raw / 1e18;
                     lumaSupply = supply;
+                    // Formatage des nombres en français (séparateur de milliers par espace)
                     supplyEl.textContent = supply.toLocaleString("fr-FR", { maximumFractionDigits: 0 }) + " LUMA";
                     updateMarketCap();
                 }
-
-                if (txEl) {
-                    // À brancher plus tard si BscScan expose un vrai total
-                    txEl.textContent = "—";
-                }
             } catch (e) {
-                console.error("LUMA stats error:", e);
+                console.error("LUMA Supply API error:", e);
+                if (supplyEl.textContent === "...") {
+                    supplyEl.textContent = "API Error";
+                }
+            }
+
+            // 3. Mise à jour des transferts (laisse à '—' en attendant une API facile)
+            if (txEl) {
+                txEl.textContent = "—";
             }
         }
         loadLumaOnchainStats();
-        setInterval(loadLumaOnchainStats, 300000); // toutes les 5 minutes
+        setInterval(loadLumaOnchainStats, 300000); // toutes les 5 minutes pour BscScan
 
         /* --- BOUTON "Add LUMA to MetaMask" --- */
         const addBtn = document.getElementById('add-luma-metamask');
