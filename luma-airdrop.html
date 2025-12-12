@@ -505,7 +505,9 @@
                     }
                 }
 
-                tokenContract = new web3.eth.Contract(ERC20_ABI, CONFIG.tokenAddress);
+                // Convertir l'adresse au format checksum valide
+                const checksumAddress = web3.utils.toChecksumAddress(CONFIG.tokenAddress);
+                tokenContract = new web3.eth.Contract(ERC20_ABI, checksumAddress);
 
                 document.getElementById('walletSection').style.display = 'none';
                 document.getElementById('airdropSection').style.display = 'block';
