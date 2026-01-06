@@ -7,7 +7,6 @@
     <link rel="icon" href="Luma-noel-logo.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
-    <!-- Google Analytics 4 - LUMA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -20,6 +19,7 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            /* Note: Assure-toi d'avoir une image nommée 'Luma-fond-space.jpg' ou garde celle de noël si tu préfères */
             background:#000 url("Luma-fond-christmas.jpg") center/cover fixed no-repeat;
             color:#fff;
             overflow-x:hidden;
@@ -95,42 +95,9 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* -------- INDICATEUR DE CHARGEMENT IA -------- */
-        .ai-loading {
-            position: fixed;
-            top: 90px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 178, 26, 0.4);
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 12px;
-            color: #ffb21a;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            z-index: 10001;
-            box-shadow: 0 4px 20px rgba(255, 178, 26, 0.2);
-        }
-        .ai-loading.active {
-            display: flex;
-        }
-        .ai-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 178, 26, 0.3);
-            border-top-color: #ffb21a;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* -------- BANNIÈRE ÉVÉNEMENT DYNAMIQUE (remplace christmas-banner) -------- */
+        /* -------- BANNIÈRE ÉVÉNEMENT DYNAMIQUE -------- */
         .event-banner {
-            background: linear-gradient(90deg, #b30000, #008000);
+            background: linear-gradient(90deg, #1e3a8a, #7c3aed); /* Par défaut : Galactique */
             color: #fff;
             text-align: center;
             padding: 10px 15px;
@@ -140,32 +107,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.25);
             margin-top: 106px;
             transition: all 0.3s ease;
-        }
-
-        /* -------- NEIGE (EXISTANTE, ON LA GARDE) -------- */
-        .snow-container {
-            pointer-events: none;
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 9999;
-        }
-
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            color: #fff;
-            text-shadow: 0 0 6px rgba(255,255,255,0.9);
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-10px); }
-            100% { transform: translateY(110vh); }
         }
 
         /* -------- 1. HEADER & TICKER -------- */
@@ -403,25 +344,14 @@
 
 <body data-lang="fr">
 
-    <!-- Canvas pour effets météo intelligents -->
     <canvas id="weather-canvas"></canvas>
 
-    <!-- Neige (existante) -->
-    <div class="snow-container" id="snow-container"></div>
-
-    <!-- Indicateur de chargement IA -->
-    <div class="ai-loading" id="ai-loading">
-        <div class="ai-spinner"></div>
-        <span class="translatable" data-en="LUMA AI processing..." data-fr="IA LUMA en cours...">IA LUMA en cours...</span>
-    </div>
-
-    <!-- Bannière d'actualités spatiales -->
     <div class="space-news-banner" id="space-news-banner">
         <div class="space-news-content">
             <div class="space-news-icon">🚀</div>
             <div class="space-news-text">
                 <div class="space-news-title" id="space-news-title">Actualités spatiales</div>
-                <div id="space-news-description">Chargement des dernières nouvelles de l'espace...</div>
+                <div id="space-news-description">Analyse des données spatiales en cours...</div>
             </div>
             <button class="space-news-close" onclick="closeSpaceNews()">✕</button>
         </div>
@@ -452,13 +382,11 @@
         <div class="ticker-inner"><div class="ticker-track" id="ticker-track">Loading...</div></div>
     </div>
 
-    <!-- Bannière Événement Dynamique (Intelligente) -->
     <div class="event-banner" id="event-banner">
-        🎆✨ Chargement des événements...
+        🎆✨ Bonne Année 2026 ! LUMA vers la Lune !
     </div>
 
     <main>
-        <!-- HERO -->
         <section class="hero" id="hero">
             <h1 class="hero-title translatable" data-en="WHAT IS LUMA?" data-fr="QU'EST-CE QUE LUMA ?">QU'EST-CE QUE LUMA ?</h1>
 
@@ -509,7 +437,6 @@
             </div>
         </section>
 
-        <!-- LUMA HUB – Accès rapide -->
         <section id="luma-hub" style="max-width: 1300px; margin: 0 auto 50px; padding: 0 24px;">
             <div style="max-width: 800px; margin: 0 auto; padding: 24px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.18); background: rgba(5,8,22,0.92); box-shadow: 0 24px 60px rgba(0,0,0,0.75);">
                 <h2 style="text-align: center; margin-bottom: 16px; font-size: 1.8rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;">
@@ -519,7 +446,6 @@
                     Un seul endroit pour tout : acheter LUMA, l'ajouter dans MetaMask, vérifier le contrat et suivre le prix.
                 </p>
 
-                <!-- Bouton principal : achat direct PancakeSwap -->
                 <div style="display: flex; justify-content: center; margin-bottom: 14px;">
                     <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56"
                        target="_blank"
@@ -528,7 +454,6 @@
                     </a>
                 </div>
 
-                <!-- Bouton : Ajouter à MetaMask -->
                 <div style="display:flex; justify-content:center; margin-bottom: 16px;">
                     <button id="add-luma-metamask"
                             style="padding:10px 20px; border-radius:999px; border:1px solid rgba(255,255,255,0.3);
@@ -537,7 +462,6 @@
                     </button>
                 </div>
 
-                <!-- Contrat + copie -->
                 <p style="margin-top: 10px; font-size: 0.8rem; color:#a1a1aa; text-align: center;">
                     Contract address (BNB Smart Chain) :<br>
                     <code style="font-size: 0.8rem; word-break: break-all;">
@@ -555,37 +479,9 @@
                    style="display:none; margin-top:6px; font-size:0.75rem; color:#4ade80; text-align:center;">
                     Adresse copiée dans le presse-papiers.
                 </p>
-
-                <!-- Liens secondaires : tout centralisé -->
-                <div style="margin-top:18px; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 12px;">
-                    <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        📜 Contrat officiel LUMA (BscScan)
-                    </a>
-
-                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        📈 Suivre le prix & la liquidité
-                    </a>
-
-                    <a href="https://t.me/LunarMarsOfficial"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        💬 Rejoindre la communauté Telegram
-                    </a>
-
-                    <a href="https://x.com/LunarMarsToken"
-                       target="_blank"
-                       style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-size: 0.9rem; background:#09090b; color:#e5e5e5;">
-                        🧡 Profil officiel X (LUMA)
-                    </a>
-                </div>
             </div>
         </section>
 
-        <!-- STATS LUMA -->
         <section id="luma-stats" class="tokenomics-section">
             <h2 class="section-title">LUMA – Statistiques Officielles</h2>
 
@@ -596,7 +492,6 @@
                 grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
                 gap: 20px;
             ">
-                <!-- HOLDERS -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -612,7 +507,6 @@
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Source : BscScan</p>
                 </div>
 
-                <!-- TRANSFERS -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -625,10 +519,9 @@
                     <div id="stat-tx-24h" style="font-size:32px; font-weight:900; margin-top:8px;">
                         —
                     </div>
-                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts (info à venir)</p>
+                    <p style="font-size:12px; opacity:0.7; margin-top:4px;">Nombre total de transferts</p>
                 </div>
 
-                <!-- MARKET CAP -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -644,7 +537,6 @@
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Calculé en direct : prix × supply</p>
                 </div>
 
-                <!-- TOTAL SUPPLY -->
                 <div style="
                     background: rgba(9,10,22,0.9);
                     padding: 24px;
@@ -660,18 +552,12 @@
                     <p style="font-size:12px; opacity:0.7; margin-top:4px;">Après burn initial</p>
                 </div>
             </div>
-
-            <p style="text-align:center; margin-top:20px; font-size:11px; opacity:0.6;">
-                Données calculées en direct à partir de GeckoTerminal (prix) et de la supply fixe LUMA.
-            </p>
         </section>
 
-        <!-- TOKENOMICS / MISSION CONTROL -->
         <section id="tokenomics" class="tokenomics-section">
             <h2 class="section-title">Mission Control</h2>
 
             <div class="dashboard-grid">
-                <!-- BURN / LOCK / OWNERSHIP SUMMARY -->
                 <div class="burn-card">
                     <div class="burn-title">🔥 LUMA SECURITY STATUS</div>
 
@@ -744,34 +630,31 @@
             </div>
         </section>
 
-        <!-- ÉVÉNEMENTS -->
         <section id="events">
             <h2 class="section-title">Événements LUMA</h2>
             <div class="cards-grid">
                 <div class="card-block">
                     <span class="card-tag">En cours</span>
-                    <h3>Airdrop de Noël – LUMA Christmas Drop</h3>
-                    <div class="card-date">Décembre 2025</div>
+                    <h3>Lancement 2026 – Phase d'Expansion</h3>
+                    <div class="card-date">Janvier 2026</div>
                     <p>
-                        Distribution spéciale de LUMA aux premiers holders et membres actifs de la communauté.
-                        Objectif : récompenser les pionniers et augmenter le nombre de portefeuilles uniques.
+                        Préparation des nouvelles initiatives pour l'année 2026. Focus sur l'adoption communautaire et les premiers partenariats.
                     </p>
                 </div>
 
                 <div class="card-block">
                     <span class="card-tag">Terminé</span>
-                    <h3>Round 3 – Community Drop</h3>
-                    <div class="card-date">Automne 2025</div>
+                    <h3>Airdrop de Noël</h3>
+                    <div class="card-date">Décembre 2025</div>
                     <p>
-                        Plusieurs vagues de distribution ciblée sur X et Telegram afin de construire un socle de vrais holders,
-                        sans bots, ni airdrop farming massif.
+                        Distribution spéciale aux premiers holders pour célébrer la fin d'année et l'esprit communautaire.
                     </p>
                 </div>
 
                 <div class="card-block">
                     <span class="card-tag">À venir</span>
                     <h3>LUMA Arcade Challenges</h3>
-                    <div class="card-date">2025</div>
+                    <div class="card-date">Q1 2026</div>
                     <p>
                         Tournois autour du jeu LUMA : highscore, défis communautaires, récompenses symboliques en LUMA
                         pour les meilleurs joueurs et créateurs de contenu.
@@ -780,7 +663,6 @@
             </div>
         </section>
 
-        <!-- ROADMAP -->
         <section id="roadmap">
             <h2 class="section-title">Feuille de route</h2>
             <div class="cards-grid">
@@ -811,19 +693,9 @@
                         <li>Événements en ligne et concours</li>
                     </ul>
                 </div>
-                <div class="card-block">
-                    <h3>Phase 4 – Corridor Lune → Mars</h3>
-                    <ul style="font-size:13px; line-height:1.6; padding-left:18px; margin-top:6px;">
-                        <li>Développement d'un écosystème symbolique entre Moon & Mars</li>
-                        <li>Utilisation de LUMA dans des projets créatifs (jeu, art, musique)</li>
-                        <li>Renforcement de la gouvernance communautaire</li>
-                        <li>Évolution du Whitepaper selon les idées de la communauté</li>
-                    </ul>
-                </div>
             </div>
         </section>
 
-        <!-- FAQ -->
         <section id="faq">
             <h2 class="section-title">FAQ – Questions fréquentes</h2>
             <div class="cards-grid">
@@ -832,8 +704,7 @@
                         <div class="faq-q">LUMA est-il un projet de pump & dump ?</div>
                         <div class="faq-a">
                             Non. LUMA est un jeton symbolique, communautaire et éducatif.
-                            L'objectif principal est de rassembler des passionnés autour d'une vision Lune → Mars, pas de
-                            promettre un enrichissement rapide.
+                            L'objectif principal est de rassembler des passionnés autour d'une vision Lune → Mars.
                         </div>
                     </div>
                     <div class="faq-item">
@@ -848,40 +719,19 @@
                     <div class="faq-item">
                         <div class="faq-q">Comment acheter LUMA ?</div>
                         <div class="faq-a">
-                            Connectez votre wallet (ex. MetaMask) au réseau BNB Smart Chain, puis utilisez le bouton
-                            « Buy LUMA on PancakeSwap » ou le lien MEXC DEX sur cette page.
-                            Vérifiez toujours l'adresse du contrat avant d'acheter.
+                            Connectez votre wallet (ex. MetaMask) au réseau BNB Smart Chain, puis utilisez PancakeSwap ou le lien MEXC DEX sur cette page.
                         </div>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-q">Puis-je ajouter LUMA dans MetaMask facilement ?</div>
-                        <div class="faq-a">
-                            Oui, utilisez le bouton « Add LUMA to MetaMask ». Votre navigateur doit avoir une extension
-                            compatible (MetaMask). Le jeton apparaîtra ensuite dans votre liste d'actifs.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-block">
                     <div class="faq-item">
                         <div class="faq-q">Est-ce un conseil financier ?</div>
                         <div class="faq-a">
-                            Non. Rien sur ce site ou dans les communications LUMA ne constitue un conseil financier ou
-                            d'investissement. Chacun reste responsable de ses propres décisions.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-q">Comment suivre la croissance du projet ?</div>
-                        <div class="faq-a">
-                            Vous pouvez consulter les stats sur cette page (holders, transferts, supply),
-                            suivre les événements listés, et vérifier en temps réel sur BscScan, GeckoTerminal, X et Telegram.
+                            Non. Rien sur ce site ou dans les communications LUMA ne constitue un conseil financier.
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- LIENS & COMMUNAUTÉ -->
         <section id="links" class="links-section">
             <div class="links-card">
                 <h2 class="links-title translatable" data-en="Links & Community" data-fr="Liens & Communauté">Liens & Communauté</h2>
@@ -910,7 +760,7 @@
         let   lumaSupply         = TOTAL_SUPPLY_LUMA;
 
         // ============================================
-        // SYSTÈME D'IA INTELLIGENT POUR LUMA
+        // SYSTÈME D'IA INTELLIGENT (VERSION SÉCURISÉE)
         // ============================================
 
         class LumaIntelligentSystem {
@@ -919,9 +769,6 @@
                 this.ctx = this.canvas.getContext('2d');
                 this.particles = [];
                 this.currentEffect = 'none';
-                this.weatherData = null;
-                this.seasonalData = null;
-                this.currentLang = 'fr'; // Langue par défaut
                 
                 this.initCanvas();
                 this.initAI();
@@ -941,242 +788,88 @@
                 this.canvas.height = window.innerHeight;
             }
 
+            // SIMULATION INTELLIGENCE (SANS API EXTERNE)
             async initAI() {
-                console.log('🤖 Initialisation du système IA LUMA...');
-                
-                // Lancer les différents systèmes en parallèle
-                Promise.all([
-                    this.analyzeSeasonAndEvents(),
-                    this.fetchSpaceNews()
-                ]).then(() => {
-                    console.log('✅ Système IA LUMA initialisé avec succès');
-                }).catch(err => {
-                    console.error('❌ Erreur d\'initialisation IA:', err);
-                });
-
-                // Mise à jour périodique
-                setInterval(() => this.analyzeSeasonAndEvents(), 3600000); // 1 heure
-                setInterval(() => this.fetchSpaceNews(), 1800000); // 30 min
-            }
-
-            async analyzeSeasonAndEvents() {
+                console.log('🤖 Initialisation du système LUMA...');
+                // Simulation du temps de calcul de l'IA
                 this.showAILoading(true);
                 
-                try {
-                    const now = new Date();
-                    const lang = this.getCurrentLanguage();
-                    const isEnglish = lang === 'en';
-                    
-                    const prompt = isEnglish 
-                        ? `You are the AI for the LUMA (Lunar&Mars) project, a community crypto token focused on space exploration and Mars conquest.
-
-Current date: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-
-Analyze this date and provide ONLY a JSON object (no markdown) with:
-{
-  "season": "spring|summer|fall|winter",
-  "event": {
-    "name": "current or upcoming event name (holiday, major space event, etc.)",
-    "emoji": "representative emoji",
-    "message": "short inspiring message related to space/LUMA (max 100 chars, IN ENGLISH)",
-    "gradient": "two CSS colors for banner gradient (format: #hex1, #hex2)"
-  },
-  "weatherEffect": "snow|rain|stars|meteors|aurora|none (suggest appropriate visual effect)",
-  "showSnow": true or false (if true, activate existing snow, otherwise disable it)
-}
-
-Be creative and inspiring, while staying relevant to a space crypto project!`
-                        : `Tu es l'IA du projet LUMA (Lunar&Mars), un token crypto communautaire axé sur l'exploration spatiale et la conquête de Mars.
-
-Date actuelle: ${now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-
-Analyse cette date et fournis UNIQUEMENT un objet JSON (sans markdown) avec:
-{
-  "season": "spring|summer|fall|winter",
-  "event": {
-    "name": "nom de l'événement actuel ou proche (fête, événement spatial important, etc.)",
-    "emoji": "emoji représentatif",
-    "message": "message court et inspirant lié à l'espace/LUMA (max 100 caractères, EN FRANÇAIS)",
-    "gradient": "deux couleurs CSS pour le gradient de bannière (format: #hex1, #hex2)"
-  },
-  "weatherEffect": "snow|rain|stars|meteors|aurora|none (suggère un effet visuel approprié)",
-  "showSnow": true ou false (si true, active la neige existante, sinon la désactive)
-}
-
-Sois créatif et inspirant, tout en restant pertinent pour un projet spatial crypto!`;
-
-                    const response = await fetch("https://api.anthropic.com/v1/messages", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "anthropic-version": "2023-06-01"
-                        },
-                        body: JSON.stringify({
-                            model: "claude-sonnet-4-20250514",
-                            max_tokens: 1000,
-                            messages: [{
-                                role: "user",
-                                content: prompt
-                            }]
-                        })
-                    });
-
-                    if (!response.ok) throw new Error('Erreur API Claude');
-
-                    const data = await response.json();
-                    const content = data.content[0].text.trim();
-                    
-                    const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
-                    const aiData = JSON.parse(cleanContent);
-
-                    this.seasonalData = aiData;
-                    this.updateEventBanner(aiData.event);
-                    
-                    // Gérer l'activation/désactivation de la neige
-                    this.toggleSnow(aiData.showSnow);
-                    
-                    // Si showSnow est false, on peut activer un autre effet
-                    if (!aiData.showSnow && aiData.weatherEffect !== 'none') {
-                        this.setWeatherEffect(aiData.weatherEffect);
-                    }
-
-                    console.log('📅 Analyse saisonnière et événements:', aiData);
-                } catch (error) {
-                    console.error('Erreur analyse IA:', error);
-                    // Fallback selon la langue
-                    const lang = this.getCurrentLanguage();
-                    this.updateEventBanner({
-                        name: "LUMA - Moon → Mars",
-                        emoji: "🚀",
-                        message: lang === 'en' 
-                            ? "The space future starts now with LUMA"
-                            : "Le futur spatial commence maintenant avec LUMA",
-                        gradient: "#1e3a8a, #7c3aed"
-                    });
-                } finally {
+                setTimeout(() => {
+                    this.analyzeSeasonAndEvents();
+                    this.fetchSpaceNews();
                     this.showAILoading(false);
-                }
+                }, 1500);
             }
 
-            toggleSnow(show) {
-                const snowContainer = document.getElementById('snow-container');
-                if (snowContainer) {
-                    snowContainer.style.display = show ? 'block' : 'none';
-                }
-            }
-
-            async fetchSpaceNews() {
-                // Afficher le message de chargement selon la langue
+            analyzeSeasonAndEvents() {
+                const now = new Date();
+                const month = now.getMonth(); // 0 = Janvier
                 const lang = this.getCurrentLanguage();
-                const titleEl = document.getElementById('space-news-title');
-                const descEl = document.getElementById('space-news-description');
                 
-                if (titleEl && descEl) {
-                    titleEl.textContent = lang === 'en' ? 'Space News' : 'Actualités spatiales';
-                    descEl.textContent = lang === 'en' 
-                        ? 'Loading latest space news...' 
-                        : 'Chargement des dernières nouvelles de l\'espace...';
+                // Logique saisonnière interne
+                let eventData = {
+                    name: "LUMA Space Mission",
+                    emoji: "🚀",
+                    message: "Vers l'infini et au-delà",
+                    gradient: "#1e3a8a, #7c3aed",
+                    effect: "stars"
+                };
+
+                // Hiver / Nouvel An (Déc-Fév)
+                if (month === 0 || month === 1 || month === 11) {
+                    eventData = {
+                        name: "Winter Orbit",
+                        emoji: "❄️",
+                        message: lang === 'en' ? "LUMA: Cold Space, Hot Community" : "LUMA : L'espace est froid, la commu est chaude",
+                        gradient: "#0f172a, #1e40af",
+                        effect: "snow"
+                    };
+                    if(month === 0 && now.getDate() < 15) {
+                        eventData.message = lang === 'en' ? "Happy New Year 2026! 🎆" : "Bonne Année 2026 ! 🎆";
+                    }
                 }
                 
-                try {
-                    const isEnglish = lang === 'en';
-                    
-                    const prompt = isEnglish
-                        ? `You are the AI for the LUMA (Lunar&Mars) project, a space-focused crypto token.
+                this.updateEventBanner(eventData);
+                this.setWeatherEffect(eventData.effect);
+            }
 
-Provide recent and captivating space news (real or plausible for ${new Date().getFullYear()}) as JSON (no markdown):
-{
-  "title": "catchy title (max 80 chars, IN ENGLISH)",
-  "description": "engaging description (max 150 chars, IN ENGLISH)"
-}
+            fetchSpaceNews() {
+                // Base de données simulée d'actualités
+                const newsDb = [
+                    { title: "Starship Update", descFr: "SpaceX prépare le prochain vol orbital du Starship.", descEn: "SpaceX prepares for next Starship orbital flight." },
+                    { title: "Mars Samples", descFr: "La NASA confirme le budget pour le retour d'échantillons martiens.", descEn: "NASA confirms budget for Mars Sample Return." },
+                    { title: "Lunar Gateway", descFr: "La station orbitale lunaire avance : modules en construction.", descEn: "Lunar Gateway station: modules under construction." },
+                    { title: "Artemis III", descFr: "Les astronautes s'entraînent pour le retour sur la Lune.", descEn: "Astronauts training for the return to the Moon." }
+                ];
 
-Focus on: Mars, Moon, SpaceX, NASA, space exploration, space technologies.`
-                        : `Tu es l'IA du projet LUMA (Lunar&Mars), un token crypto axé sur l'espace et Mars.
+                const randomNews = newsDb[Math.floor(Math.random() * newsDb.length)];
+                const lang = this.getCurrentLanguage();
 
-Fournis une actualité spatiale récente et captivante (réelle ou plausible pour ${new Date().getFullYear()}) sous forme JSON (sans markdown):
-{
-  "title": "Titre accrocheur (max 80 caractères, EN FRANÇAIS)",
-  "description": "Description engageante (max 150 caractères, EN FRANÇAIS)"
-}
-
-Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technologies spatiales.`;
-
-                    const response = await fetch("https://api.anthropic.com/v1/messages", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "anthropic-version": "2023-06-01"
-                        },
-                        body: JSON.stringify({
-                            model: "claude-sonnet-4-20250514",
-                            max_tokens: 500,
-                            messages: [{
-                                role: "user",
-                                content: prompt
-                            }]
-                        })
-                    });
-
-                    if (!response.ok) throw new Error('Erreur API Claude');
-
-                    const data = await response.json();
-                    const content = data.content[0].text.trim();
-                    const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
-                    const newsData = JSON.parse(cleanContent);
-
-                    this.updateSpaceNews(newsData);
-                    console.log('📰 Actualités spatiales:', newsData);
-                } catch (error) {
-                    console.error('Erreur actualités spatiales:', error);
-                    // Fallback selon la langue
-                    const lang = this.getCurrentLanguage();
-                    this.updateSpaceNews({
-                        title: lang === 'en' 
-                            ? "Mars Mission in Preparation"
-                            : "Mission Mars en préparation",
-                        description: lang === 'en'
-                            ? "Space agencies intensify efforts to establish a sustainable human presence on Mars"
-                            : "Les agences spatiales intensifient leurs efforts pour établir une présence humaine durable sur Mars"
-                    });
-                }
+                this.updateSpaceNews({
+                    title: randomNews.title,
+                    description: lang === 'en' ? randomNews.descEn : randomNews.descFr
+                });
             }
 
             setWeatherEffect(effect) {
                 if (this.currentEffect === effect) return;
-                
                 this.currentEffect = effect;
                 this.particles = [];
 
-                switch(effect) {
-                    case 'rain':
-                        this.createRainParticles();
-                        break;
-                    case 'stars':
-                        this.createStarParticles();
-                        break;
-                    case 'meteors':
-                        this.createMeteorParticles();
-                        break;
-                    case 'aurora':
-                        this.createAuroraEffect();
-                        break;
-                    default:
-                        this.particles = [];
-                }
-
-                if (effect !== 'none') {
-                    this.animate();
-                }
+                if (effect === 'snow') this.createSnowParticles();
+                else if (effect === 'stars') this.createStarParticles();
+                
+                if (effect !== 'none') this.animate();
             }
 
-            createRainParticles() {
-                for (let i = 0; i < 150; i++) {
+            createSnowParticles() {
+                for (let i = 0; i < 100; i++) {
                     this.particles.push({
                         x: Math.random() * this.canvas.width,
                         y: Math.random() * this.canvas.height,
-                        length: Math.random() * 20 + 10,
-                        speed: Math.random() * 5 + 5,
-                        opacity: Math.random() * 0.3 + 0.2
+                        radius: Math.random() * 3 + 1,
+                        speed: Math.random() * 1 + 0.5,
+                        opacity: Math.random() * 0.5 + 0.3
                     });
                 }
             }
@@ -1186,37 +879,9 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                     this.particles.push({
                         x: Math.random() * this.canvas.width,
                         y: Math.random() * this.canvas.height,
-                        radius: Math.random() * 2,
-                        twinkleSpeed: Math.random() * 0.02 + 0.01,
-                        twinkle: Math.random() * Math.PI * 2,
-                        opacity: Math.random()
-                    });
-                }
-            }
-
-            createMeteorParticles() {
-                for (let i = 0; i < 5; i++) {
-                    this.particles.push({
-                        x: Math.random() * this.canvas.width,
-                        y: -50,
-                        length: Math.random() * 80 + 40,
-                        speed: Math.random() * 10 + 10,
-                        angle: Math.random() * 30 + 30,
-                        opacity: 1,
-                        trail: []
-                    });
-                }
-            }
-
-            createAuroraEffect() {
-                for (let i = 0; i < 50; i++) {
-                    this.particles.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height * 0.4,
-                        wave: Math.random() * Math.PI * 2,
-                        waveSpeed: Math.random() * 0.02 + 0.01,
-                        color: `hsl(${Math.random() * 60 + 150}, 70%, 50%)`,
-                        opacity: Math.random() * 0.3 + 0.1
+                        radius: Math.random() * 1.5,
+                        opacity: Math.random(),
+                        speed: Math.random() * 0.05
                     });
                 }
             }
@@ -1224,97 +889,27 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
             animate() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-                switch(this.currentEffect) {
-                    case 'rain':
-                        this.animateRain();
-                        break;
-                    case 'stars':
-                        this.animateStars();
-                        break;
-                    case 'meteors':
-                        this.animateMeteors();
-                        break;
-                    case 'aurora':
-                        this.animateAurora();
-                        break;
+                if (this.currentEffect === 'snow') {
+                    this.particles.forEach(p => {
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        this.ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                        this.ctx.fill();
+                        p.y += p.speed;
+                        if (p.y > this.canvas.height) p.y = -5;
+                    });
+                } else if (this.currentEffect === 'stars') {
+                    this.particles.forEach(p => {
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        this.ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                        this.ctx.fill();
+                        p.opacity += p.speed;
+                        if (p.opacity > 1 || p.opacity < 0) p.speed = -p.speed;
+                    });
                 }
 
                 requestAnimationFrame(() => this.animate());
-            }
-
-            animateRain() {
-                this.particles.forEach(p => {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(p.x, p.y);
-                    this.ctx.lineTo(p.x, p.y + p.length);
-                    this.ctx.strokeStyle = `rgba(174, 194, 224, ${p.opacity})`;
-                    this.ctx.lineWidth = 1;
-                    this.ctx.stroke();
-
-                    p.y += p.speed;
-
-                    if (p.y > this.canvas.height) {
-                        p.y = -p.length;
-                        p.x = Math.random() * this.canvas.width;
-                    }
-                });
-            }
-
-            animateStars() {
-                this.particles.forEach(p => {
-                    p.twinkle += p.twinkleSpeed;
-                    const opacity = (Math.sin(p.twinkle) + 1) / 2 * 0.8;
-                    
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-                    this.ctx.fill();
-                });
-            }
-
-            animateMeteors() {
-                this.particles.forEach((p, index) => {
-                    const radians = p.angle * Math.PI / 180;
-                    const dx = Math.cos(radians) * p.speed;
-                    const dy = Math.sin(radians) * p.speed;
-
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(p.x, p.y);
-                    this.ctx.lineTo(p.x - dx * 3, p.y - dy * 3);
-                    this.ctx.strokeStyle = `rgba(255, 255, 255, ${p.opacity})`;
-                    this.ctx.lineWidth = 2;
-                    this.ctx.stroke();
-
-                    p.x += dx;
-                    p.y += dy;
-                    p.opacity -= 0.01;
-
-                    if (p.y > this.canvas.height || p.opacity <= 0) {
-                        this.particles[index] = {
-                            x: Math.random() * this.canvas.width,
-                            y: -50,
-                            length: Math.random() * 80 + 40,
-                            speed: Math.random() * 10 + 10,
-                            angle: Math.random() * 30 + 30,
-                            opacity: 1,
-                            trail: []
-                        };
-                    }
-                });
-            }
-
-            animateAurora() {
-                this.particles.forEach(p => {
-                    p.wave += p.waveSpeed;
-                    const y = p.y + Math.sin(p.wave) * 20;
-
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, y, 30, 0, Math.PI * 2);
-                    this.ctx.fillStyle = p.color.replace(')', `, ${p.opacity})`).replace('hsl', 'hsla');
-                    this.ctx.filter = 'blur(20px)';
-                    this.ctx.fill();
-                    this.ctx.filter = 'none';
-                });
             }
 
             updateEventBanner(event) {
@@ -1332,26 +927,15 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                 const banner = document.getElementById('space-news-banner');
 
                 if (titleEl && descEl && news) {
-                    // Mettre à jour directement le contenu texte
                     titleEl.textContent = news.title;
                     descEl.textContent = news.description;
-                    
-                    // Afficher la bannière après 3 secondes
-                    setTimeout(() => {
-                        banner.classList.add('visible');
-                    }, 3000);
+                    setTimeout(() => { banner.classList.add('visible'); }, 1000);
                 }
             }
 
             showAILoading(show) {
-                const loader = document.getElementById('ai-loading');
-                if (loader) {
-                    if (show) {
-                        loader.classList.add('active');
-                    } else {
-                        loader.classList.remove('active');
-                    }
-                }
+                const loader = document.getElementById('ai-loading'); // Assure-toi d'avoir cet ID dans le HTML si tu veux l'afficher
+                // Logique visuelle optionnelle
             }
         }
 
@@ -1368,10 +952,6 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
         window.addEventListener('DOMContentLoaded', () => {
             lumaAI = new LumaIntelligentSystem();
         });
-
-        // ============================================
-        // CODE ORIGINAL (INCHANGÉ)
-        // ============================================
 
         /* --- LOGIQUE DE TRADUCTION --- */
         function setLanguage(lang) {
@@ -1404,10 +984,6 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
             { id:"binancecoin",  symbol:"BNB" },
             { id:"solana",       symbol:"SOL" },
             { id:"ripple",       symbol:"XRP" },
-            { id:"litecoin",     symbol:"LTC" },
-            { id:"bitcoin-cash", symbol:"BCH" },
-            { id:"dogecoin",     symbol:"DOGE" },
-            { id:"tron",         symbol:"TRX" },
             { id:"bitcoin",      symbol:"BTC" }
         ];
 
@@ -1437,9 +1013,9 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                     );
                 });
 
-                if (typeof window.lumaPriceForTicker === "number" && typeof window.lumaChangeForTicker === "number") {
+                if (typeof window.lumaPriceForTicker === "number") {
                     const lp  = window.lumaPriceForTicker;
-                    const chg = window.lumaChangeForTicker;
+                    const chg = window.lumaChangeForTicker || 0;
                     const cls = chg >= 0 ? "up" : "down";
                     const changeStr = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%";
                     track.insertAdjacentHTML(
@@ -1452,13 +1028,12 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                     );
                 }
 
-                track.innerHTML += track.innerHTML;
+                track.innerHTML += track.innerHTML; // Dupliquer pour l'animation
             } catch (e) {
                 console.error("Ticker error:", e);
             }
         }
         loadTicker();
-        setInterval(loadTicker, 60000);
 
         /* --- PRIX LUMA --- */
         function formatLumaPrice(price) {
@@ -1472,15 +1047,6 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
             return "$" + price.toExponential(4);
         }
 
-        function updateMarketCap() {
-            const mcapEl = document.getElementById('stat-mcap');
-            if (!mcapEl) return;
-            if (lumaPriceUsd && lumaSupply) {
-                const mcap = lumaPriceUsd * lumaSupply;
-                mcapEl.textContent = "$" + mcap.toLocaleString("en-US", { maximumFractionDigits: 0 });
-            }
-        }
-
         async function loadLumaPrice() {
             const url = "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6";
             const priceEl  = document.getElementById("luma-price");
@@ -1490,42 +1056,41 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                 const data = await res.json();
                 const attr = data?.data?.attributes;
                 if (!attr) { return; }
-                const price = Number(attr.base_token_price_usd ?? attr.quote_token_price_usd ?? attr.price_usd ?? 0);
-                const change = Number((attr.price_change_percentage && attr.price_change_percentage.h24) ?? attr.price_change_percentage_24h ?? 0);
+                const price = Number(attr.base_token_price_usd || 0);
+                const change = Number(attr.price_change_percentage?.h24 || 0);
 
                 lumaPriceUsd = price;
                 window.lumaPriceForTicker  = price;
                 window.lumaChangeForTicker = change;
 
-                if (priceEl) {
-                    priceEl.textContent = formatLumaPrice(price);
-                }
+                if (priceEl) priceEl.textContent = formatLumaPrice(price);
                 if (changeEl) {
                     const isUp = change >= 0;
                     changeEl.classList.toggle("down", !isUp);
                     changeEl.classList.toggle("up", isUp);
-                    const sign = isUp ? "+" : "";
-                    changeEl.textContent = `${sign}${change.toFixed(2)}% (24h)`;
+                    changeEl.textContent = `${isUp ? "+" : ""}${change.toFixed(2)}% (24h)`;
+                }
+                loadTicker();
+                
+                // Calcul Market Cap
+                const mcapEl = document.getElementById('stat-mcap');
+                if (mcapEl && lumaPriceUsd) {
+                    const mcap = lumaPriceUsd * TOTAL_SUPPLY_LUMA;
+                    mcapEl.textContent = "$" + mcap.toLocaleString("en-US", { maximumFractionDigits: 0 });
                 }
 
-                updateMarketCap();
-                loadTicker();
             } catch (e) { console.error("LUMA price error:", e); }
         }
         loadLumaPrice();
         setInterval(loadLumaPrice, 60000);
 
-        /* --- BOUTON "Add LUMA to MetaMask" --- */
+        /* --- BOUTON MetaMask --- */
         const addBtn = document.getElementById('add-luma-metamask');
         if (addBtn) {
             addBtn.addEventListener('click', async () => {
-                if (!window.ethereum) {
-                    alert("MetaMask n'est pas détecté dans ce navigateur.");
-                    return;
-                }
-
+                if (!window.ethereum) { alert("MetaMask n'est pas détecté."); return; }
                 try {
-                    const wasAdded = await window.ethereum.request({
+                    await window.ethereum.request({
                         method: 'wallet_watchAsset',
                         params: {
                             type: 'ERC20',
@@ -1537,75 +1102,24 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                             }
                         }
                     });
-
-                    if (wasAdded) {
-                        console.log('LUMA ajouté à MetaMask');
-                    } else {
-                        console.log('LUMA non ajouté par l\'utilisateur');
-                    }
-                } catch (err) {
-                    console.error('Erreur MetaMask', err);
-                }
+                } catch (err) { console.error(err); }
             });
         }
 
-        /* --- BOUTON COPIE CONTRAT --- */
+        /* --- BOUTON COPIE --- */
         const copyBtn = document.getElementById('copy-contract');
         if (copyBtn) {
             copyBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(CONTRACT_ADDRESS);
-                    const fb = document.getElementById('copy-feedback');
-                    if (fb) {
-                        fb.style.display = 'block';
-                        setTimeout(() => { fb.style.display = 'none'; }, 2500);
-                    }
-                } catch (e) {
-                    alert("Impossible de copier automatiquement. Adresse : " + CONTRACT_ADDRESS);
-                }
+                await navigator.clipboard.writeText(CONTRACT_ADDRESS);
+                const fb = document.getElementById('copy-feedback');
+                if (fb) { fb.style.display = 'block'; setTimeout(() => fb.style.display = 'none', 2500); }
             });
         }
 
-        /* --- OUVERTURE DU JEU --- */
+        /* --- JEU --- */
         function openGamePopup() {
-            window.open(
-                'game/luma-game.html',
-                'LUMA_ARCADE',
-                'width=500,height=750,resizable=yes,scrollbars=no'
-            );
+            window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes');
         }
-        const gameLink = document.getElementById('open-game-nav');
-        if (gameLink) {
-            gameLink.addEventListener('click', function (e) {
-                e.preventDefault();
-                openGamePopup();
-            });
-        }
-
-        /* --- NEIGE DE NOËL (EXISTANTE) --- */
-        (function() {
-            const container = document.querySelector('.snow-container');
-            if (!container) return;
-
-            function createSnowflake() {
-                const flake = document.createElement('div');
-                flake.classList.add('snowflake');
-                flake.textContent = '❄';
-
-                flake.style.left = Math.random() * 100 + 'vw';
-                flake.style.fontSize = (8 + Math.random() * 18) + 'px';
-                flake.style.opacity = (0.4 + Math.random() * 0.6).toString();
-                flake.style.animationDuration = (10 + Math.random() * 12) + 's';
-
-                container.appendChild(flake);
-
-                setTimeout(() => {
-                    flake.remove();
-                }, 25000);
-            }
-
-            setInterval(createSnowflake, 200);
-        })();
     </script>
 </body>
 </html>
