@@ -14,7 +14,7 @@
         gtag('config', 'G-Z4L8P2YSD7');
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,34 +42,45 @@
     <style>
         body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
         
-        /* --- STYLE TICKER WALL STREET --- */
+        /* --- STYLE TICKER WALL STREET (MODIFIÉ) --- */
         .ticker-container {
             width: 100%;
             overflow: hidden;
             white-space: nowrap;
-            background: #000; /* Fond noir pur pour contraste */
+            background: #000;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            height: 40px; /* Hauteur fixe */
+            height: 40px;
             display: flex;
             align-items: center;
         }
 
         .ticker-track {
             display: flex;
-            gap: 2rem;
-            /* Animation continue et rapide */
-            animation: scroll 20s linear infinite; 
+            gap: 3rem; /* Espacement plus large pour la lisibilité */
+            /* Animation RALENTIE (240s au lieu de 40s) pour gérer la longue liste */
+            animation: scroll 240s linear infinite; 
         }
         
-        /* Pause au survol pour lire */
         .ticker-container:hover .ticker-track {
             animation-play-state: paused;
         }
 
         @keyframes scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Astuce: On duplique le contenu, donc -50% suffit */
+            100% { transform: translateX(-50%); } 
         }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #888;
+        }
+        
+        .ticker-item strong { color: white; margin-right: 6px; }
+        .ticker-item .up { color: #10b981; }
+        .ticker-item .down { color: #ef4444; }
 
         /* --- UI ELEMENTS --- */
         .tech-card {
@@ -104,13 +115,12 @@
 
     <div id="weather-overlay"></div>
 
-    <div class="fixed top-0 w-full z-50 flex flex-col bg-[#050505]/95 backdrop-blur-xl">
-        
-        <div id="festival-bar" class="hidden w-full bg-gradient-to-r from-[#b30000] to-[#008000] border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
-            <span id="festival-text"></span>
-        </div>
+    <div id="festival-bar" class="hidden fixed top-0 w-full z-[70] bg-gradient-to-r from-[#b30000] to-[#008000] border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
+        <span id="festival-text"></span>
+    </div>
 
-        <nav class="w-full border-b border-white/10 h-16 flex items-center">
+    <div class="fixed top-0 w-full z-50 flex flex-col bg-[#050505]/95 backdrop-blur-xl">
+        <nav id="mainNav" class="w-full border-b border-white/10 h-16 flex items-center transition-all duration-300">
             <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <img src="Luma-noel-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
@@ -143,7 +153,7 @@
 
         <div class="ticker-container">
             <div id="ticker-track" class="ticker-track text-xs font-mono font-bold">
-                <span class="text-gray-500">Initialisation du flux financier...</span>
+                <span class="text-gray-500 pl-4">Initialisation du flux Top 20...</span>
             </div>
         </div>
     </div>
@@ -318,6 +328,10 @@
                         <div class="text-sm font-bold text-white">Noël Airdrop</div>
                         <p class="text-xs text-gray-400">Distribution aux premiers holders.</p>
                     </div>
+                    <div class="p-3 bg-white/5 border border-white/10 rounded-lg opacity-60">
+                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-gray-400 uppercase">Terminé</span><span class="text-[10px] text-gray-400">Automne 2025</span></div>
+                        <div class="text-sm font-bold text-white">Round 3 Drop</div>
+                    </div>
                     <div class="p-3 bg-white/5 border border-white/10 rounded-lg">
                         <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-brand uppercase">À Venir</span><span class="text-[10px] text-gray-400">2026</span></div>
                         <div class="text-sm font-bold text-white">LUMA Arcade</div>
@@ -380,7 +394,7 @@
         // --- TRADUCTION ---
         const translations = {
             fr: {
-                nav_dash: "DASHBOARD", nav_planetary: "PLANÉTAIRE", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "ACHETER LUMA",
+                nav_about: "À PROPOS", nav_stats: "STATS", nav_tokenomics: "TOKENOMICS", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "ACHETER LUMA",
                 system_nominal: "RÉSEAU BNB ACTIF", hero_title: "QU'EST-CE QUE LUMA ?", hero_subtitle: "LUMA EN UNE PHRASE : UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.",
                 hero_desc: "Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars.",
                 lbl_market_data: "DONNÉES MARCHÉ", lbl_price: "PRIX LUMA", lbl_env: "ENVIRONNEMENT", geo_wait: "En attente GPS...",
@@ -393,7 +407,7 @@
                 lbl_webb_disco: "DERNIÈRES DÉCOUVERTES (API)", footer_links: "LIENS", footer_data: "DONNÉES"
             },
             en: {
-                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "BUY LUMA",
+                nav_about: "ABOUT", nav_stats: "STATS", nav_tokenomics: "TOKENOMICS", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "BUY LUMA",
                 system_nominal: "BNB NETWORK ACTIVE", hero_title: "WHAT IS LUMA?", hero_subtitle: "LUMA IN ONE SENTENCE: A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE.",
                 hero_desc: "Lunar&Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars.",
                 lbl_market_data: "MARKET DATA", lbl_price: "LUMA PRICE", lbl_env: "LOCAL ENV", geo_wait: "Waiting GPS...",
@@ -434,44 +448,56 @@
 
             if (show) {
                 txt.textContent = message; bar.classList.remove("hidden");
+                // Le header est fixed, on ajuste juste la visibilité, le CSS fait le reste
             } else {
                 bar.classList.add("hidden");
             }
         }
 
-        // --- TICKER WALL STREET (LOOP) ---
-        const barCoins = [{id:"bitcoin", sym:"BTC"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}];
+        // --- TICKER WALL STREET (TOP 20 COINS) ---
+        // Liste élargie pour le ticker
+        const barCoins = [
+            {id:"bitcoin", sym:"BTC"}, {id:"ethereum", sym:"ETH"}, {id:"binancecoin", sym:"BNB"}, 
+            {id:"solana", sym:"SOL"}, {id:"ripple", sym:"XRP"}, {id:"cardano", sym:"ADA"},
+            {id:"avalanche-2", sym:"AVAX"}, {id:"dogecoin", sym:"DOGE"}, {id:"polkadot", sym:"DOT"},
+            {id:"chainlink", sym:"LINK"}, {id:"tron", sym:"TRX"}, {id:"matic-network", sym:"MATIC"},
+            {id:"shiba-inu", sym:"SHIB"}, {id:"litecoin", sym:"LTC"}, {id:"uniswap", sym:"UNI"},
+            {id:"bitcoin-cash", sym:"BCH"}, {id:"stellar", sym:"XLM"}, {id:"monero", sym:"XMR"}
+        ];
+
         async function fetchTicker() {
             try {
-                // Get LUMA Price first
+                // LUMA PRICE
                 const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
                 const dLuma = await rLuma.json(); 
                 const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
                 const c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
                 
-                // Update Main Card
                 const pStr = p < 0.01 ? '$'+p.toFixed(9) : '$'+p.toFixed(4);
                 $("livePrice").innerText = pStr;
                 $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
                 $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
                 $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
 
-                // Ticker Content
+                // TICKER COINS
                 const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
                 const dCoins = await rCoins.json();
                 
-                let html = `<div class="ticker-item"><span class="text-brand">LUMA ${pStr}</span> <span class="${c>=0?'text-green-500':'text-red-500'}">(${c.toFixed(2)}%)</span></div>`;
+                // Construire le HTML du ticker
+                let itemsHtml = `<div class="ticker-item"><strong class="text-brand">LUMA</strong> ${pStr} <span class="${c>=0?'up':'down'}">(${c.toFixed(2)}%)</span></div>`;
                 
-                barCoins.forEach(coin => { 
-                    const d = dCoins[coin.id]; 
-                    if(d) html += `<div class="ticker-item"><span class="text-gray-300">${coin.sym} $${d.usd}</span> <span class="${d.usd_24h_change>=0?'text-green-500':'text-red-500'}">(${d.usd_24h_change.toFixed(1)}%)</span></div>`; 
+                barCoins.forEach(coin => {
+                    const d = dCoins[coin.id];
+                    if(d) {
+                         const chg = d.usd_24h_change;
+                         itemsHtml += `<div class="ticker-item"><strong>${coin.sym}</strong> $${d.usd} <span class="${chg>=0?'up':'down'}">(${chg.toFixed(2)}%)</span></div>`;
+                    }
                 });
 
-                // DUPLICATE CONTENT 10 TIMES TO ENSURE LOOP
-                let fullHtml = "";
-                for(let i=0; i<10; i++) { fullHtml += html; }
-                
-                $("ticker-track").innerHTML = fullHtml;
+                // Injection du contenu dupliqué pour le scroll infini (10x pour être sûr de remplir l'écran)
+                let finalHtml = "";
+                for(let i=0; i<10; i++) finalHtml += itemsHtml;
+                $("ticker-track").innerHTML = finalHtml;
 
             } catch(e) {}
         }
@@ -537,14 +563,6 @@
                     if (c >= 95) mode = "storm";
                     applyWeatherEffect(mode);
                 } catch(e) {}
-                setInterval(async () => {
-                    try {
-                        const r = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
-                        const j = await r.json();
-                        $("iss-lat").innerText = `LAT ${j.latitude.toFixed(2)}`;
-                        $("iss-lon").innerText = `LON ${j.longitude.toFixed(2)}`;
-                    } catch(e){}
-                }, 5000);
             }, () => { $("geoStatus").innerText = "GPS OFF"; });
         }
 
@@ -571,7 +589,6 @@
         $("copyContractBtn").addEventListener('click', () => copy(CONTRACT_ADDRESS));
         $("copyContractFooter").addEventListener('click', (e) => { e.preventDefault(); copy(CONTRACT_ADDRESS); });
 
-        $("addMetaMask").addEventListener('click', async () => { if (window.ethereum) { try { await window.ethereum.request({ method: 'wallet_watchAsset', params: { type: 'ERC20', options: { address: CONTRACT_ADDRESS, symbol: 'LUMA', decimals: 18, image: window.location.origin + '/luma-logo.png' }}}); } catch (e) {} } else alert("MetaMask introuvable"); });
         function toggleExplorerMode() { alert("Mode Explorateur (3D) en cours de développement."); }
         function openGamePopup() { window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no'); }
     </script>
