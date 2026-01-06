@@ -16,7 +16,10 @@
     </script>
 
     <style>
+        /* --- RESET & BASE --- */
         * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; } /* Défilement fluide */
+        
         body {
             font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
             background:#000 url("Luma-fond-christmas.jpg") center/cover fixed no-repeat;
@@ -25,11 +28,12 @@
             position: relative;
         }
         a { color:inherit; text-decoration:none; }
+        section { scroll-margin-top: 100px; } /* Pour que le menu ne cache pas le titre */
 
         /* -------- CANVAS EFFETS MÉTÉO -------- */
         #weather-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9998;
+            pointer-events: none; z-index: 1; /* Derrière le contenu */
         }
 
         /* -------- BANNIÈRE ACTUALITÉS -------- */
@@ -57,6 +61,7 @@
             background: linear-gradient(90deg, #1e3a8a, #7c3aed);
             color: #fff; text-align: center; padding: 10px 15px;
             font-weight: 600; font-size: 0.95rem; margin-top: 106px;
+            position: relative; z-index: 2;
         }
 
         /* -------- HEADER & TICKER -------- */
@@ -73,7 +78,7 @@
 
         .nav { display:flex; gap:16px; font-size:12px; text-transform:uppercase; }
         .nav a { padding:4px 8px; color:#f5f5ff; opacity:0.85; cursor:pointer; }
-        .nav a:hover { opacity:1; }
+        .nav a:hover { opacity:1; background:rgba(255,255,255,0.1); border-radius:10px; }
 
         .lang-switch { display:flex; gap:8px; }
         .lang-switch button {
@@ -96,15 +101,15 @@
         @media (max-width:800px) { .ticker-track { animation:none; } .nav { display:none; } }
 
         /* -------- HERO & TERMINAL -------- */
-        main { min-height:100vh; }
-        .hero { max-width:1300px; margin:0 auto; padding:180px 24px 80px; }
+        main { min-height:100vh; position: relative; z-index: 5; }
+        .hero { max-width:1300px; margin:0 auto; padding:80px 24px 80px; }
         .hero-title {
             text-align:center; font-size:54px; font-weight:900;
             margin-bottom:30px; text-shadow:0 0 18px rgba(0,0,0,0.9);
         }
         .hero-grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:36px; }
 
-        /* NOUVEAU STYLE TERMINAL (CAPTIVANT) */
+        /* STYLE TERMINAL */
         .terminal-window {
             background: rgba(10, 10, 15, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -181,7 +186,7 @@
         <div class="space-news-content">
             <div class="space-news-icon">🚀</div>
             <div class="space-news-text">
-                <div class="space-news-title" id="space-news-title">Actualités spatiales</div>
+                <div class="space-news-title translatable" data-en="Space News" data-fr="Actualités Spatiales" id="space-news-title">Actualités spatiales</div>
                 <div id="space-news-description">Connexion satellite en cours...</div>
             </div>
             <button class="space-news-close" onclick="closeSpaceNews()">✕</button>
@@ -194,11 +199,11 @@
             <div class="brand-name">Lunar&Mars</div>
         </div>
         <nav class="nav">
-            <a href="#hero">Mission</a>
-            <a href="#tokenomics">Tokenomics</a>
-            <a href="#events">Événements</a>
-            <a href="#roadmap">Trajectoire</a>
-            <a href="#" id="open-game-nav">Jeu</a>
+            <a href="#hero" class="translatable" data-en="Mission" data-fr="Mission">Mission</a>
+            <a href="#tokenomics" class="translatable" data-en="Tokenomics" data-fr="Tokenomics">Tokenomics</a>
+            <a href="#events" class="translatable" data-en="Events" data-fr="Événements">Événements</a>
+            <a href="#roadmap" class="translatable" data-en="Roadmap" data-fr="Trajectoire">Trajectoire</a>
+            <a href="#" id="open-game-nav" class="translatable" data-en="Game" data-fr="Jeu">Jeu</a>
         </nav>
         <div class="lang-switch">
             <button id="lang-en" onclick="setLanguage('en')">EN</button>
@@ -228,25 +233,25 @@
                         <span id="typewriter"></span><span class="cursor">_</span>
                     </div>
                     <div class="hero-btns">
-                        <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="btn btn-primary">Acheter LUMA</a>
+                        <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="btn btn-primary translatable" data-en="Buy LUMA" data-fr="Acheter LUMA">Acheter LUMA</a>
                         <a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="btn btn-dark">Whitepaper</a>
                         <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
-                        <button type="button" class="btn btn-primary" onclick="openGamePopup()">🎮 Arcade</button>
+                        <button type="button" class="btn btn-primary translatable" data-en="🎮 Arcade" data-fr="🎮 Arcade" onclick="openGamePopup()">🎮 Arcade</button>
                     </div>
                 </article>
 
                 <div class="panel-box-right">
-                    <div style="font-size:12px; font-weight:700; color:#aaa; margin-bottom:10px;">DONNÉES DE VOL (LUMA/USD)</div>
+                    <div style="font-size:12px; font-weight:700; color:#aaa; margin-bottom:10px;" class="translatable" data-en="FLIGHT DATA (LUMA/USD)" data-fr="DONNÉES DE VOL (LUMA/USD)">DONNÉES DE VOL (LUMA/USD)</div>
                     <div id="luma-price" class="price-main">$0.00000000</div>
                     <div id="luma-change" style="font-weight:700; margin-bottom:20px;">0.00%</div>
 
                     <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J"
-                       target="_blank" class="btn btn-primary" style="width:100%">
+                       target="_blank" class="btn btn-primary translatable" style="width:100%" data-en="Buy on MEXC" data-fr="Acheter sur MEXC">
                        Acheter sur MEXC
                     </a>
                     
                     <div style="margin-top:20px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
-                        <button id="add-luma-metamask" style="width:100%; padding:10px; background:rgba(255,165,0,0.1); color:#ffa500; border:1px solid #ffa500; border-radius:8px; cursor:pointer;">
+                        <button id="add-luma-metamask" class="translatable" data-en="🦊 Add to MetaMask" data-fr="🦊 Ajouter à MetaMask" style="width:100%; padding:10px; background:rgba(255,165,0,0.1); color:#ffa500; border:1px solid #ffa500; border-radius:8px; cursor:pointer;">
                              🦊 Ajouter à MetaMask
                         </button>
                         <div style="margin-top:10px; font-size:11px; color:#666; text-align:center;">
@@ -258,7 +263,7 @@
             </div>
         </section>
 
-        <section class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); text-align:center;">
+        <section id="luma-stats" class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); text-align:center;">
              <div class="card-block">
                  <div style="color:#ffb21a; font-weight:800;">HOLDERS</div>
                  <div id="stat-holders" style="font-size:24px; font-weight:900;">600+</div>
@@ -269,52 +274,74 @@
              </div>
              <div class="card-block">
                  <div style="color:#ffb21a; font-weight:800;">MARKET CAP</div>
-                 <div id="stat-mcap" style="font-size:24px; font-weight:900;">Chargement...</div>
+                 <div id="stat-mcap" style="font-size:24px; font-weight:900;">...</div>
              </div>
         </section>
 
         <section id="tokenomics" class="tokenomics-section">
-            <h2 class="section-title">Mission Control</h2>
+            <h2 class="section-title translatable" data-en="MISSION CONTROL" data-fr="MISSION CONTROL">Mission Control</h2>
             <div class="dashboard-grid">
                 <div class="burn-card">
-                    <div style="color:#e64b5f; font-weight:800; letter-spacing:2px; margin-bottom:15px;">🔥 SÉCURITÉ & BURN</div>
-                    <p>✅ <strong>10% Burned:</strong> 22M+ LUMA détruits.</p>
-                    <p>✅ <strong>Liquidity Locked:</strong> 1 an sur PinkSale.</p>
-                    <p>✅ <strong>Ownership Renounced:</strong> Contrat immuable.</p>
+                    <div class="translatable" data-en="🔥 SECURITY & BURN" data-fr="🔥 SÉCURITÉ & BURN" style="color:#e64b5f; font-weight:800; letter-spacing:2px; margin-bottom:15px;">🔥 SÉCURITÉ & BURN</div>
+                    <p class="translatable" data-en="✅ <strong>10% Burned:</strong> 22M+ LUMA destroyed." data-fr="✅ <strong>10% Burned:</strong> 22M+ LUMA détruits.">✅ <strong>10% Burned:</strong> 22M+ LUMA détruits.</p>
+                    <p class="translatable" data-en="✅ <strong>Liquidity Locked:</strong> 1 year on PinkSale." data-fr="✅ <strong>Liquidity Locked:</strong> 1 an sur PinkSale.">✅ <strong>Liquidity Locked:</strong> 1 an sur PinkSale.</p>
+                    <p class="translatable" data-en="✅ <strong>Ownership Renounced:</strong> Immutable contract." data-fr="✅ <strong>Ownership Renounced:</strong> Contrat immuable.">✅ <strong>Ownership Renounced:</strong> Contrat immuable.</p>
                     <br>
                     <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" style="color:#fff; text-decoration:underline;">Vérifier sur BscScan -></a>
                 </div>
                 <div class="info-card">
                     <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; margin-bottom:10px;">
-                        <span>TAXE ACHAT</span> <span style="color:#27c93f; font-weight:bold;">0%</span>
+                        <span class="translatable" data-en="BUY TAX" data-fr="TAXE ACHAT">TAXE ACHAT</span> <span style="color:#27c93f; font-weight:bold;">0%</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; margin-bottom:10px;">
-                        <span>TAXE VENTE</span> <span style="color:#27c93f; font-weight:bold;">0%</span>
+                        <span class="translatable" data-en="SELL TAX" data-fr="TAXE VENTE">TAXE VENTE</span> <span style="color:#27c93f; font-weight:bold;">0%</span>
                     </div>
-                    <p style="font-size:13px; color:#aaa; margin-top:10px;">Un jeton purement communautaire. Pas de taxes cachées, pas de fonction mint.</p>
+                    <p class="translatable" data-en="A purely community token. No hidden taxes, no mint function." data-fr="Un jeton purement communautaire. Pas de taxes cachées, pas de fonction mint." style="font-size:13px; color:#aaa; margin-top:10px;">Un jeton purement communautaire. Pas de taxes cachées, pas de fonction mint.</p>
                 </div>
             </div>
         </section>
 
         <section id="events">
-            <h2 class="section-title">Calendrier de Mission</h2>
+            <h2 class="section-title translatable" data-en="MISSION CALENDAR" data-fr="CALENDRIER DE MISSION">Calendrier de Mission</h2>
             <div class="cards-grid">
                 <div class="card-block">
-                    <span style="background:#27c93f; color:#000; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:bold;">EN COURS</span>
-                    <h3>Expansion 2026</h3>
-                    <p>Développement de l'écosystème, partenariats stratégiques et recrutement de nouveaux cadets.</p>
+                    <span class="translatable" data-en="ACTIVE" data-fr="EN COURS" style="background:#27c93f; color:#000; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:bold;">EN COURS</span>
+                    <h3 class="translatable" data-en="2026 Expansion" data-fr="Expansion 2026">Expansion 2026</h3>
+                    <p class="translatable" data-en="Ecosystem development, strategic partnerships, and new cadet recruitment." data-fr="Développement de l'écosystème, partenariats stratégiques et recrutement de nouveaux cadets.">Développement de l'écosystème, partenariats stratégiques et recrutement de nouveaux cadets.</p>
                 </div>
                 <div class="card-block">
-                    <span style="background:#ffb21a; color:#000; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:bold;">BIENTÔT</span>
+                    <span class="translatable" data-en="SOON" data-fr="BIENTÔT" style="background:#ffb21a; color:#000; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:bold;">BIENTÔT</span>
                     <h3>LUMA Arcade League</h3>
-                    <p>Compétitions de high-score sur le jeu LUMA avec récompenses symboliques.</p>
+                    <p class="translatable" data-en="High-score competitions on LUMA Game with symbolic rewards." data-fr="Compétitions de high-score sur le jeu LUMA avec récompenses symboliques.">Compétitions de high-score sur le jeu LUMA avec récompenses symboliques.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap">
+            <h2 class="section-title translatable" data-en="FLIGHT TRAJECTORY" data-fr="TRAJECTOIRE DE VOL">Trajectoire de Vol</h2>
+            <div class="cards-grid">
+                <div class="card-block">
+                    <h3>Phase 1</h3>
+                    <ul style="margin-left:20px; font-size:13px; margin-top:10px;">
+                        <li class="translatable" data-en="Contract Deployment" data-fr="Déploiement Contrat">Déploiement Contrat</li>
+                        <li class="translatable" data-en="Burn & Lock" data-fr="Burn & Lock">Burn & Lock</li>
+                        <li class="translatable" data-en="Community Building" data-fr="Construction Communauté">Construction Communauté</li>
+                    </ul>
+                </div>
+                <div class="card-block">
+                    <h3>Phase 2</h3>
+                    <ul style="margin-left:20px; font-size:13px; margin-top:10px;">
+                        <li class="translatable" data-en="Website V2 (Terminal)" data-fr="Site V2 (Terminal)">Site V2 (Terminal)</li>
+                        <li class="translatable" data-en="LUMA Arcade Game" data-fr="Jeu Arcade LUMA">Jeu Arcade LUMA</li>
+                        <li class="translatable" data-en="Marketing Push" data-fr="Campagne Marketing">Campagne Marketing</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <section id="links" class="links-section">
             <div class="links-card" style="text-align:center;">
-                <h2 style="margin-bottom:20px;">Rejoignez l'équipage</h2>
+                <h2 style="margin-bottom:20px;" class="translatable" data-en="Join the Crew" data-fr="Rejoignez l'équipage">Rejoignez l'équipage</h2>
                 <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
                     <a href="https://x.com/LunarMarsToken" target="_blank" class="btn btn-dark">X (Twitter)</a>
                     <a href="https://t.me/LunarMarsOfficial" target="_blank" class="btn btn-dark">Telegram</a>
@@ -325,7 +352,7 @@
     </main>
 
     <footer>
-        LUMA est un projet communautaire symbolique. NFA (Not Financial Advice).<br>
+        <span class="translatable" data-en="LUMA is a community symbolic project. NFA (Not Financial Advice)." data-fr="LUMA est un projet communautaire symbolique. NFA (Not Financial Advice).">LUMA est un projet communautaire symbolique. NFA (Not Financial Advice).</span><br>
         © 2026 Lunar&Mars Project.
     </footer>
 
@@ -334,35 +361,77 @@
         const TOTAL_SUPPLY_LUMA  = 202845959;
         let   lumaPriceUsd       = null;
 
-        // --- 1. EFFET TYPEWRITER (TERMINAL) ---
-        const textToType = [
-            "> Initialisation du protocole LUMA...",
-            "> Scan de la Blockchain BNB... OK.",
-            "> Cible verrouillée : Transition LUNE -> MARS.",
-            "> Statut communautaire : ACTIF.",
-            "> Bienvenue à bord, Cadet.",
-            "> En attente d'ordres..."
-        ];
-        let lineIndex = 0;
-        let charIndex = 0;
-        const typeWriterElement = document.getElementById('typewriter');
+        // --- 1. GESTION LANGUES (CORRIGÉ) ---
+        function setLanguage(lang) {
+            document.body.setAttribute('data-lang', lang);
+            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+            document.getElementById('lang-'+lang).classList.add('active');
 
-        function typeLine() {
-            if (lineIndex < textToType.length) {
-                if (charIndex < textToType[lineIndex].length) {
-                    typeWriterElement.innerHTML += textToType[lineIndex].charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeLine, 25); // Vitesse de frappe
-                } else {
-                    typeWriterElement.innerHTML += "<br>";
-                    lineIndex++;
-                    charIndex = 0;
-                    setTimeout(typeLine, 300); // Pause entre les lignes
-                }
+            // Traduction des textes simples
+            const titleElement = document.getElementById('page-title');
+            if (titleElement) {
+                const newTitle = titleElement.getAttribute('data-' + lang);
+                if (newTitle) { titleElement.textContent = newTitle; }
             }
+            document.querySelectorAll('.translatable').forEach(el => {
+                const translation = el.getAttribute('data-' + lang);
+                if (translation) { el.innerHTML = translation; }
+            });
+
+            // Redémarrer le terminal dans la bonne langue
+            startTerminal(lang);
         }
 
-        // --- 2. IA SIMULÉE (MÉTÉO & NEWS) ---
+        // --- 2. EFFET TYPEWRITER (TERMINAL - MULTILINGUE) ---
+        let terminalInterval;
+        
+        function startTerminal(lang) {
+            const typeWriterElement = document.getElementById('typewriter');
+            if(!typeWriterElement) return;
+            
+            // Stop l'animation en cours
+            typeWriterElement.innerHTML = "";
+            let lineIndex = 0;
+            let charIndex = 0;
+            
+            const textFr = [
+                "> Initialisation du protocole LUMA...",
+                "> Scan de la Blockchain BNB... OK.",
+                "> Cible : Transition LUNE -> MARS.",
+                "> Statut communautaire : ACTIF.",
+                "> Bienvenue à bord, Cadet.",
+                "> En attente d'ordres..."
+            ];
+            
+            const textEn = [
+                "> Initializing LUMA Protocol...",
+                "> Scanning BNB Blockchain... OK.",
+                "> Target Locked: MOON -> MARS.",
+                "> Community Status: ACTIVE.",
+                "> Welcome aboard, Cadet.",
+                "> Awaiting orders..."
+            ];
+            
+            const textToType = (lang === 'en') ? textEn : textFr;
+
+            function typeLine() {
+                if (lineIndex < textToType.length) {
+                    if (charIndex < textToType[lineIndex].length) {
+                        typeWriterElement.innerHTML += textToType[lineIndex].charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeLine, 25);
+                    } else {
+                        typeWriterElement.innerHTML += "<br>";
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(typeLine, 300);
+                    }
+                }
+            }
+            typeLine();
+        }
+
+        // --- 3. IA SIMULÉE (MÉTÉO & NEWS) ---
         class LumaSystem {
             constructor() {
                 this.canvas = document.getElementById('weather-canvas');
@@ -388,7 +457,7 @@
                 if (month === 0 || month === 1 || month === 11) {
                     banner.innerHTML = "❄️ Orbite Hivernale - Bonne Année 2026 ! 🚀";
                     banner.style.background = "linear-gradient(90deg, #0f172a, #1e40af)";
-                    this.createStars(); // Effet étoilé
+                    this.createStars(); 
                 } else {
                     banner.innerHTML = "🚀 Route vers Mars - Systèmes nominaux";
                     this.createStars();
@@ -403,7 +472,6 @@
                     "Mars : De nouvelles traces d'eau glaciaire détectées."
                 ];
                 const randNews = news[Math.floor(Math.random() * news.length)];
-                document.getElementById('space-news-title').textContent = "Info Flash";
                 document.getElementById('space-news-description').textContent = randNews;
                 setTimeout(() => document.getElementById('space-news-banner').classList.add('visible'), 2000);
             }
@@ -424,14 +492,14 @@
                     this.ctx.beginPath();
                     this.ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
                     this.ctx.fill();
-                    p.y += p.speed; // Mouvement vers le bas (effet warp lent)
+                    p.y += p.speed; 
                     if(p.y > this.canvas.height) p.y = 0;
                 });
                 requestAnimationFrame(() => this.animate());
             }
         }
 
-        // --- 3. DATA & PRIX ---
+        // --- 4. DATA & PRIX ---
         async function loadData() {
             try {
                 // Ticker Coins
@@ -473,20 +541,14 @@
             } catch(e) { console.log("Data load error", e); }
         }
 
-        // --- 4. UTILITAIRES ---
+        // --- 5. UTILITAIRES ---
         function closeSpaceNews() { document.getElementById('space-news-banner').classList.remove('visible'); }
         function openGamePopup() { window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750'); }
-        function setLanguage(lang) {
-            document.body.setAttribute('data-lang', lang);
-            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
-            document.getElementById('lang-'+lang).classList.add('active');
-            // Logique de traduction simple ici si besoin
-        }
 
         // --- INIT ---
         window.addEventListener('DOMContentLoaded', () => {
             new LumaSystem(); // Lance l'IA visuelle
-            typeLine();       // Lance le terminal
+            setLanguage('fr'); // Lance le terminal et la langue par défaut
             loadData();       // Charge les prix
             setInterval(loadData, 60000);
 
