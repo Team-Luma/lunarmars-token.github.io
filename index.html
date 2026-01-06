@@ -14,7 +14,7 @@
         gtag('config', 'G-Z4L8P2YSD7');
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -24,6 +24,7 @@
                     fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
                     colors: {
                         bg: '#050505',
+                        panel: '#0F0F12',
                         brand: '#ffb21a',
                         webb: '#d4a017',
                         mars: '#ef4444',
@@ -41,6 +42,36 @@
     <style>
         body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
         
+        /* --- STYLE TICKER WALL STREET --- */
+        .ticker-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: #000; /* Fond noir pur pour contraste */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            height: 40px; /* Hauteur fixe */
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-track {
+            display: flex;
+            gap: 2rem;
+            /* Animation continue et rapide */
+            animation: scroll 20s linear infinite; 
+        }
+        
+        /* Pause au survol pour lire */
+        .ticker-container:hover .ticker-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Astuce: On duplique le contenu, donc -50% suffit */
+        }
+
+        /* --- UI ELEMENTS --- */
         .tech-card {
             background: rgba(15, 15, 18, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -63,45 +94,6 @@
         .lang-btn { cursor: pointer; opacity: 0.5; transition: opacity 0.3s; font-weight: bold; }
         .lang-btn.active { opacity: 1; color: #ffb21a; }
         
-        /* --- ANIMATION TICKER CORRIGÉE --- */
-        @keyframes scroll-left {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Déplace de 50% car le contenu est dupliqué */
-        }
-        
-        .ticker-wrap {
-            width: 100%;
-            overflow: hidden;
-            background: #0a0a0c;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            height: 32px;
-            display: flex;
-            align-items: center;
-            position: fixed;
-            top: 64px; /* Hauteur navbar */
-            z-index: 40;
-            backdrop-filter: blur(10px);
-        }
-
-        .ticker-move {
-            display: flex;
-            white-space: nowrap;
-            /* Animation continue de 40s */
-            animation: scroll-left 40s linear infinite; 
-        }
-        
-        .ticker-move:hover {
-            animation-play-state: paused;
-        }
-
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            padding: 0 2rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-        }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
@@ -112,51 +104,53 @@
 
     <div id="weather-overlay"></div>
 
-    <div id="festival-bar" class="hidden fixed top-0 w-full z-[70] bg-gradient-to-r from-[#b30000] to-[#008000] border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
-        <span id="festival-text"></span>
-    </div>
+    <div class="fixed top-0 w-full z-50 flex flex-col bg-[#050505]/95 backdrop-blur-xl">
+        
+        <div id="festival-bar" class="hidden w-full bg-gradient-to-r from-[#b30000] to-[#008000] border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
+            <span id="festival-text"></span>
+        </div>
 
-    <nav id="mainNav" class="fixed top-0 w-full z-50 border-b border-white/10 bg-[#050505]/90 backdrop-blur-xl h-16 flex items-center transition-all duration-300">
-        <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <img src="Luma-noel-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
-                <div class="hidden md:block">
-                    <span class="font-bold tracking-tight text-lg block leading-none text-white">Lunar&Mars</span>
-                    <span class="text-[10px] text-brand font-mono tracking-widest">MISSION CONTROL</span>
+        <nav class="w-full border-b border-white/10 h-16 flex items-center">
+            <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img src="Luma-noel-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
+                    <div class="hidden md:block">
+                        <span class="font-bold tracking-tight text-lg block leading-none text-white">Lunar&Mars</span>
+                        <span class="text-[10px] text-brand font-mono tracking-widest">MISSION CONTROL</span>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
+                    <a href="#hero" class="hover:text-white transition-colors" data-i18n="nav_about">À PROPOS</a>
+                    <a href="#stats" class="hover:text-white transition-colors" data-i18n="nav_stats">STATS</a>
+                    <a href="#tokenomics" class="hover:text-white transition-colors" data-i18n="nav_tokenomics">TOKENOMICS</a>
+                    <a href="#science" class="hover:text-white transition-colors text-webb" data-i18n="nav_science">SCIENCE</a>
+                    <a href="#roadmap" class="hover:text-white transition-colors" data-i18n="nav_roadmap">ROADMAP</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-xs font-mono border-r border-white/10 pr-4">
+                        <span class="lang-btn active" onclick="changeLanguage('fr')" id="btn-fr">FR</span>
+                        <span class="text-gray-600">/</span>
+                        <span class="lang-btn" onclick="changeLanguage('en')" id="btn-en">EN</span>
+                    </div>
+                    <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
+                        <span data-i18n="btn_buy">ACHETER LUMA</span>
+                    </a>
                 </div>
             </div>
+        </nav>
 
-            <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
-                <a href="#hero" class="hover:text-white transition-colors" data-i18n="nav_about">À PROPOS</a>
-                <a href="#stats" class="hover:text-white transition-colors" data-i18n="nav_stats">STATS</a>
-                <a href="#tokenomics" class="hover:text-white transition-colors" data-i18n="nav_tokenomics">TOKENOMICS</a>
-                <a href="#roadmap" class="hover:text-white transition-colors" data-i18n="nav_roadmap">ROADMAP</a>
-                <a href="#science" class="hover:text-white transition-colors text-webb" data-i18n="nav_science">SCIENCE</a>
-                <a href="#" onclick="openGamePopup()" class="text-brand hover:text-white flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> JEU</a>
+        <div class="ticker-container">
+            <div id="ticker-track" class="ticker-track text-xs font-mono font-bold">
+                <span class="text-gray-500">Initialisation du flux financier...</span>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 text-xs font-mono border-r border-white/10 pr-4">
-                    <span class="lang-btn active" onclick="changeLanguage('fr')" id="btn-fr">FR</span>
-                    <span class="text-gray-600">/</span>
-                    <span class="lang-btn" onclick="changeLanguage('en')" id="btn-en">EN</span>
-                </div>
-                <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
-                    <span data-i18n="btn_buy">ACHETER LUMA</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <div id="tickerBar" class="ticker-wrap">
-        <div class="ticker-move" id="ticker-track">
-            <div class="ticker-item text-gray-500">Connexion aux satellites financiers...</div>
         </div>
     </div>
 
-    <main id="mainContent" class="relative pt-32 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-12">
+    <main id="mainContent" class="relative pt-36 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-8">
 
-        <section id="hero" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <section id="hero" class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-4">
             
             <div class="md:col-span-12 lg:col-span-7 tech-card rounded-2xl p-8 relative overflow-hidden group">
                 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i data-lucide="orbit" class="w-40 h-40 text-brand"></i></div>
@@ -168,7 +162,7 @@
                     <h1 class="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight" data-i18n="hero_title">QU'EST-CE QUE LUMA ?</h1>
                     <div class="text-xs font-bold text-brand uppercase mb-4" data-i18n="hero_subtitle">LUMA EN UNE PHRASE : UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.</div>
                     
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6 h-40 overflow-y-auto pr-2 custom-scroll" data-i18n="hero_desc">
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6" data-i18n="hero_desc">
                         Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif.
                     </p>
 
@@ -182,7 +176,7 @@
             </div>
 
             <div class="md:col-span-12 lg:col-span-5 flex flex-col gap-4">
-                <div class="tech-card rounded-2xl p-6 flex-1">
+                <div class="tech-card rounded-2xl p-6 flex-1" id="stats">
                     <div class="data-label text-brand mb-2" data-i18n="lbl_market_data">MARKET DATA</div>
                     <div class="flex justify-between items-baseline mb-4">
                         <div id="livePrice" class="text-3xl font-mono font-bold text-white">$0.00000000</div>
@@ -261,44 +255,16 @@
             </div>
         </section>
 
-        <section id="roadmap" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 tech-card rounded-2xl p-8">
-                <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-wider" data-i18n="roadmap_title">FEUILLE DE ROUTE</h2>
-                <div class="space-y-6 border-l border-white/10 ml-2">
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-xs text-green-400 font-bold mb-1" data-i18n="phase_1">PHASE 1 - LANCEMENT ORBITAL</div><p class="text-sm text-gray-400" data-i18n="phase_1_desc">Déploiement contrat, Burn initial, Whitepaper v1, Canaux sociaux.</p></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand animate-pulse"></span><div class="text-xs text-brand font-bold mb-1" data-i18n="phase_2">PHASE 2 - CONSTRUCTION (EN COURS)</div><p class="text-sm text-gray-400" data-i18n="phase_2_desc">Airdrops ciblés, Site Officiel, Jeu Arcade, Suivi stats.</p></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_3">PHASE 3 - EXPANSION LUNAIRE</div><p class="text-sm text-gray-400" data-i18n="phase_3_desc">Partenariats Web3, Outils pédagogiques, Concours.</p></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_4">PHASE 4 - CORRIDOR LUNE → MARS</div><p class="text-sm text-gray-400" data-i18n="phase_4_desc">Écosystème symbolique, Utilité créative, Gouvernance.</p></div>
-                </div>
-            </div>
-
-            <div class="tech-card rounded-2xl p-6">
-                <h2 class="text-lg font-bold text-white mb-6 uppercase" data-i18n="events_title">ÉVÉNEMENTS</h2>
-                <div class="space-y-4">
-                    <div class="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-green-400 uppercase">En Cours</span><span class="text-[10px] text-gray-400">Déc 2025</span></div>
-                        <div class="text-sm font-bold text-white">Noël Airdrop</div>
-                        <p class="text-xs text-gray-400">Distribution aux premiers holders.</p>
-                    </div>
-                    <div class="p-3 bg-white/5 border border-white/10 rounded-lg opacity-60">
-                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-gray-400 uppercase">Terminé</span><span class="text-[10px] text-gray-400">Automne 2025</span></div>
-                        <div class="text-sm font-bold text-white">Round 3 Drop</div>
-                    </div>
-                    <div class="p-3 bg-white/5 border border-white/10 rounded-lg">
-                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-brand uppercase">À Venir</span><span class="text-[10px] text-gray-400">2026</span></div>
-                        <div class="text-sm font-bold text-white">LUMA Arcade</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <div id="science" class="border-t border-white/10 pt-10">
             <h2 class="text-2xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2"><i data-lucide="telescope" class="text-accent"></i> Deep Space Tracking</h2>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
                     <div class="absolute -right-6 -top-6 w-32 h-32 bg-webb/10 rounded-full blur-3xl"></div>
-                    <div class="flex justify-between items-center mb-4"><div class="flex items-center gap-3"><i data-lucide="aperture" class="text-webb"></i><h3 class="font-bold text-lg text-white">JAMES WEBB (JWST)</h3></div><span class="text-[10px] text-webb border border-webb/30 px-2 py-1 rounded bg-webb/5">LAGRANGE L2</span></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3"><i data-lucide="aperture" class="text-webb"></i><h3 class="font-bold text-lg text-white">JAMES WEBB (JWST)</h3></div>
+                        <span class="text-[10px] text-webb border border-webb/30 px-2 py-1 rounded bg-webb/5">LAGRANGE L2</span>
+                    </div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">TEMP MIRI</div><div class="data-value text-blue-200">-266.15 °C</div></div>
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">DISTANCE TERRE</div><div class="data-value text-webb">1.5M km</div></div>
@@ -332,6 +298,33 @@
                 </div>
             </div>
         </div>
+
+        <section id="roadmap" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 tech-card rounded-2xl p-8">
+                <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-wider" data-i18n="roadmap_title">FEUILLE DE ROUTE</h2>
+                <div class="space-y-6 border-l border-white/10 ml-2">
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-xs text-green-400 font-bold mb-1" data-i18n="phase_1">PHASE 1 - LANCEMENT ORBITAL</div><p class="text-sm text-gray-400" data-i18n="phase_1_desc">Déploiement contrat, Burn initial, Whitepaper v1, Canaux sociaux.</p></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand animate-pulse"></span><div class="text-xs text-brand font-bold mb-1" data-i18n="phase_2">PHASE 2 - CONSTRUCTION (EN COURS)</div><p class="text-sm text-gray-400" data-i18n="phase_2_desc">Airdrops ciblés, Site Officiel, Jeu Arcade, Suivi stats.</p></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_3">PHASE 3 - EXPANSION LUNAIRE</div><p class="text-sm text-gray-400" data-i18n="phase_3_desc">Partenariats Web3, Outils pédagogiques, Concours.</p></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_4">PHASE 4 - CORRIDOR LUNE → MARS</div><p class="text-sm text-gray-400" data-i18n="phase_4_desc">Écosystème symbolique, Utilité créative, Gouvernance.</p></div>
+                </div>
+            </div>
+
+            <div class="tech-card rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white mb-6 uppercase" data-i18n="events_title">ÉVÉNEMENTS</h2>
+                <div class="space-y-4">
+                    <div class="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-green-400 uppercase">En Cours</span><span class="text-[10px] text-gray-400">Déc 2025</span></div>
+                        <div class="text-sm font-bold text-white">Noël Airdrop</div>
+                        <p class="text-xs text-gray-400">Distribution aux premiers holders.</p>
+                    </div>
+                    <div class="p-3 bg-white/5 border border-white/10 rounded-lg">
+                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-brand uppercase">À Venir</span><span class="text-[10px] text-gray-400">2026</span></div>
+                        <div class="text-sm font-bold text-white">LUMA Arcade</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section id="faq">
             <h2 class="text-2xl font-bold text-white mb-6 uppercase" data-i18n="faq_title">FAQ</h2>
@@ -384,7 +377,7 @@
         const TOTAL_SUPPLY = 202845959;
         const $ = (id) => document.getElementById(id);
 
-        // --- 0. TRADUCTION ---
+        // --- TRADUCTION ---
         const translations = {
             fr: {
                 nav_dash: "DASHBOARD", nav_planetary: "PLANÉTAIRE", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "ACHETER LUMA",
@@ -428,7 +421,7 @@
         }
         changeLanguage(currentLang);
 
-        // --- 1. BANDEAU FÊTES ---
+        // --- FESTIVAL BAR ---
         function setFestivalBar() {
             const now = new Date();
             const month = now.getMonth(); const day = now.getDate();
@@ -441,19 +434,53 @@
 
             if (show) {
                 txt.textContent = message; bar.classList.remove("hidden");
-                nav.style.top = "32px"; ticker.style.top = "96px"; main.style.paddingTop = "12rem";
             } else {
-                bar.classList.add("hidden"); nav.style.top = "0px"; ticker.style.top = "64px"; main.style.paddingTop = "10rem";
+                bar.classList.add("hidden");
             }
         }
 
-        // --- 2. PLANETARY OPS ---
-        async function fetchMarsWeather() {
+        // --- TICKER WALL STREET (LOOP) ---
+        const barCoins = [{id:"bitcoin", sym:"BTC"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}];
+        async function fetchTicker() {
             try {
-                const res = await fetch("https://api.maas2.org/");
-                const data = await res.json();
-                $("mars-temp").innerText = `${data.max_temp}°C`;
-            } catch(e) { $("mars-temp").innerText = "-63°C"; }
+                // Get LUMA Price first
+                const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
+                const dLuma = await rLuma.json(); 
+                const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
+                const c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
+                
+                // Update Main Card
+                const pStr = p < 0.01 ? '$'+p.toFixed(9) : '$'+p.toFixed(4);
+                $("livePrice").innerText = pStr;
+                $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
+                $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
+                $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
+
+                // Ticker Content
+                const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
+                const dCoins = await rCoins.json();
+                
+                let html = `<div class="ticker-item"><span class="text-brand">LUMA ${pStr}</span> <span class="${c>=0?'text-green-500':'text-red-500'}">(${c.toFixed(2)}%)</span></div>`;
+                
+                barCoins.forEach(coin => { 
+                    const d = dCoins[coin.id]; 
+                    if(d) html += `<div class="ticker-item"><span class="text-gray-300">${coin.sym} $${d.usd}</span> <span class="${d.usd_24h_change>=0?'text-green-500':'text-red-500'}">(${d.usd_24h_change.toFixed(1)}%)</span></div>`; 
+                });
+
+                // DUPLICATE CONTENT 10 TIMES TO ENSURE LOOP
+                let fullHtml = "";
+                for(let i=0; i<10; i++) { fullHtml += html; }
+                
+                $("ticker-track").innerHTML = fullHtml;
+
+            } catch(e) {}
+        }
+        fetchTicker(); setInterval(fetchTicker, 60000);
+
+        // --- PLANETARY & WEATHER ---
+        async function fetchMarsWeather() {
+            try { const res = await fetch("https://api.maas2.org/"); const data = await res.json(); $("mars-temp").innerText = `${data.max_temp}°C`; } 
+            catch(e) { $("mars-temp").innerText = "-63°C"; }
         }
         fetchMarsWeather();
 
@@ -465,13 +492,11 @@
             $("mars-dist").innerText = Math.floor(marsDist).toLocaleString();
             $("mars-light").innerText = `${((marsDist / 299792) / 60).toFixed(1)} min`;
             
-            // Voyager
             const startTimestamp = 1704067200000; const elapsed = (now - startTimestamp) / 1000;
             $("v1-dist").innerText = Math.floor(24400000000 + (elapsed * 17)).toLocaleString() + " km";
         }
         setInterval(updatePlanetaryData, 1000);
 
-        // --- 3. MÉTÉO VISUELLE ---
         let stopParticles = null;
         function clearWeatherOverlay() { $("weather-overlay").innerHTML = ""; }
         function spawnParticles(char, rateMs) {
@@ -492,18 +517,10 @@
             return () => clearInterval(timer);
         }
         function applyWeatherEffect(mode) {
-            clearWeatherOverlay();
-            if (stopParticles) stopParticles();
+            clearWeatherOverlay(); if (stopParticles) stopParticles();
             if (mode === "snow") stopParticles = spawnParticles("❄", 200);
             else if (mode === "rain") stopParticles = spawnParticles("💧", 80);
             else if (mode === "storm") stopParticles = spawnParticles("⚡", 300);
-        }
-
-        // --- 4. GENERAL APIs ---
-        function haversineKm(lat1, lon1, lat2, lon2) {
-            const R = 6371; const toRad = x => x * Math.PI / 180;
-            const dLat = toRad(lat2 - lat1); const dLon = toRad(lon2 - lon1);
-            return 2 * R * Math.asin(Math.sqrt(Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2));
         }
 
         if ("geolocation" in navigator) {
@@ -531,64 +548,30 @@
             }, () => { $("geoStatus").innerText = "GPS OFF"; });
         }
 
-        // --- 5. NEWS ---
+        // --- NEWS ---
         async function fetchSpaceNews() {
             try {
                 const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2");
                 const jWebb = await rWebb.json();
                 $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join('');
-                
-                const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=3");
-                const j = await r.json();
-                // Utilisation dans la section science pour filtrer par Webb, ou autre logique si besoin.
             } catch(e) {}
         }
         fetchSpaceNews();
 
-        // --- 6. UTILS ---
+        // --- UTILS ---
         function updateClocks() {
             const now = new Date();
             $("earth-clock").innerText = now.toISOString().split('T')[1].split('.')[0] + " UTC";
             const millisPerSol = 88775244; const sols = (now.getTime() - 947116800000) / millisPerSol;
-            const solDay = Math.floor(sols) + 44796;
-            $("mars-clock").innerText = `Sol ${solDay}`;
+            $("mars-clock").innerText = `Sol ${Math.floor(sols) + 44796}`;
         }
         setInterval(updateClocks, 1000);
 
-        const barCoins = [{id:"bitcoin", sym:"BTC"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}];
-        async function fetchMarket() {
-            try {
-                // LUMA PRICE
-                const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
-                const dLuma = await rLuma.json(); 
-                const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
-                const c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
-                
-                // Update DOM
-                const pStr = p < 0.01 ? '$'+p.toFixed(9) : '$'+p.toFixed(4);
-                $("livePrice").innerText = pStr;
-                $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '% (24h)';
-                $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
-                
-                // Market Cap
-                $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
-
-                // TICKER
-                const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
-                const dCoins = await rCoins.json();
-                let html = `<span class="font-bold text-brand">LUMA ${pStr}</span> <span class="mx-4 text-gray-600">|</span> `;
-                barCoins.forEach(coin => { const d = dCoins[coin.id]; if(d) html += `<span class="text-gray-300">${coin.sym} $${d.usd}</span> <span class="mx-4 text-gray-600">|</span> `; });
-                // Double pour l'animation
-                $("ticker-track").innerHTML = html + html; 
-            } catch(e){}
-        }
-        fetchMarket(); setInterval(fetchMarket, 60000);
-
-        // Copy
         function copy(text) { navigator.clipboard.writeText(text); alert("Copié !"); }
         $("copyContractBtn").addEventListener('click', () => copy(CONTRACT_ADDRESS));
         $("copyContractFooter").addEventListener('click', (e) => { e.preventDefault(); copy(CONTRACT_ADDRESS); });
 
+        $("addMetaMask").addEventListener('click', async () => { if (window.ethereum) { try { await window.ethereum.request({ method: 'wallet_watchAsset', params: { type: 'ERC20', options: { address: CONTRACT_ADDRESS, symbol: 'LUMA', decimals: 18, image: window.location.origin + '/luma-logo.png' }}}); } catch (e) {} } else alert("MetaMask introuvable"); });
         function toggleExplorerMode() { alert("Mode Explorateur (3D) en cours de développement."); }
         function openGamePopup() { window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no'); }
     </script>
