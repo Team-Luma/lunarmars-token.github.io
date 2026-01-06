@@ -30,7 +30,15 @@
                         mars: '#ef4444',
                         moon: '#e5e7eb',
                         quantum: '#8b5cf6',
-                        success: '#10b981'
+                        success: '#10b981',
+                        warning: '#f59e0b'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scroll-ticker': 'scroll 240s linear infinite',
+                    },
+                    keyframes: {
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } }
                     }
                 }
             }
@@ -42,72 +50,31 @@
     <style>
         body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
         
-        /* --- STYLE TICKER WALL STREET (MODIFIÉ) --- */
+        /* Ticker Wall Street */
         .ticker-container {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            background: #000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            height: 40px;
-            display: flex;
-            align-items: center;
+            width: 100%; overflow: hidden; white-space: nowrap; background: #000;
+            border-bottom: 1px solid rgba(255,255,255,0.1); height: 40px; display: flex; align-items: center;
         }
-
-        .ticker-track {
-            display: flex;
-            gap: 3rem; /* Espacement plus large pour la lisibilité */
-            /* Animation RALENTIE (240s au lieu de 40s) pour gérer la longue liste */
-            animation: scroll 240s linear infinite; 
-        }
-        
-        .ticker-container:hover .ticker-track {
-            animation-play-state: paused;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } 
-        }
-
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: #888;
-        }
-        
+        .ticker-track { display: flex; gap: 3rem; animation: scroll 240s linear infinite; }
+        .ticker-container:hover .ticker-track { animation-play-state: paused; }
+        .ticker-item { display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #888; }
         .ticker-item strong { color: white; margin-right: 6px; }
-        .ticker-item .up { color: #10b981; }
+        .ticker-item .up { color: #10b981; } 
         .ticker-item .down { color: #ef4444; }
 
-        /* --- UI ELEMENTS --- */
+        /* UI */
         .tech-card {
-            background: rgba(15, 15, 18, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            background: rgba(15, 15, 18, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px); transition: border-color 0.3s ease, transform 0.3s ease;
         }
         .tech-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
-
         .data-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 700; margin-bottom: 0.25rem; }
         .data-value { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: white; }
-        
-        .grid-bg {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
+        .grid-bg { background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 40px 40px; }
         #weather-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; }
-        
         .lang-btn { cursor: pointer; opacity: 0.5; transition: opacity 0.3s; font-weight: bold; }
         .lang-btn.active { opacity: 1; color: #ffb21a; }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #050505; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
     </style>
 </head>
 
@@ -115,12 +82,12 @@
 
     <div id="weather-overlay"></div>
 
-    <div id="festival-bar" class="hidden fixed top-0 w-full z-[70] bg-gradient-to-r from-[#b30000] to-[#008000] border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
-        <span id="festival-text"></span>
-    </div>
-
     <div class="fixed top-0 w-full z-50 flex flex-col bg-[#050505]/95 backdrop-blur-xl">
-        <nav id="mainNav" class="w-full border-b border-white/10 h-16 flex items-center transition-all duration-300">
+        <div id="top-banner" class="w-full bg-gradient-to-r from-red-900 to-red-800 border-b border-white/10 text-white text-[10px] font-mono text-center py-1 px-4">
+            <span data-i18n="disclaimer_short">⚠ AVERTISSEMENT : LUMA n’est pas un produit financier. Capital à risque.</span>
+        </div>
+
+        <nav class="w-full border-b border-white/10 h-16 flex items-center">
             <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <img src="Luma-noel-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
@@ -129,19 +96,16 @@
                         <span class="text-[10px] text-brand font-mono tracking-widest">MISSION CONTROL</span>
                     </div>
                 </div>
-
                 <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
-                    <a href="#hero" class="hover:text-white transition-colors" data-i18n="nav_about">À PROPOS</a>
+                    <a href="#whitepaper" class="hover:text-white transition-colors text-brand" data-i18n="nav_whitepaper">WHITEPAPER V1.1</a>
                     <a href="#stats" class="hover:text-white transition-colors" data-i18n="nav_stats">STATS</a>
                     <a href="#tokenomics" class="hover:text-white transition-colors" data-i18n="nav_tokenomics">TOKENOMICS</a>
                     <a href="#science" class="hover:text-white transition-colors text-webb" data-i18n="nav_science">SCIENCE</a>
                     <a href="#roadmap" class="hover:text-white transition-colors" data-i18n="nav_roadmap">ROADMAP</a>
                 </div>
-
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2 text-xs font-mono border-r border-white/10 pr-4">
                         <span class="lang-btn active" onclick="changeLanguage('fr')" id="btn-fr">FR</span>
-                        <span class="text-gray-600">/</span>
                         <span class="lang-btn" onclick="changeLanguage('en')" id="btn-en">EN</span>
                     </div>
                     <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
@@ -158,68 +122,85 @@
         </div>
     </div>
 
-    <main id="mainContent" class="relative pt-36 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-8">
+    <main id="mainContent" class="relative pt-40 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-12">
 
-        <section id="hero" class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-4">
-            
-            <div class="md:col-span-12 lg:col-span-7 tech-card rounded-2xl p-8 relative overflow-hidden group">
-                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i data-lucide="orbit" class="w-40 h-40 text-brand"></i></div>
+        <section id="whitepaper" class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-4">
+            <div class="md:col-span-12 tech-card rounded-2xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="file-text" class="w-40 h-40 text-brand"></i></div>
+                
                 <div class="relative z-10">
-                    <div class="inline-flex items-center gap-2 px-2 py-1 rounded border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-mono mb-4">
-                        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
-                        <span data-i18n="status_active">SYSTÈMES NOMINAUX</span>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2 py-1 rounded bg-brand/10 border border-brand/30 text-brand text-[10px] font-mono">DOC OFFICIEL V1.1</span>
+                        <span class="text-gray-500 text-xs font-mono">2025-12-12</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight" data-i18n="hero_title">QU'EST-CE QUE LUMA ?</h1>
-                    <div class="text-xs font-bold text-brand uppercase mb-4" data-i18n="hero_subtitle">LUMA EN UNE PHRASE : UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.</div>
                     
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6" data-i18n="hero_desc">
-                        Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars. La vision du projet repose sur l'idée simple de représenter symboliquement le corridor imaginaire entre la Lune et Mars. LUMA n'est pas un actif spéculatif : il s'agit d'un jeton conceptuel, communautaire et éducatif.
-                    </p>
-
-                    <div class="flex flex-wrap gap-3">
-                        <a href="luma-airdrop.html" target="_blank" class="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center gap-2"><i data-lucide="gift" class="w-3 h-3"></i> AIRDROP</a>
-                        <a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="px-4 py-2 rounded border border-white/20 hover:bg-white/10 text-white text-xs font-bold transition flex items-center gap-2"><i data-lucide="file-text" class="w-3 h-3"></i> WHITEPAPER</a>
-                        <a href="https://t.me/LunarMarsOfficial" target="_blank" class="px-4 py-2 rounded bg-[#229ED9]/20 text-[#229ED9] border border-[#229ED9]/30 hover:bg-[#229ED9]/30 text-xs font-bold transition">TELEGRAM</a>
-                        <button id="copyContractBtn" class="px-4 py-2 rounded border border-white/20 hover:bg-white/10 text-gray-300 text-xs font-bold transition flex items-center gap-2"><i data-lucide="copy" class="w-3 h-3"></i> COPIER CONTRAT</button>
+                    <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 uppercase" data-i18n="hero_title">LUNAR&MARS (LUMA)</h1>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-white font-bold mb-2 flex items-center gap-2"><i data-lucide="target" class="w-4 h-4 text-accent"></i> <span data-i18n="vision_title">VISION & CONCEPT</span></h3>
+                            <p class="text-sm text-gray-400 leading-relaxed mb-4 text-justify" data-i18n="vision_text">
+                                Lunar&Mars repose sur un axe simple : Lune → Mars. Ce thème sert de cadre à un projet communautaire visant à apprendre les mécanismes blockchain, construire un actif numérique vérifiable et développer une présence publique cohérente. LUMA n’est pas un instrument de profit garanti, mais un projet vivant dont la valeur dépend de l'adoption.
+                            </p>
+                            
+                            <h3 class="text-white font-bold mb-2 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4 text-accent"></i> <span data-i18n="evolution_title">ÉVOLUTION (~30 JOURS)</span></h3>
+                            <ul class="text-sm text-gray-400 list-disc list-inside space-y-1 mb-4" data-i18n="evolution_list">
+                                <li>Déploiement sur BSC et contrat vérifié.</li>
+                                <li>Création du pool de liquidité et premières transactions organiques.</li>
+                                <li>Distribution communautaire (Airdrops).</li>
+                                <li>Lancement des canaux sociaux (X, Telegram).</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white/5 p-6 rounded-xl border border-white/10 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-white font-bold mb-4 flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-warning"></i> <span data-i18n="disclaimer_title">PRINCIPES DE TRANSPARENCE</span></h3>
+                                <p class="text-xs text-gray-400 leading-relaxed mb-4 italic" data-i18n="disclaimer_text">
+                                    LUMA n’est pas un produit financier offrant un rendement garanti. Les actifs numériques comportent des risques, incluant la volatilité et la perte totale du capital. Ce document n’est pas un conseil d’investissement.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-3 mt-4">
+                                <a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="flex-1 px-4 py-3 rounded bg-white text-black text-xs font-bold text-center hover:bg-gray-200 transition">LIRE WHITEPAPER COMPLET (PDF)</a>
+                                <button id="copyContractBtn" class="px-4 py-3 rounded border border-white/20 hover:bg-white/10 text-gray-300 text-xs font-bold transition flex items-center gap-2"><i data-lucide="copy" class="w-3 h-3"></i> 0xEA...ECC9</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="md:col-span-12 lg:col-span-5 flex flex-col gap-4">
-                <div class="tech-card rounded-2xl p-6 flex-1" id="stats">
-                    <div class="data-label text-brand mb-2" data-i18n="lbl_market_data">MARKET DATA</div>
-                    <div class="flex justify-between items-baseline mb-4">
-                        <div id="livePrice" class="text-3xl font-mono font-bold text-white">$0.00000000</div>
-                        <div id="liveChange" class="text-sm font-bold text-gray-500">0.00%</div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div class="bg-white/5 p-2 rounded text-center">
-                            <span class="block text-gray-500 text-[10px]">MARKET CAP</span>
-                            <span id="stat-mcap" class="font-mono text-white">--</span>
-                        </div>
-                        <div class="bg-white/5 p-2 rounded text-center">
-                            <span class="block text-gray-500 text-[10px]">HOLDERS</span>
-                            <span class="font-mono text-white">600+</span>
-                        </div>
-                    </div>
-                    <div class="mt-4 flex gap-2">
-                        <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" class="flex-1 py-2 text-center bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded text-xs font-bold hover:bg-blue-600/30">MEXC</a>
-                        <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" class="flex-1 py-2 text-center bg-white/5 text-gray-300 border border-white/10 rounded text-xs font-bold hover:bg-white/10">CHART</a>
+        <section id="stats" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-12 lg:col-span-8 tech-card rounded-2xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="data-label text-brand text-lg" data-i18n="lbl_market_data">DONNÉES MARCHÉ EN DIRECT</div>
+                    <div class="flex gap-2">
+                         <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank" class="px-3 py-1 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded text-[10px] font-bold hover:bg-blue-600/30">MEXC</a>
+                         <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" class="px-3 py-1 bg-white/5 text-gray-300 border border-white/10 rounded text-[10px] font-bold hover:bg-white/10">CHART</a>
                     </div>
                 </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div><div class="data-label">PRIX (USD)</div><div id="livePrice" class="text-2xl font-mono font-bold text-white">$0.00000000</div></div>
+                    <div><div class="data-label">VAR 24H</div><div id="liveChange" class="text-xl font-mono font-bold text-gray-500">0.00%</div></div>
+                    <div><div class="data-label">MARKET CAP</div><div id="stat-mcap" class="text-xl font-mono text-white">--</div><div class="text-[10px] text-gray-500">Estimé</div></div>
+                    <div><div class="data-label">DÉTENTEURS</div><div class="text-xl font-mono text-white">650+</div><div class="text-[10px] text-gray-500">BscScan</div></div>
+                </div>
+            </div>
 
-                <div class="tech-card rounded-2xl p-6 flex-1 relative overflow-hidden">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <div class="data-label mb-1">ENVIRONNEMENT LOCAL</div>
-                            <div id="wxLabel" class="text-xl font-mono font-bold text-white">--°C</div>
-                            <div id="geoStatus" class="text-[10px] text-gray-500 mt-1">GPS...</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="data-label mb-1">HEURE MARTIENNE</div>
-                            <div id="mars-clock" class="text-lg font-mono text-brand">Sol ---</div>
-                        </div>
+            <div class="md:col-span-12 lg:col-span-4 tech-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <div class="data-label mb-1" data-i18n="lbl_env">MÉTÉO LOCALE (TERRE)</div>
+                        <div id="wxLabel" class="text-3xl font-mono font-bold text-white">--°C</div>
+                        <div id="geoStatus" class="text-[10px] text-gray-500 mt-1">Recherche GPS...</div>
                     </div>
+                    <div class="text-right">
+                        <div class="data-label mb-1">HEURE MARTIENNE</div>
+                        <div id="mars-clock" class="text-xl font-mono text-brand">Sol ---</div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/5">
+                    <div class="data-label" data-i18n="lbl_iss_dist">DISTANCE ISS</div>
+                    <div id="issDistance" class="text-lg font-mono text-accent">-- km</div>
                 </div>
             </div>
         </section>
@@ -227,17 +208,29 @@
         <section id="tokenomics">
             <div class="flex items-center gap-2 mb-6">
                 <i data-lucide="shield-check" class="text-green-400"></i>
-                <h2 class="text-2xl font-bold text-white uppercase tracking-wider">Mission Control (Tokenomics)</h2>
+                <h2 class="text-2xl font-bold text-white uppercase tracking-wider" data-i18n="nav_tokenomics">TOKENOMICS & SÉCURITÉ</h2>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="tech-card rounded-2xl p-6 bg-gradient-to-br from-red-900/20 to-transparent border-red-900/30">
-                    <h3 class="text-brand font-bold text-sm mb-4 uppercase flex items-center gap-2"><i data-lucide="flame" class="w-4 h-4"></i> Sécurité & Burn</h3>
+                <div class="tech-card rounded-2xl p-6 bg-gradient-to-br from-red-900/10 to-transparent border-red-900/30">
+                    <h3 class="text-brand font-bold text-sm mb-4 uppercase flex items-center gap-2"><i data-lucide="flame" class="w-4 h-4"></i> Structure de l'Offre</h3>
                     <ul class="space-y-4 text-sm text-gray-300">
-                        <li class="flex justify-between border-b border-white/5 pb-2"><span>🔥 Burn (10%)</span><span class="font-mono text-white">22,538,440 LUMA</span></li>
-                        <li class="flex justify-between border-b border-white/5 pb-2"><span>🔒 Supply Verrouillé</span><span class="font-mono text-white">PinkLock V2</span></li>
-                        <li class="flex justify-between border-b border-white/5 pb-2"><span>💧 Liquidité LP</span><span class="text-green-400">Verrouillée 1 an</span></li>
-                        <li class="flex justify-between"><span>🧾 Ownership</span><span class="text-green-400">Renounced (Renoncé)</span></li>
+                        <li class="flex justify-between border-b border-white/5 pb-2">
+                            <span>Total Supply (Max)</span>
+                            <span class="font-mono text-white">202,845,958.7 LUMA</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/5 pb-2">
+                            <span>🔥 Burn (Détruit)</span>
+                            <span class="font-mono text-mars">~10% (22.5M)</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/5 pb-2">
+                            <span>🔒 Supply Verrouillé</span>
+                            <span class="font-mono text-white">PinkLock V2 (~10%)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>💧 Liquidité</span>
+                            <span class="text-green-400">Faible / En construction</span>
+                        </li>
                     </ul>
                     <div class="mt-4 grid grid-cols-2 gap-2">
                         <a href="https://bscscan.com/tx/0x4b8a548ebe8a599c66b59915d7413549a601ae5c2e6c5e7c0c0baf9214f15a17" target="_blank" class="text-[10px] text-center bg-white/5 py-2 rounded hover:bg-white/10 text-gray-400">Preuve Burn</a>
@@ -246,27 +239,67 @@
                 </div>
 
                 <div class="tech-card rounded-2xl p-6">
-                    <h3 class="text-accent font-bold text-sm mb-4 uppercase flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Données Contrat</h3>
+                    <h3 class="text-accent font-bold text-sm mb-4 uppercase flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Paramètres Contrat</h3>
                     <div class="space-y-4">
-                        <div>
-                            <div class="data-label">TOTAL SUPPLY (FIXE)</div>
-                            <div class="text-2xl font-mono text-white">202,845,959 LUMA</div>
-                        </div>
                         <div class="p-3 bg-black/40 rounded border border-white/10 font-mono text-[10px] text-gray-400 break-all text-center">
                             0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
                         </div>
                         <div class="flex justify-between text-center pt-2">
                             <div><div class="text-xl font-bold text-white">0%</div><div class="text-[10px] text-gray-500">TAXE ACHAT</div></div>
                             <div><div class="text-xl font-bold text-white">0%</div><div class="text-[10px] text-gray-500">TAXE VENTE</div></div>
-                            <div><div class="text-xl font-bold text-white">BEP-20</div><div class="text-[10px] text-gray-500">BNB CHAIN</div></div>
+                            <div><div class="text-xl font-bold text-green-400">OUI</div><div class="text-[10px] text-gray-500">RENOUNCED</div></div>
+                        </div>
+                        <div class="text-xs text-gray-400 italic text-center mt-2">
+                            "Plus le contrat est simple, plus il est facile à comprendre et à auditer."
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <section id="roadmap" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 tech-card rounded-2xl p-8">
+                <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-wider" data-i18n="roadmap_title">FEUILLE DE ROUTE (COURT/MOYEN TERME)</h2>
+                <div class="space-y-6 border-l border-white/10 ml-2">
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand animate-pulse"></span>
+                        <div class="text-xs text-brand font-bold mb-1" data-i18n="term_short">COURT TERME (2–6 SEMAINES)</div>
+                        <ul class="text-sm text-gray-400 list-disc list-inside space-y-1">
+                            <li data-i18n="roadmap_s1">Stabiliser et renforcer la liquidité.</li>
+                            <li data-i18n="roadmap_s2">Améliorer UX d'achat et guides visuels.</li>
+                            <li data-i18n="roadmap_s3">Standardiser l'identité (Site, X, Telegram).</li>
+                            <li data-i18n="roadmap_s4">Préparer dossier CoinGecko/CMC.</li>
+                        </ul>
+                    </div>
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
+                        <div class="text-xs text-white font-bold mb-1" data-i18n="term_mid">MOYEN TERME (2–6 MOIS)</div>
+                        <ul class="text-sm text-gray-400 list-disc list-inside space-y-1">
+                            <li data-i18n="roadmap_m1">Seuils de liquidité crédibles pour l'indexation.</li>
+                            <li data-i18n="roadmap_m2">Simplifier l'accès non-crypto (On-ramp).</li>
+                            <li data-i18n="roadmap_m3">Utilité légère (Éducation, NFTs thématiques).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-card rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white mb-6 uppercase" data-i18n="access_title">ACCESSIBILITÉ</h2>
+                <p class="text-xs text-gray-400 mb-4" data-i18n="access_desc">Le principal frein actuel est l'expérience d'achat. Nous travaillons à réduire les frictions.</p>
+                <div class="space-y-3">
+                    <button id="addMetaMask" class="w-full py-3 bg-[#f6851b]/10 border border-[#f6851b]/30 rounded text-[#f6851b] font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#f6851b]/20 transition">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-4 h-4"> AJOUTER À METAMASK
+                    </button>
+                    <div class="p-3 bg-white/5 rounded border border-white/10 text-center">
+                        <div class="text-[10px] text-gray-500 mb-1">CIBLE LONG TERME</div>
+                        <div class="text-sm font-bold text-white">CEX / ON-RAMP</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div id="science" class="border-t border-white/10 pt-10">
-            <h2 class="text-2xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2"><i data-lucide="telescope" class="text-accent"></i> Deep Space Tracking</h2>
+            <h2 class="text-2xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2"><i data-lucide="telescope" class="text-accent"></i> Modules Scientifiques</h2>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
@@ -289,7 +322,6 @@
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">TEMP SURFACE</div><div class="data-value text-white" id="mars-temp">--°C</div></div>
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">DISTANCE</div><div class="data-value text-mars" id="mars-dist">Calcul...</div></div>
                     </div>
-                    <div class="text-[10px] text-gray-500 font-mono">LIGHT TIME: <span id="mars-light">--</span></div>
                 </div>
             </div>
 
@@ -298,62 +330,27 @@
                     <div class="flex items-center gap-2 mb-2"><i data-lucide="satellite" class="text-blue-400"></i><span class="font-bold text-white">VOYAGER 1</span></div>
                     <div class="data-label">DISTANCE TERRE</div>
                     <div id="v1-dist" class="text-xl font-mono text-blue-200">Calcul...</div>
+                    <div class="text-[10px] text-gray-500 mt-2">Espace Interstellaire</div>
                 </div>
                 <div class="tech-card rounded-2xl p-6">
-                    <div class="flex items-center gap-2 mb-2"><i data-lucide="navigation" class="text-green-400"></i><span class="font-bold text-white">ISS LIVE</span></div>
-                    <div class="flex gap-4">
-                        <div><div class="data-label">LAT</div><div id="iss-lat" class="font-mono text-white">--</div></div>
-                        <div><div class="data-label">LON</div><div id="iss-lon" class="font-mono text-white">--</div></div>
-                    </div>
+                    <div class="flex items-center gap-2 mb-2"><i data-lucide="cpu" class="text-quantum"></i><span class="font-bold text-white">QUANTUM STATE</span></div>
+                    <div class="data-label">QUBIT COHERENCE</div>
+                    <div class="text-xl font-mono text-white">99.9%</div>
+                    <div class="text-[10px] text-gray-500 mt-2">Simulation Stable</div>
                 </div>
             </div>
         </div>
-
-        <section id="roadmap" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 tech-card rounded-2xl p-8">
-                <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-wider" data-i18n="roadmap_title">FEUILLE DE ROUTE</h2>
-                <div class="space-y-6 border-l border-white/10 ml-2">
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-xs text-green-400 font-bold mb-1" data-i18n="phase_1">PHASE 1 - LANCEMENT ORBITAL</div><p class="text-sm text-gray-400" data-i18n="phase_1_desc">Déploiement contrat, Burn initial, Whitepaper v1, Canaux sociaux.</p></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand animate-pulse"></span><div class="text-xs text-brand font-bold mb-1" data-i18n="phase_2">PHASE 2 - CONSTRUCTION (EN COURS)</div><p class="text-sm text-gray-400" data-i18n="phase_2_desc">Airdrops ciblés, Site Officiel, Jeu Arcade, Suivi stats.</p></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_3">PHASE 3 - EXPANSION LUNAIRE</div><p class="text-sm text-gray-400" data-i18n="phase_3_desc">Partenariats Web3, Outils pédagogiques, Concours.</p></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_4">PHASE 4 - CORRIDOR LUNE → MARS</div><p class="text-sm text-gray-400" data-i18n="phase_4_desc">Écosystème symbolique, Utilité créative, Gouvernance.</p></div>
-                </div>
-            </div>
-
-            <div class="tech-card rounded-2xl p-6">
-                <h2 class="text-lg font-bold text-white mb-6 uppercase" data-i18n="events_title">ÉVÉNEMENTS</h2>
-                <div class="space-y-4">
-                    <div class="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-green-400 uppercase">En Cours</span><span class="text-[10px] text-gray-400">Déc 2025</span></div>
-                        <div class="text-sm font-bold text-white">Noël Airdrop</div>
-                        <p class="text-xs text-gray-400">Distribution aux premiers holders.</p>
-                    </div>
-                    <div class="p-3 bg-white/5 border border-white/10 rounded-lg opacity-60">
-                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-gray-400 uppercase">Terminé</span><span class="text-[10px] text-gray-400">Automne 2025</span></div>
-                        <div class="text-sm font-bold text-white">Round 3 Drop</div>
-                    </div>
-                    <div class="p-3 bg-white/5 border border-white/10 rounded-lg">
-                        <div class="flex justify-between mb-1"><span class="text-[10px] font-bold text-brand uppercase">À Venir</span><span class="text-[10px] text-gray-400">2026</span></div>
-                        <div class="text-sm font-bold text-white">LUMA Arcade</div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <section id="faq">
             <h2 class="text-2xl font-bold text-white mb-6 uppercase" data-i18n="faq_title">FAQ</h2>
             <div class="space-y-4">
                 <div class="tech-card rounded-xl p-5">
                     <h4 class="font-bold text-brand mb-2">LUMA est-il un projet de pump & dump ?</h4>
-                    <p class="text-sm text-gray-400">Non. LUMA est un jeton symbolique, communautaire et éducatif. L’objectif est de rassembler autour d'une vision.</p>
+                    <p class="text-sm text-gray-400">Non. LUMA est un actif communautaire expérimental avec une priorité donnée à la simplicité et à la stabilité.</p>
                 </div>
                 <div class="tech-card rounded-xl p-5">
-                    <h4 class="font-bold text-white mb-2">Comment acheter LUMA ?</h4>
-                    <p class="text-sm text-gray-400">Connectez MetaMask à la BSC, puis utilisez PancakeSwap ou MEXC DEX avec l'adresse officielle.</p>
-                </div>
-                <div class="tech-card rounded-xl p-5">
-                    <h4 class="font-bold text-white mb-2">Est-ce un conseil financier ?</h4>
-                    <p class="text-sm text-gray-400">Non. Rien ici ne constitue un conseil financier. Chacun est responsable de ses décisions.</p>
+                    <h4 class="font-bold text-white mb-2">Risques & Limites ?</h4>
+                    <p class="text-sm text-gray-400">La liquidité est encore faible, ce qui implique une volatilité potentiellement élevée. Soyez prudents.</p>
                 </div>
             </div>
         </section>
@@ -368,17 +365,16 @@
                 <p class="mt-2">&copy; 2026 Lunar&Mars Project.</p>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3" data-i18n="footer_links">LIENS & COMMUNAUTÉ</h4>
+                <h4 class="text-white font-bold mb-3" data-i18n="footer_links">COMMUNAUTÉ</h4>
                 <ul class="space-y-2">
                     <li><a href="https://t.me/LunarMarsOfficial" class="hover:text-brand">Telegram</a></li>
                     <li><a href="https://x.com/LunarMarsToken" class="hover:text-brand">X (Twitter)</a></li>
-                    <li><a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" class="hover:text-brand">BscScan</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-white font-bold mb-3" data-i18n="footer_data">DONNÉES</h4>
                 <ul class="space-y-2">
-                    <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper</a></li>
+                    <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper V1.1</a></li>
                     <li><a href="#" id="copyContractFooter" class="hover:text-brand">Copier Contrat</a></li>
                 </ul>
             </div>
@@ -388,36 +384,40 @@
     <script>
         lucide.createIcons();
         const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
-        const TOTAL_SUPPLY = 202845959;
+        const TOTAL_SUPPLY = 202845958.7;
         const $ = (id) => document.getElementById(id);
 
         // --- TRADUCTION ---
         const translations = {
             fr: {
+                disclaimer_short: "⚠ AVERTISSEMENT : LUMA n’est pas un produit financier. Capital à risque.",
                 nav_about: "À PROPOS", nav_stats: "STATS", nav_tokenomics: "TOKENOMICS", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "ACHETER LUMA",
-                system_nominal: "RÉSEAU BNB ACTIF", hero_title: "QU'EST-CE QUE LUMA ?", hero_subtitle: "LUMA EN UNE PHRASE : UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.",
-                hero_desc: "Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il est conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l'établissement éventuel de colonies sur Mars.",
-                lbl_market_data: "DONNÉES MARCHÉ", lbl_price: "PRIX LUMA", lbl_env: "ENVIRONNEMENT", geo_wait: "En attente GPS...",
-                status_active: "SYSTÈMES NOMINAUX", events_title: "ÉVÉNEMENTS", roadmap_title: "FEUILLE DE ROUTE", faq_title: "FAQ",
-                footer_desc: "LUMA est un jeton communautaire symbolique sur BNB Smart Chain.",
-                phase_1: "PHASE 1", phase_1_desc: "Lancement Orbital (Terminé)",
-                phase_2: "PHASE 2", phase_2_desc: "Construction de l'Équipage (En cours)",
-                phase_3: "PHASE 3", phase_3_desc: "Expansion Lunaire",
-                phase_4: "PHASE 4", phase_4_desc: "Corridor Lune → Mars",
-                lbl_webb_disco: "DERNIÈRES DÉCOUVERTES (API)", footer_links: "LIENS", footer_data: "DONNÉES"
+                system_nominal: "RÉSEAU BNB ACTIF", hero_title: "LUNAR&MARS (LUMA)", hero_subtitle: "WHITEPAPER OFFICIEL V1.1 — DOCUMENT DÉTAILLÉ",
+                hero_desc: "LUMA est un jeton BEP-20 déployé sur la BNB Smart Chain. Initialement conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l’exploration de Mars, le projet a évolué vers un actif communautaire expérimental, public et transparent, avec une priorité donnée à la simplicité, à la stabilité et à l’accessibilité.",
+                vision_title: "VISION & CONCEPT", vision_text: "La vision de Lunar&Mars repose sur un axe simple : Lune → Mars comme fil conducteur. Ce thème sert de cadre à un projet communautaire visant à apprendre des mécanismes blockchain de base et construire un actif numérique simple.",
+                evolution_title: "ÉVOLUTION (~30 JOURS)", evolution_list: "<li>Déploiement du jeton sur BSC et identité stable.</li><li>Vérification du contrat sur l’explorateur.</li><li>Création d’un pool de liquidité et premières transactions.</li><li>Début de la distribution communautaire.</li>",
+                disclaimer_title: "TRANSPARENCE", disclaimer_text: "LUMA n’est pas conçu comme un instrument de profit garanti. Il s’agit d’un projet en construction dont la valeur éventuelle dépendra de l’adoption.",
+                lbl_market_data: "DONNÉES MARCHÉ EN DIRECT", lbl_env: "MÉTÉO LOCALE", lbl_iss_dist: "DISTANCE ISS",
+                nav_tokenomics: "TOKENOMICS", roadmap_title: "FEUILLE DE ROUTE",
+                term_short: "COURT TERME (2–6 SEMAINES)", roadmap_s1: "Stabiliser et renforcer la liquidité par ajouts progressifs.", roadmap_s2: "Améliorer la page d’achat (UX).", roadmap_s3: "Standardiser l’identité (Site, X, Telegram).", roadmap_s4: "Publier un Proof of Work mensuel.",
+                term_mid: "MOYEN TERME (2–6 MOIS)", roadmap_m1: "Atteindre des seuils de liquidité crédibles.", roadmap_m2: "Rendre l’accès non-crypto-native plus simple.", roadmap_m3: "Développer une utilité légère et cohérente.",
+                access_title: "ACCESSIBILITÉ", access_desc: "Le principal frein actuel est l'expérience d'achat. Amélioration prioritaire.",
+                faq_title: "FAQ", events_title: "ÉVÉNEMENTS", lbl_webb_disco: "DERNIÈRES DÉCOUVERTES", footer_links: "COMMUNAUTÉ", footer_data: "DONNÉES", footer_desc: "LUMA est un actif communautaire expérimental. Pas de conseil financier."
             },
             en: {
+                disclaimer_short: "⚠ WARNING: LUMA is not a financial product. Capital at risk.",
                 nav_about: "ABOUT", nav_stats: "STATS", nav_tokenomics: "TOKENOMICS", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "BUY LUMA",
-                system_nominal: "BNB NETWORK ACTIVE", hero_title: "WHAT IS LUMA?", hero_subtitle: "LUMA IN ONE SENTENCE: A COMMUNITY TOKEN DESIGNED FOR THE MOON → MARS FUTURE.",
-                hero_desc: "Lunar&Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain. It is designed as a symbolic representation of humanity's future transition from a stable presence on the Moon toward the ambition of establishing colonies on Mars.",
-                lbl_market_data: "MARKET DATA", lbl_price: "LUMA PRICE", lbl_env: "LOCAL ENV", geo_wait: "Waiting GPS...",
-                status_active: "SYSTEMS NOMINAL", events_title: "EVENTS", roadmap_title: "ROADMAP", faq_title: "FAQ",
-                footer_desc: "LUMA is a symbolic community token on BNB Smart Chain.",
-                phase_1: "PHASE 1", phase_1_desc: "Orbital Launch (Completed)",
-                phase_2: "PHASE 2", phase_2_desc: "Crew Building (Active)",
-                phase_3: "PHASE 3", phase_3_desc: "Lunar Expansion",
-                phase_4: "PHASE 4", phase_4_desc: "Moon → Mars Corridor",
-                lbl_webb_disco: "LATEST DISCOVERIES (API)", footer_links: "LINKS", footer_data: "DATA"
+                system_nominal: "BNB NETWORK ACTIVE", hero_title: "LUNAR&MARS (LUMA)", hero_subtitle: "OFFICIAL WHITEPAPER V1.1 — DETAILED DOCUMENT",
+                hero_desc: "Lunar&Mars (LUMA) is a BEP-20 token deployed on the BNB Smart Chain (BSC). Initially created as a symbolic representation of humanity’s transition from the Moon toward Mars exploration, the project has evolved into a public, transparent, experimental community asset, prioritizing simplicity, stability, and accessibility.",
+                vision_title: "VISION & CONCEPT", vision_text: "LUMA follows a simple narrative: Moon → Mars. This theme provides a foundation for learning basic blockchain mechanics and building a verifiable digital asset.",
+                evolution_title: "EVOLUTION (~30 DAYS)", evolution_list: "<li>Token deployment on BSC with stable identity.</li><li>Contract verification on explorer.</li><li>Active liquidity pool and first organic trades.</li><li>Early community distribution.</li>",
+                disclaimer_title: "TRANSPARENCY", disclaimer_text: "LUMA is not designed as a guaranteed profit instrument. It is a project under construction whose value depends on adoption.",
+                lbl_market_data: "LIVE MARKET DATA", lbl_env: "LOCAL WEATHER", lbl_iss_dist: "ISS DISTANCE",
+                nav_tokenomics: "TOKENOMICS", roadmap_title: "ROADMAP",
+                term_short: "SHORT TERM (2–6 WEEKS)", roadmap_s1: "Stabilize and strengthen liquidity.", roadmap_s2: "Improve buying UX.", roadmap_s3: "Standardize identity across channels.", roadmap_s4: "Publish monthly Proof of Work.",
+                term_mid: "MID TERM (2–6 MONTHS)", roadmap_m1: "Reach credible liquidity thresholds.", roadmap_m2: "Make non-native access simpler.", roadmap_m3: "Build light, coherent utility.",
+                access_title: "ACCESSIBILITY", access_desc: "Main friction is buying flow. Priority on reducing steps.",
+                faq_title: "FAQ", events_title: "EVENTS", lbl_webb_disco: "LATEST DISCOVERIES", footer_links: "COMMUNITY", footer_data: "DATA", footer_desc: "LUMA is an experimental community asset. No financial advice."
             }
         };
 
@@ -427,9 +427,15 @@
             localStorage.setItem('luma-lang', lang);
             document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
             document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            
+            // Text replacement
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) el.innerText = translations[lang][key];
+                if (translations[lang][key]) {
+                    // Check if it's a list (ul/ol) to use innerHTML for <li>
+                    if (el.tagName === 'UL') el.innerHTML = translations[lang][key];
+                    else el.innerText = translations[lang][key];
+                }
             });
             setFestivalBar();
         }
@@ -440,34 +446,27 @@
             const now = new Date();
             const month = now.getMonth(); const day = now.getDate();
             const bar = $("festival-bar"); const txt = $("festival-text");
-            const nav = $("mainNav"); const ticker = $("tickerBar"); const main = $("mainContent");
-            let message = "", show = false;
-
-            if (month === 0 && day <= 15) { message = currentLang === 'fr' ? "✨ BONNE ANNÉE 2026 !" : "✨ HAPPY NEW YEAR 2026!"; show = true; }
-            else if (month === 11 && day >= 20) { message = currentLang === 'fr' ? "🎅 LUMA Christmas Airdrop !" : "🎅 LUMA Christmas Airdrop!"; show = true; }
-
+            const show = (month === 0 && day <= 15) || (month === 11 && day >= 20);
+            
             if (show) {
-                txt.textContent = message; bar.classList.remove("hidden");
-                // Le header est fixed, on ajuste juste la visibilité, le CSS fait le reste
-            } else {
-                bar.classList.add("hidden");
-            }
+                let msg = (month === 0) 
+                    ? (currentLang==='fr' ? "✨ BONNE ANNÉE 2026 !" : "✨ HAPPY NEW YEAR 2026!") 
+                    : (currentLang==='fr' ? "🎅 LUMA Christmas Airdrop !" : "🎅 LUMA Christmas Airdrop!");
+                txt.textContent = msg; bar.classList.remove("hidden");
+            } else { bar.classList.add("hidden"); }
         }
 
-        // --- TICKER WALL STREET (TOP 20 COINS) ---
-        // Liste élargie pour le ticker
+        // --- TICKER WALL STREET (Top 20 + LUMA) ---
         const barCoins = [
-            {id:"bitcoin", sym:"BTC"}, {id:"ethereum", sym:"ETH"}, {id:"binancecoin", sym:"BNB"}, 
-            {id:"solana", sym:"SOL"}, {id:"ripple", sym:"XRP"}, {id:"cardano", sym:"ADA"},
-            {id:"avalanche-2", sym:"AVAX"}, {id:"dogecoin", sym:"DOGE"}, {id:"polkadot", sym:"DOT"},
-            {id:"chainlink", sym:"LINK"}, {id:"tron", sym:"TRX"}, {id:"matic-network", sym:"MATIC"},
-            {id:"shiba-inu", sym:"SHIB"}, {id:"litecoin", sym:"LTC"}, {id:"uniswap", sym:"UNI"},
-            {id:"bitcoin-cash", sym:"BCH"}, {id:"stellar", sym:"XLM"}, {id:"monero", sym:"XMR"}
+            {id:"bitcoin", sym:"BTC"}, {id:"ethereum", sym:"ETH"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}, {id:"ripple", sym:"XRP"},
+            {id:"cardano", sym:"ADA"}, {id:"avalanche-2", sym:"AVAX"}, {id:"dogecoin", sym:"DOGE"}, {id:"polkadot", sym:"DOT"}, {id:"chainlink", sym:"LINK"},
+            {id:"tron", sym:"TRX"}, {id:"matic-network", sym:"MATIC"}, {id:"shiba-inu", sym:"SHIB"}, {id:"litecoin", sym:"LTC"}, {id:"uniswap", sym:"UNI"},
+            {id:"bitcoin-cash", sym:"BCH"}, {id:"stellar", sym:"XLM"}, {id:"monero", sym:"XMR"}, {id:"cosmos", sym:"ATOM"}, {id:"ethereum-classic", sym:"ETC"}
         ];
 
         async function fetchTicker() {
             try {
-                // LUMA PRICE
+                // LUMA Price
                 const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
                 const dLuma = await rLuma.json(); 
                 const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
@@ -479,11 +478,10 @@
                 $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
                 $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
 
-                // TICKER COINS
+                // Top 20 Price
                 const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
                 const dCoins = await rCoins.json();
                 
-                // Construire le HTML du ticker
                 let itemsHtml = `<div class="ticker-item"><strong class="text-brand">LUMA</strong> ${pStr} <span class="${c>=0?'up':'down'}">(${c.toFixed(2)}%)</span></div>`;
                 
                 barCoins.forEach(coin => {
@@ -494,7 +492,7 @@
                     }
                 });
 
-                // Injection du contenu dupliqué pour le scroll infini (10x pour être sûr de remplir l'écran)
+                // Duplication pour scroll infini (10x)
                 let finalHtml = "";
                 for(let i=0; i<10; i++) finalHtml += itemsHtml;
                 $("ticker-track").innerHTML = finalHtml;
@@ -503,7 +501,7 @@
         }
         fetchTicker(); setInterval(fetchTicker, 60000);
 
-        // --- PLANETARY & WEATHER ---
+        // --- PLANETARY & SCIENCE ---
         async function fetchMarsWeather() {
             try { const res = await fetch("https://api.maas2.org/"); const data = await res.json(); $("mars-temp").innerText = `${data.max_temp}°C`; } 
             catch(e) { $("mars-temp").innerText = "-63°C"; }
@@ -512,43 +510,34 @@
 
         function updatePlanetaryData() {
             const now = Date.now();
+            // Mars Dist
             const marsPeriod = 779.94 * 24 * 3600 * 1000;
             const marsPhase = (now % marsPeriod) / marsPeriod;
             const marsDist = 225000000 + (Math.cos(marsPhase * Math.PI * 2) * 170000000);
             $("mars-dist").innerText = Math.floor(marsDist).toLocaleString();
-            $("mars-light").innerText = `${((marsDist / 299792) / 60).toFixed(1)} min`;
             
+            // Voyager
             const startTimestamp = 1704067200000; const elapsed = (now - startTimestamp) / 1000;
             $("v1-dist").innerText = Math.floor(24400000000 + (elapsed * 17)).toLocaleString() + " km";
+
+            // Mars Clock
+            const millisPerSol = 88775244; const sols = (now.getTime() - 947116800000) / millisPerSol;
+            $("mars-clock").innerText = `Sol ${Math.floor(sols) + 44796}`;
         }
         setInterval(updatePlanetaryData, 1000);
 
-        let stopParticles = null;
-        function clearWeatherOverlay() { $("weather-overlay").innerHTML = ""; }
-        function spawnParticles(char, rateMs) {
-            const w = $("weather-overlay");
-            const timer = setInterval(() => {
-                const p = document.createElement("div");
-                p.className = "absolute top-[-20px] text-white/60 pointer-events-none";
-                p.textContent = char;
-                p.style.left = Math.random() * 100 + "vw";
-                p.style.fontSize = (10 + Math.random() * 14) + "px";
-                p.style.opacity = (0.3 + Math.random() * 0.5).toString();
-                const dur = 4 + Math.random() * 4;
-                p.style.transition = `transform ${dur}s linear, opacity ${dur}s linear`;
-                w.appendChild(p);
-                requestAnimationFrame(() => { p.style.transform = `translateY(110vh) translateX(${(-20 + Math.random()*40)}px)`; p.style.opacity = "0"; });
-                setTimeout(() => p.remove(), dur * 1000);
-            }, rateMs);
-            return () => clearInterval(timer);
+        // Webb News
+        async function fetchWebbNews() {
+            try {
+                const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2");
+                const jWebb = await rWebb.json();
+                $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join('');
+            } catch(e) {}
         }
-        function applyWeatherEffect(mode) {
-            clearWeatherOverlay(); if (stopParticles) stopParticles();
-            if (mode === "snow") stopParticles = spawnParticles("❄", 200);
-            else if (mode === "rain") stopParticles = spawnParticles("💧", 80);
-            else if (mode === "storm") stopParticles = spawnParticles("⚡", 300);
-        }
+        fetchWebbNews();
 
+        // --- UTILS ---
+        // Météo (Simplified)
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 const lat = pos.coords.latitude; const lon = pos.coords.longitude;
@@ -557,39 +546,37 @@
                     const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
                     const data = await res.json();
                     $("wxLabel").innerText = `${data.current_weather.temperature}°C`;
-                    let mode = "clear"; const c = data.current_weather.weathercode;
-                    if ((c >= 51 && c <= 67) || (c >= 80 && c <= 82)) mode = "rain";
-                    if (c >= 71 && c <= 77) mode = "snow";
-                    if (c >= 95) mode = "storm";
-                    applyWeatherEffect(mode);
+                    
+                    // FX Météo
+                    const code = data.current_weather.weathercode;
+                    const w = document.getElementById("weather-overlay");
+                    w.innerHTML = "";
+                    let char = "";
+                    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) char = "💧";
+                    if (code >= 71 && code <= 77) char = "❄";
+                    
+                    if(char) {
+                        setInterval(() => {
+                            const p = document.createElement("div");
+                            p.className = "absolute top-[-20px] text-white/50 pointer-events-none";
+                            p.textContent = char;
+                            p.style.left = Math.random() * 100 + "vw";
+                            p.style.animation = `fall ${2+Math.random()*3}s linear`;
+                            w.appendChild(p);
+                            setTimeout(() => p.remove(), 5000);
+                        }, 200);
+                        // Inject CSS
+                        const style = document.createElement('style');
+                        style.innerHTML = `@keyframes fall { to { transform: translateY(110vh); opacity: 0; } }`;
+                        document.head.appendChild(style);
+                    }
                 } catch(e) {}
             }, () => { $("geoStatus").innerText = "GPS OFF"; });
         }
 
-        // --- NEWS ---
-        async function fetchSpaceNews() {
-            try {
-                const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2");
-                const jWebb = await rWebb.json();
-                $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join('');
-            } catch(e) {}
-        }
-        fetchSpaceNews();
-
-        // --- UTILS ---
-        function updateClocks() {
-            const now = new Date();
-            $("earth-clock").innerText = now.toISOString().split('T')[1].split('.')[0] + " UTC";
-            const millisPerSol = 88775244; const sols = (now.getTime() - 947116800000) / millisPerSol;
-            $("mars-clock").innerText = `Sol ${Math.floor(sols) + 44796}`;
-        }
-        setInterval(updateClocks, 1000);
-
         function copy(text) { navigator.clipboard.writeText(text); alert("Copié !"); }
         $("copyContractBtn").addEventListener('click', () => copy(CONTRACT_ADDRESS));
-        $("copyContractFooter").addEventListener('click', (e) => { e.preventDefault(); copy(CONTRACT_ADDRESS); });
-
-        function toggleExplorerMode() { alert("Mode Explorateur (3D) en cours de développement."); }
+        $("addMetaMask").addEventListener('click', async () => { if (window.ethereum) { try { await window.ethereum.request({ method: 'wallet_watchAsset', params: { type: 'ERC20', options: { address: CONTRACT_ADDRESS, symbol: 'LUMA', decimals: 18, image: window.location.origin + '/luma-logo.png' }}}); } catch (e) {} } else alert("MetaMask introuvable"); });
         function openGamePopup() { window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no'); }
     </script>
 </body>
