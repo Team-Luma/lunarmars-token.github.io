@@ -412,7 +412,7 @@
     <!-- Indicateur de chargement IA -->
     <div class="ai-loading" id="ai-loading">
         <div class="ai-spinner"></div>
-        <span>IA LUMA en cours...</span>
+        <span class="translatable" data-en="LUMA AI processing..." data-fr="IA LUMA en cours...">IA LUMA en cours...</span>
     </div>
 
     <!-- Bannière d'actualités spatiales -->
@@ -921,9 +921,14 @@
                 this.currentEffect = 'none';
                 this.weatherData = null;
                 this.seasonalData = null;
+                this.currentLang = 'fr'; // Langue par défaut
                 
                 this.initCanvas();
                 this.initAI();
+            }
+
+            getCurrentLanguage() {
+                return document.body.getAttribute('data-lang') || 'fr';
             }
 
             initCanvas() {
@@ -959,7 +964,29 @@
                 
                 try {
                     const now = new Date();
-                    const prompt = `Tu es l'IA du projet LUMA (Lunar&Mars), un token crypto communautaire axé sur l'exploration spatiale et la conquête de Mars.
+                    const lang = this.getCurrentLanguage();
+                    const isEnglish = lang === 'en';
+                    
+                    const prompt = isEnglish 
+                        ? `You are the AI for the LUMA (Lunar&Mars) project, a community crypto token focused on space exploration and Mars conquest.
+
+Current date: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+
+Analyze this date and provide ONLY a JSON object (no markdown) with:
+{
+  "season": "spring|summer|fall|winter",
+  "event": {
+    "name": "current or upcoming event name (holiday, major space event, etc.)",
+    "emoji": "representative emoji",
+    "message": "short inspiring message related to space/LUMA (max 100 chars, IN ENGLISH)",
+    "gradient": "two CSS colors for banner gradient (format: #hex1, #hex2)"
+  },
+  "weatherEffect": "snow|rain|stars|meteors|aurora|none (suggest appropriate visual effect)",
+  "showSnow": true or false (if true, activate existing snow, otherwise disable it)
+}
+
+Be creative and inspiring, while staying relevant to a space crypto project!`
+                        : `Tu es l'IA du projet LUMA (Lunar&Mars), un token crypto communautaire axé sur l'exploration spatiale et la conquête de Mars.
 
 Date actuelle: ${now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
 
@@ -969,7 +996,7 @@ Analyse cette date et fournis UNIQUEMENT un objet JSON (sans markdown) avec:
   "event": {
     "name": "nom de l'événement actuel ou proche (fête, événement spatial important, etc.)",
     "emoji": "emoji représentatif",
-    "message": "message court et inspirant lié à l'espace/LUMA (max 100 caractères)",
+    "message": "message court et inspirant lié à l'espace/LUMA (max 100 caractères, EN FRANÇAIS)",
     "gradient": "deux couleurs CSS pour le gradient de bannière (format: #hex1, #hex2)"
   },
   "weatherEffect": "snow|rain|stars|meteors|aurora|none (suggère un effet visuel approprié)",
@@ -1016,11 +1043,14 @@ Sois créatif et inspirant, tout en restant pertinent pour un projet spatial cry
                     console.log('📅 Analyse saisonnière et événements:', aiData);
                 } catch (error) {
                     console.error('Erreur analyse IA:', error);
-                    // Fallback
+                    // Fallback selon la langue
+                    const lang = this.getCurrentLanguage();
                     this.updateEventBanner({
                         name: "LUMA - Moon → Mars",
                         emoji: "🚀",
-                        message: "Le futur spatial commence maintenant avec LUMA",
+                        message: lang === 'en' 
+                            ? "The space future starts now with LUMA"
+                            : "Le futur spatial commence maintenant avec LUMA",
                         gradient: "#1e3a8a, #7c3aed"
                     });
                 } finally {
@@ -1036,13 +1066,37 @@ Sois créatif et inspirant, tout en restant pertinent pour un projet spatial cry
             }
 
             async fetchSpaceNews() {
+                // Afficher le message de chargement selon la langue
+                const lang = this.getCurrentLanguage();
+                const titleEl = document.getElementById('space-news-title');
+                const descEl = document.getElementById('space-news-description');
+                
+                if (titleEl && descEl) {
+                    titleEl.textContent = lang === 'en' ? 'Space News' : 'Actualités spatiales';
+                    descEl.textContent = lang === 'en' 
+                        ? 'Loading latest space news...' 
+                        : 'Chargement des dernières nouvelles de l\'espace...';
+                }
+                
                 try {
-                    const prompt = `Tu es l'IA du projet LUMA (Lunar&Mars), un token crypto axé sur l'espace et Mars.
+                    const isEnglish = lang === 'en';
+                    
+                    const prompt = isEnglish
+                        ? `You are the AI for the LUMA (Lunar&Mars) project, a space-focused crypto token.
+
+Provide recent and captivating space news (real or plausible for ${new Date().getFullYear()}) as JSON (no markdown):
+{
+  "title": "catchy title (max 80 chars, IN ENGLISH)",
+  "description": "engaging description (max 150 chars, IN ENGLISH)"
+}
+
+Focus on: Mars, Moon, SpaceX, NASA, space exploration, space technologies.`
+                        : `Tu es l'IA du projet LUMA (Lunar&Mars), un token crypto axé sur l'espace et Mars.
 
 Fournis une actualité spatiale récente et captivante (réelle ou plausible pour ${new Date().getFullYear()}) sous forme JSON (sans markdown):
 {
-  "title": "Titre accrocheur (max 80 caractères)",
-  "description": "Description engageante (max 150 caractères)"
+  "title": "Titre accrocheur (max 80 caractères, EN FRANÇAIS)",
+  "description": "Description engageante (max 150 caractères, EN FRANÇAIS)"
 }
 
 Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technologies spatiales.`;
@@ -1074,9 +1128,15 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                     console.log('📰 Actualités spatiales:', newsData);
                 } catch (error) {
                     console.error('Erreur actualités spatiales:', error);
+                    // Fallback selon la langue
+                    const lang = this.getCurrentLanguage();
                     this.updateSpaceNews({
-                        title: "Mission Mars en préparation",
-                        description: "Les agences spatiales intensifient leurs efforts pour établir une présence humaine durable sur Mars"
+                        title: lang === 'en' 
+                            ? "Mars Mission in Preparation"
+                            : "Mission Mars en préparation",
+                        description: lang === 'en'
+                            ? "Space agencies intensify efforts to establish a sustainable human presence on Mars"
+                            : "Les agences spatiales intensifient leurs efforts pour établir une présence humaine durable sur Mars"
                     });
                 }
             }
@@ -1272,6 +1332,7 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                 const banner = document.getElementById('space-news-banner');
 
                 if (titleEl && descEl && news) {
+                    // Mettre à jour directement le contenu texte
                     titleEl.textContent = news.title;
                     descEl.textContent = news.description;
                     
@@ -1328,6 +1389,12 @@ Privilégie les sujets: Mars, Lune, SpaceX, NASA, exploration spatiale, technolo
                 const translation = el.getAttribute('data-' + lang);
                 if (translation) { el.innerHTML = translation; }
             });
+            
+            // Recharger le contenu IA dans la nouvelle langue
+            if (typeof lumaAI !== 'undefined' && lumaAI) {
+                lumaAI.analyzeSeasonAndEvents();
+                lumaAI.fetchSpaceNews();
+            }
         }
         setLanguage('fr');
 
