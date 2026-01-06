@@ -1,1428 +1,333 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8" />
-    <title id="page-title">Lunar&Mars (LUMA) - Moon to Mars</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lunar&Mars (LUMA) - Corridor Lune → Mars</title>
     <link rel="icon" href="Luma-noel-logo.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-Z4L8P2YSD7');
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        bg: '#0F0F10',
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                        'glass-hover': 'rgba(255, 255, 255, 0.1)',
+                    }
+                }
+            }
+        }
     </script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
-            position: relative;
+        body { background-color: #0F0F10; color: white; }
+        .glow-bg {
+            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
         }
-        
-        a { color: inherit; text-decoration: none; }
-
-        /* ============ VIDEO BACKGROUND HERO ============ */
-        .hero-video-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            z-index: 0;
-        }
-        
-        #starfield-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: 1;
-        }
-
-        /* ============ HEADER ============ */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
         }
-        
-        header.scrolled {
-            background: rgba(0, 0, 0, 0.95);
-        }
-        
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ff6b00, #ff9500);
-            padding: 2px;
-        }
-        
-        .logo-img img {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-        
-        .logo-text {
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #fff, #ff9500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        nav {
-            display: flex;
-            gap: 35px;
-        }
-        
-        nav a {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        nav a:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #ff9500;
-            transition: width 0.3s ease;
-        }
-        
-        nav a:hover {
-            opacity: 1;
-        }
-        
-        nav a:hover:after {
-            width: 100%;
-        }
-        
-        .lang-btns {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .lang-btn {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .lang-btn.active {
-            background: #ff9500;
-            border-color: #ff9500;
-            color: #000;
-        }
-
-        /* ============ LIVE DATA PANELS (ISS + STATS) ============ */
-        .live-panel {
-            position: fixed;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 149, 0, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            z-index: 999;
-            box-shadow: 0 8px 32px rgba(255, 149, 0, 0.2);
-            animation: slideIn 0.6s ease;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        .iss-tracker {
-            top: 140px;
-            right: 30px;
-            width: 320px;
-        }
-        
-        .space-stats {
-            top: 140px;
-            left: 30px;
-            width: 280px;
-        }
-        
-        .panel-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 149, 0, 0.3);
-        }
-        
-        .panel-icon {
-            font-size: 24px;
-            animation: rotate 20s linear infinite;
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .panel-title {
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: #ff9500;
-        }
-        
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 11px;
-        }
-        
-        .data-label {
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 500;
-        }
-        
-        .data-value {
-            font-weight: 700;
-            font-family: 'Space Mono', monospace;
-            color: #fff;
-        }
-        
-        .distance-highlight {
-            background: linear-gradient(135deg, rgba(255, 149, 0, 0.2), rgba(255, 107, 0, 0.2));
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            margin: 12px 0;
-        }
-        
-        .distance-value {
-            font-size: 24px;
-            font-weight: 900;
-            color: #ff9500;
-            font-family: 'Space Mono', monospace;
-        }
-        
-        .astronaut-list {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .astronaut-item {
-            font-size: 10px;
-            padding: 4px 0;
-            opacity: 0.8;
-        }
-
-        /* ============ HERO SECTION ============ */
-        .hero-section {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-        
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-            padding: 0 30px;
-            animation: fadeInUp 1s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from { transform: translateY(40px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .hero-title {
-            font-size: 72px;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 25px;
-            letter-spacing: -2px;
-        }
-        
-        .hero-subtitle {
-            font-size: 20px;
-            font-weight: 400;
-            opacity: 0.9;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        
-        .hero-cta {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 16px 40px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .btn-primary {
-            background: #ff9500;
-            color: #000;
-        }
-        
-        .btn-primary:hover {
-            background: #ff6b00;
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 149, 0, 0.4);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #fff;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
-        }
-        
-        .scroll-indicator span {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            opacity: 0.7;
-        }
-
-        /* ============ TERMINAL SECTION ============ */
-        .terminal-section {
-            position: relative;
-            background: #000;
-            padding: 120px 40px;
-            z-index: 10;
-        }
-        
-        .section-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .terminal-grid {
-            display: grid;
-            grid-template-columns: 1.3fr 1fr;
-            gap: 40px;
-        }
-        
-        .terminal-window {
-            background: rgba(10, 10, 15, 0.95);
-            border: 1px solid rgba(255, 149, 0, 0.3);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        }
-        
-        .terminal-header {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-        
-        .terminal-title {
-            margin-left: 15px;
-            font-size: 11px;
-            font-family: 'Space Mono', monospace;
-            color: #888;
-            letter-spacing: 1px;
-        }
-        
-        .terminal-body {
-            padding: 30px;
-            font-family: 'Space Mono', monospace;
-            color: #00ff00;
-            font-size: 14px;
-            line-height: 1.8;
-            min-height: 350px;
-        }
-        
-        .terminal-cursor {
-            animation: blink 1s infinite;
-            font-weight: bold;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .terminal-actions {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .price-panel {
-            background: rgba(10, 10, 15, 0.95);
-            border: 1px solid rgba(255, 149, 0, 0.3);
-            border-radius: 20px;
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .price-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
-        }
-        
-        .price-value {
-            font-size: 42px;
-            font-weight: 900;
-            font-family: 'Space Mono', monospace;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff, #ff9500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .price-change {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 25px;
-        }
-        
-        .price-change.up { color: #27c93f; }
-        .price-change.down { color: #ff5f56; }
-
-        /* ============ STATS CARDS ============ */
-        .stats-section {
-            background: #000;
-            padding: 80px 40px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .stats-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 149, 0, 0.05);
-            border-color: rgba(255, 149, 0, 0.3);
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #ff9500;
-            letter-spacing: 1.5px;
-            margin-bottom: 15px;
-        }
-        
-        .stat-value {
-            font-size: 36px;
-            font-weight: 900;
-            font-family: 'Space Mono', monospace;
-        }
-
-        /* ============ SECURITY SECTION ============ */
-        .security-section {
-            background: #000;
-            padding: 100px 40px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 60px;
-            letter-spacing: -1px;
-        }
-        
-        .security-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        
-        .security-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-        }
-        
-        .security-card.burn {
-            background: linear-gradient(135deg, rgba(255, 95, 86, 0.05), rgba(255, 107, 0, 0.05));
-            border-color: rgba(255, 95, 86, 0.3);
-        }
-        
-        .card-title {
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: #ff9500;
-            margin-bottom: 20px;
-        }
-        
-        .security-item {
-            padding: 12px 0;
-            font-size: 15px;
-            line-height: 1.8;
-        }
-        
-        .security-item strong {
-            color: #ff9500;
-        }
-
-        /* ============ ROADMAP ============ */
-        .roadmap-section {
-            background: #000;
-            padding: 100px 40px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .roadmap-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .roadmap-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
-            transition: all 0.3s ease;
-        }
-        
-        .roadmap-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 149, 0, 0.05);
-            border-color: rgba(255, 149, 0, 0.3);
-        }
-        
-        .phase-badge {
-            background: #ff9500;
-            color: #000;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-        
-        .roadmap-card h3 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-        
-        .roadmap-card ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .roadmap-card li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        .roadmap-card li:before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: #ff9500;
-            font-weight: bold;
-        }
-
-        /* ============ FOOTER ============ */
-        footer {
-            background: #000;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 60px 40px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            font-size: 14px;
-            font-weight: 600;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            opacity: 1;
-            color: #ff9500;
-        }
-        
-        .footer-text {
-            font-size: 12px;
-            opacity: 0.5;
-            line-height: 1.8;
-        }
-
-        /* ============ SPACE NEWS BANNER ============ */
-        .news-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, rgba(255, 149, 0, 0.15), rgba(255, 107, 0, 0.15));
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 149, 0, 0.3);
-            padding: 15px 30px;
-            z-index: 999;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-        }
-        
-        .news-banner.visible {
-            transform: translateY(0);
-        }
-        
-        .news-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .news-icon {
-            font-size: 24px;
-            animation: pulse 2s infinite;
-        }
-        
-        .news-text {
-            flex: 1;
-        }
-        
-        .news-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #ff9500;
-            margin-bottom: 3px;
-        }
-        
-        .news-description {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        
-        .news-close {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: all 0.3s ease;
-        }
-        
-        .news-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* ============ RESPONSIVE ============ */
-        @media (max-width: 1024px) {
-            .iss-tracker, .space-stats {
-                display: none;
-            }
-            
-            .terminal-grid, .security-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-title {
-                font-size: 48px;
-            }
-            
-            nav {
-                display: none;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 36px;
-            }
-            
-            .hero-subtitle {
-                font-size: 16px;
-            }
-            
-            .section-title {
-                font-size: 32px;
-            }
         }
     </style>
 </head>
 
-<body data-lang="fr">
+<body class="antialiased selection:bg-indigo-500/30">
 
-    <!-- Video Background Hero -->
-    <div class="hero-video-bg">
-        <canvas id="starfield-canvas"></canvas>
-        <div class="hero-overlay"></div>
-    </div>
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0F0F10]/90 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="Luma-noel-logo.png" alt="Logo" class="w-8 h-8 rounded-lg grayscale opacity-80">
+                <span class="font-bold tracking-tight text-lg">Lunar&Mars</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm text-gray-400 font-medium">
+                <a href="#stats" class="hover:text-white transition-colors">Statistiques</a>
+                <a href="#roadmap" class="hover:text-white transition-colors">Roadmap</a>
+                <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" class="hover:text-white transition-colors">Chart</a>
+            </div>
+            <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 transition-colors">
+                Acheter LUMA
+            </a>
+        </div>
+    </nav>
 
-    <!-- Header -->
-    <header id="main-header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo-img">
-                    <img src="Luma-noel-logo.png" alt="LUMA" />
-                </div>
-                <div class="logo-text">LUNAR&MARS</div>
+    <main class="relative pt-32 pb-20 px-6">
+        <div class="absolute inset-0 -z-10 glow-bg h-[800px]"></div>
+
+        <div class="max-w-4xl mx-auto text-center mb-24">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium mb-8">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                </span>
+                Corridor Lune → Mars actif
             </div>
             
-            <nav>
-                <a href="#mission">MISSION</a>
-                <a href="#security">SECURITY</a>
-                <a href="#roadmap">ROADMAP</a>
-                <a href="#join">JOIN</a>
-            </nav>
-            
-            <div class="lang-btns">
-                <button class="lang-btn active" onclick="setLanguage('fr')">FR</button>
-                <button class="lang-btn" onclick="setLanguage('en')">EN</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- ISS Tracker -->
-    <div class="live-panel iss-tracker" id="iss-tracker">
-        <div class="panel-header">
-            <div class="panel-icon">🛰️</div>
-            <div class="panel-title">ISS LIVE TRACKING</div>
-        </div>
-        <div class="data-row">
-            <span class="data-label">Altitude</span>
-            <span class="data-value" id="iss-altitude">--- km</span>
-        </div>
-        <div class="data-row">
-            <span class="data-label">Velocity</span>
-            <span class="data-value" id="iss-velocity">--- km/h</span>
-        </div>
-        <div class="data-row">
-            <span class="data-label">Position</span>
-            <span class="data-value" id="iss-position">---</span>
-        </div>
-        <div class="distance-highlight">
-            <div class="data-label" style="margin-bottom:8px;">Distance from you</div>
-            <div class="distance-value" id="iss-distance">---</div>
-        </div>
-        <div class="astronaut-list" id="iss-astronauts">
-            <div class="data-label" style="margin-bottom:8px;">👨‍🚀 Currently aboard</div>
-        </div>
-    </div>
-
-    <!-- Space Stats -->
-    <div class="live-panel space-stats" id="space-stats">
-        <div class="panel-header">
-            <div class="panel-icon">🌌</div>
-            <div class="panel-title">SPACE STATS</div>
-        </div>
-        <div class="data-row">
-            <span class="data-label">People in Space</span>
-            <span class="data-value" id="stat-people">---</span>
-        </div>
-        <div class="data-row">
-            <span class="data-label">Active Missions</span>
-            <span class="data-value">12+</span>
-        </div>
-        <div class="data-row">
-            <span class="data-label">Next Full Moon</span>
-            <span class="data-value" id="stat-moon">---</span>
-        </div>
-        <div class="data-row">
-            <span class="data-label">System Time</span>
-            <span class="data-value" id="stat-time">---</span>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title" id="hero-title">
-                MOON TO MARS<br>INITIATIVE
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+                Plus qu'un token. <br />
+                <span class="text-white">Un symbole.</span>
             </h1>
-            <p class="hero-subtitle" id="hero-subtitle">
-                The symbolic cryptocurrency project for humanity's journey from lunar presence to Martian colonization
+            
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                LUMA est le jeton communautaire représentant la transition de l'humanité vers Mars. 
+                <br class="hidden md:block">0% Taxe. Ownership renoncé. 100% Décentralisé.
             </p>
-            <div class="hero-cta">
-                <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" class="btn btn-primary">BUY LUMA</a>
-                <a href="LUMA_Whitepaper_v1.1.pdf" class="btn btn-secondary">WHITEPAPER</a>
-                <button class="btn btn-secondary" onclick="openGame()">PLAY GAME</button>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="h-12 px-8 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+                    Rejoindre l'aventure <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+                <button id="copyBtn" class="h-12 px-8 rounded-full border border-white/10 hover:bg-white/5 text-gray-300 transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <i data-lucide="copy" class="w-4 h-4"></i> <span id="copyText">Copier le contrat</span>
+                </button>
+            </div>
+            <div class="mt-4 text-xs text-gray-600 font-mono break-all">
+                0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
             </div>
         </div>
-        <div class="scroll-indicator">
-            <span>↓ SCROLL TO EXPLORE</span>
-        </div>
-    </section>
 
-    <!-- Terminal + Price Section -->
-    <section class="terminal-section" id="mission">
-        <div class="section-container">
-            <div class="terminal-grid">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="terminal-dot dot-red"></span>
-                        <span class="terminal-dot dot-yellow"></span>
-                        <span class="terminal-dot dot-green"></span>
-                        <span class="terminal-title">LUMA_FLIGHT_CONTROLLER_v2.0</span>
-                    </div>
-                    <div class="terminal-body">
-                        <div id="terminal-output"></div>
-                        <span class="terminal-cursor">_</span>
-                    </div>
-                    <div class="terminal-actions">
-                        <button class="btn btn-primary" onclick="addToMetamask()">🦊 ADD TO METAMASK</button>
-                        <button class="btn btn-secondary" onclick="copyContract()">📋 COPY CONTRACT</button>
-                        <a href="https://t.me/LunarMarsOfficial" class="btn btn-secondary">💬 TELEGRAM</a>
-                    </div>
-                </div>
+        <div id="stats" class="max-w-6xl mx-auto mb-32">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
-                <div class="price-panel">
-                    <div class="price-label">LUMA/USD LIVE</div>
-                    <div class="price-value" id="luma-price">$0.00000000</div>
-                    <div class="price-change" id="luma-change">+0.00%</div>
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="mb-6 flex justify-between items-start">
+                        <div class="inline-flex p-3 rounded-xl bg-white/5 text-indigo-400 group-hover:bg-white/10 transition-colors">
+                            <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Données Marché</h3>
+                    <p class="text-gray-400 text-sm mb-6">Prix en temps réel via GeckoTerminal.</p>
                     
-                    <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" 
-                       class="btn btn-primary" style="width:100%; margin-bottom:12px;">
-                        BUY ON MEXC
-                    </a>
-                    <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" 
-                       class="btn btn-secondary" style="width:100%;">
-                        VIEW CHART
-                    </a>
+                    <div class="space-y-1">
+                        <div class="text-sm text-gray-500">Prix Actuel (USD)</div>
+                        <div id="livePrice" class="text-3xl font-mono font-bold text-white">Loading...</div>
+                        <div id="liveChange" class="text-sm font-bold mt-1">--%</div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">HOLDERS</div>
-                <div class="stat-value">600+</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">TOTAL SUPPLY</div>
-                <div class="stat-value" id="stat-supply">202M</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">MARKET CAP</div>
-                <div class="stat-value" id="stat-mcap">$---</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">BURNED</div>
-                <div class="stat-value">22M+</div>
-            </div>
-        </div>
-    </section>
+                <div class="glass-card rounded-3xl p-8 md:col-span-2 relative overflow-hidden group">
+                    <div class="mb-6">
+                        <div class="inline-flex p-3 rounded-xl bg-white/5 text-indigo-400 group-hover:bg-white/10 transition-colors">
+                            <i data-lucide="rocket" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Mission Control</h3>
+                    <p class="text-gray-400 text-sm mb-8">Une structure économique saine pour la longévité.</p>
 
-    <!-- Security Section -->
-    <section class="security-section" id="security">
-        <h2 class="section-title">MISSION CONTROL</h2>
-        <div class="security-grid">
-            <div class="security-card burn">
-                <div class="card-title">🔥 SECURITY STATUS</div>
-                <div class="security-item">
-                    <strong>10% BURNED:</strong> 22,538,440 LUMA permanently destroyed
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
+                        <div>
+                            <span class="text-xs uppercase text-gray-500 font-semibold">Total Supply</span>
+                            <div class="text-2xl font-bold text-white my-1">202M</div>
+                            <span class="text-xs text-indigo-400">Fixe</span>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase text-gray-500 font-semibold">Burned</span>
+                            <div class="text-2xl font-bold text-white my-1">10%</div>
+                            <span class="text-xs text-indigo-400">Détruit</span>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase text-gray-500 font-semibold">Locked</span>
+                            <div class="text-2xl font-bold text-white my-1">10%</div>
+                            <span class="text-xs text-indigo-400">PinkLock</span>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase text-gray-500 font-semibold">Taxes</span>
+                            <div class="text-2xl font-bold text-white my-1">0/0</div>
+                            <span class="text-xs text-indigo-400">Buy/Sell</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex gap-3">
+                        <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20 flex items-center gap-1">
+                            <i data-lucide="check" class="w-3 h-3"></i> Ownership Renounced
+                        </span>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold border border-blue-500/20 flex items-center gap-1">
+                            <i data-lucide="lock" class="w-3 h-3"></i> Liquidity Locked
+                        </span>
+                    </div>
                 </div>
-                <div class="security-item">
-                    <strong>LIQUIDITY LOCKED:</strong> 1 year on PinkSale V2
-                </div>
-                <div class="security-item">
-                    <strong>OWNERSHIP RENOUNCED:</strong> Immutable, decentralized contract
-                </div>
-                <div class="security-item">
-                    <strong>0% TAX:</strong> No buy/sell taxes, pure community token
-                </div>
-                <div style="margin-top:20px;">
-                    <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" 
-                       style="color:#ff9500; text-decoration:underline;">
-                        Verify on BscScan →
-                    </a>
-                </div>
-            </div>
-            
-            <div class="security-card">
-                <div class="card-title">📊 TOKENOMICS</div>
-                <div class="security-item">
-                    <strong>CONTRACT:</strong><br>
-                    <span style="font-family:'Space Mono',monospace; font-size:11px; word-break:break-all;">
-                        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
-                    </span>
-                </div>
-                <div class="security-item">
-                    <strong>NETWORK:</strong> BNB Smart Chain (BEP-20)
-                </div>
-                <div class="security-item">
-                    <strong>DECIMALS:</strong> 18
-                </div>
-                <div class="security-item">
-                    <strong>SYMBOL:</strong> LUMA
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Roadmap Section -->
-    <section class="roadmap-section" id="roadmap">
-        <h2 class="section-title">FLIGHT TRAJECTORY</h2>
-        <div class="roadmap-grid">
-            <div class="roadmap-card">
-                <span class="phase-badge">PHASE 1</span>
-                <h3>Orbital Launch</h3>
-                <ul>
-                    <li>Contract deployment on BSC</li>
-                    <li>Initial burn + liquidity lock</li>
-                    <li>Community channels setup</li>
-                    <li>Whitepaper v1 release</li>
-                </ul>
-            </div>
-            
-            <div class="roadmap-card">
-                <span class="phase-badge">PHASE 2</span>
-                <h3>Crew Building</h3>
-                <ul>
-                    <li>Targeted airdrops</li>
-                    <li>Official website launch</li>
-                    <li>LUMA Arcade integration</li>
-                    <li>On-chain stats tracking</li>
-                </ul>
-            </div>
-            
-            <div class="roadmap-card">
-                <span class="phase-badge">PHASE 3</span>
-                <h3>Lunar Expansion</h3>
-                <ul>
-                    <li>Listings on price trackers</li>
-                    <li>Web3 partnerships</li>
-                    <li>Educational tools release</li>
-                    <li>Community competitions</li>
-                </ul>
-            </div>
-            
-            <div class="roadmap-card">
-                <span class="phase-badge">PHASE 4</span>
-                <h3>Moon → Mars Corridor</h3>
-                <ul>
-                    <li>Symbolic ecosystem development</li>
-                    <li>Creative projects (art, music, games)</li>
-                    <li>Community governance</li>
-                    <li>Whitepaper evolution</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group flex flex-col justify-between">
+                    <div>
+                        <div class="mb-6">
+                            <div class="inline-flex p-3 rounded-xl bg-white/5 text-indigo-400 group-hover:bg-white/10 transition-colors">
+                                <i data-lucide="wallet" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Wallet</h3>
+                        <p class="text-gray-400 text-sm">Ajoutez LUMA en un clic.</p>
+                    </div>
+                    <button id="addMetaMask" class="w-full mt-6 py-3 rounded-xl bg-orange-600/20 text-orange-400 border border-orange-600/30 hover:bg-orange-600/30 transition font-bold flex items-center justify-center gap-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-5 h-5" alt="MetaMask">
+                        Ajouter
+                    </button>
+                </div>
 
-    <!-- Footer -->
-    <footer id="join">
-        <div class="footer-links">
-            <a href="https://x.com/LunarMarsToken">X (TWITTER)</a>
-            <a href="https://t.me/LunarMarsOfficial">TELEGRAM</a>
-            <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9">BSCSCAN</a>
-            <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6">GECKOTERMINAL</a>
-            <a href="LUMA_Whitepaper_v1.1.pdf">WHITEPAPER</a>
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="mb-6">
+                        <div class="inline-flex p-3 rounded-xl bg-white/5 text-indigo-400 group-hover:bg-white/10 transition-colors">
+                            <i data-lucide="users" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Communauté</h3>
+                    <p class="text-gray-400 text-sm mb-4">Rejoignez les pionniers.</p>
+                    
+                    <div class="flex flex-col gap-3">
+                        <a href="https://t.me/LunarMarsOfficial" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 transition">
+                            <span class="font-semibold text-blue-400 text-sm">Telegram</span>
+                            <i data-lucide="external-link" class="w-4 h-4 text-blue-400"></i>
+                        </a>
+                        <a href="https://x.com/LunarMarsToken" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
+                            <span class="font-semibold text-white text-sm">X (Twitter)</span>
+                            <i data-lucide="external-link" class="w-4 h-4 text-white"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="mb-6">
+                        <div class="inline-flex p-3 rounded-xl bg-white/5 text-indigo-400 group-hover:bg-white/10 transition-colors">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Sécurité</h3>
+                    <p class="text-gray-400 text-sm">Contrat immuable sur la BSC. Vos actifs sont sécurisés par le réseau.</p>
+                </div>
+            </div>
         </div>
-        <div class="footer-text">
-            LUMA is a symbolic community project on BNB Smart Chain.<br>
-            Not financial advice. Always DYOR.<br>
-            © 2026 Lunar&Mars Initiative
+
+        <div id="roadmap" class="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center">Plan de Vol</h2>
+            <h2 class="text-3xl font-bold mb-12 text-center text-white">Plan de Vol</h2>
+            
+            <div class="space-y-6 relative border-l border-white/10 ml-4 md:ml-0 md:border-l-0">
+                
+                <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+                    <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">1</div>
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                        <div class="p-6 rounded-2xl glass-card">
+                            <div class="flex items-center justify-between md:justify-end mb-2 gap-2">
+                                <h3 class="font-bold text-white">Phase 1 : Lancement</h3>
+                                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-green-500/30 text-green-400">Terminé</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Déploiement contrat, Burn initial, Whitepaper v1, PinkLock.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+                    <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">2</div>
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:translate-x-full md:pl-12">
+                        <div class="p-6 rounded-2xl glass-card border-indigo-500/30">
+                            <div class="flex items-center justify-between mb-2 gap-2">
+                                <h3 class="font-bold text-white">Phase 2 : Construction</h3>
+                                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-indigo-500/30 text-indigo-400">En cours</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Nouveau Site Web, Airdrops communautaires, Tracking stats.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+                    <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">3</div>
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                        <div class="p-6 rounded-2xl glass-card">
+                            <div class="flex items-center justify-between md:justify-end mb-2 gap-2">
+                                <h3 class="font-bold text-white">Phase 3 : Expansion</h3>
+                                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-white/10 text-gray-500">À venir</span>
+                            </div>
+                            <p class="text-sm text-gray-400">Listing Coingecko/CMC, Partenariats Web3, Outils pédagogiques.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+    </main>
+
+    <footer class="border-t border-white/5 py-12 text-center">
+        <p class="text-gray-600 text-xs max-w-md mx-auto leading-relaxed">
+            LUMA est un jeton communautaire symbolique sur BNB Smart Chain. <br>
+            &copy; 2026 Lunar&Mars Project.
+        </p>
     </footer>
 
-    <!-- Space News Banner -->
-    <div class="news-banner" id="news-banner">
-        <div class="news-content">
-            <div class="news-icon">🚀</div>
-            <div class="news-text">
-                <div class="news-title" id="news-title">Space News</div>
-                <div class="news-description" id="news-description">Loading latest updates...</div>
-            </div>
-            <button class="news-close" onclick="closeNews()">✕</button>
-        </div>
-    </div>
-
     <script>
-        const CONTRACT = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
-        const SUPPLY = 202845959;
-        let userLocation = null;
-        let currentLang = 'fr';
+        // Init Icons
+        lucide.createIcons();
 
-        // ============ STARFIELD ANIMATION ============
-        class Starfield {
-            constructor() {
-                this.canvas = document.getElementById('starfield-canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.stars = [];
-                this.init();
-            }
-            
-            init() {
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                this.createStars();
-                this.animate();
-            }
-            
-            resize() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-            }
-            
-            createStars() {
-                for(let i = 0; i < 200; i++) {
-                    this.stars.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height,
-                        size: Math.random() * 2,
-                        speed: Math.random() * 0.5 + 0.2,
-                        opacity: Math.random()
-                    });
-                }
-            }
-            
-            animate() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                this.stars.forEach(star => {
-                    this.ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                    this.ctx.beginPath();
-                    this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                    this.ctx.fill();
-                    
-                    star.y += star.speed;
-                    if(star.y > this.canvas.height) {
-                        star.y = 0;
-                        star.x = Math.random() * this.canvas.width;
-                    }
-                });
-                
-                requestAnimationFrame(() => this.animate());
-            }
-        }
+        // Config
+        const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
 
-        // ============ TERMINAL TYPEWRITER ============
-        class Terminal {
-            constructor() {
-                this.output = document.getElementById('terminal-output');
-                this.lines = {
-                    fr: [
-                        '> Initialisation du protocole LUMA...',
-                        '> Scan de la Blockchain BNB... [OK]',
-                        '> Cible verrouillée : LUNE → MARS',
-                        '> Statut communautaire : ACTIF',
-                        '> Contract: 0xEA6C0908...664EECc9',
-                        '> Bienvenue à bord, Cadet.',
-                        '> Tous les systèmes sont opérationnels.',
-                        '> En attente d\'ordres...'
-                    ],
-                    en: [
-                        '> Initializing LUMA Protocol...',
-                        '> Scanning BNB Blockchain... [OK]',
-                        '> Target Locked: MOON → MARS',
-                        '> Community Status: ACTIVE',
-                        '> Contract: 0xEA6C0908...664EECc9',
-                        '> Welcome aboard, Cadet.',
-                        '> All systems operational.',
-                        '> Awaiting orders...'
-                    ]
-                };
-                this.start();
-            }
-            
-            async start(lang = 'fr') {
-                this.output.innerHTML = '';
-                const text = this.lines[lang];
-                
-                for(let line of text) {
-                    await this.typeLine(line);
-                    await this.delay(300);
-                }
-            }
-            
-            async typeLine(text) {
-                const div = document.createElement('div');
-                this.output.appendChild(div);
-                
-                for(let char of text) {
-                    div.textContent += char;
-                    await this.delay(25);
-                }
-            }
-            
-            delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-        }
+        // 1. Copy Function
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            navigator.clipboard.writeText(CONTRACT_ADDRESS);
+            const textSpan = document.getElementById('copyText');
+            const originalText = textSpan.innerText;
+            textSpan.innerText = "Adresse copiée !";
+            setTimeout(() => { textSpan.innerText = originalText; }, 2000);
+        });
 
-        // ============ ISS TRACKER ============
-        class ISSTracker {
-            constructor() {
-                this.getUserLocation();
-                this.update();
-                this.fetchAstronauts();
-                setInterval(() => this.update(), 10000);
-            }
-            
-            getUserLocation() {
-                if('geolocation' in navigator) {
-                    navigator.geolocation.getCurrentPosition(
-                        pos => {
-                            userLocation = {
-                                lat: pos.coords.latitude,
-                                lon: pos.coords.longitude
-                            };
+        // 2. Add to Metamask
+        document.getElementById('addMetaMask').addEventListener('click', async () => {
+            if (window.ethereum) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: CONTRACT_ADDRESS,
+                                symbol: 'LUMA',
+                                decimals: 18,
+                                image: window.location.origin + '/Luma-noel-logo.png',
+                            },
                         },
-                        () => {
-                            userLocation = { lat: 45.8817, lon: -72.4842 };
-                        }
-                    );
-                } else {
-                    userLocation = { lat: 45.8817, lon: -72.4842 };
-                }
-            }
-            
-            async update() {
-                try {
-                    const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-                    const data = await res.json();
-                    
-                    document.getElementById('iss-altitude').textContent = 
-                        Math.round(data.altitude) + ' km';
-                    document.getElementById('iss-velocity').textContent = 
-                        Math.round(data.velocity) + ' km/h';
-                    document.getElementById('iss-position').textContent = 
-                        `${data.latitude.toFixed(1)}°, ${data.longitude.toFixed(1)}°`;
-                    
-                    if(userLocation) {
-                        const dist = this.calculateDistance(
-                            userLocation.lat, userLocation.lon,
-                            data.latitude, data.longitude
-                        );
-                        document.getElementById('iss-distance').textContent = 
-                            Math.round(dist) + ' km';
-                    }
-                } catch(e) {
-                    console.log('ISS error:', e);
-                }
-            }
-            
-            async fetchAstronauts() {
-                try {
-                    const res = await fetch('http://api.open-notify.org/astros.json');
-                    const data = await res.json();
-                    
-                    const issAstronauts = data.people.filter(p => p.craft === 'ISS');
-                    const container = document.getElementById('iss-astronauts');
-                    
-                    issAstronauts.forEach(astro => {
-                        const div = document.createElement('div');
-                        div.className = 'astronaut-item';
-                        div.textContent = `• ${astro.name}`;
-                        container.appendChild(div);
                     });
-                    
-                    document.getElementById('stat-people').textContent = data.number;
-                } catch(e) {
-                    console.log('Astronaut error:', e);
-                }
+                } catch (error) { console.error(error); }
+            } else {
+                alert("MetaMask non détecté.");
             }
-            
-            calculateDistance(lat1, lon1, lat2, lon2) {
-                const R = 6371;
-                const dLat = (lat2 - lat1) * Math.PI / 180;
-                const dLon = (lon2 - lon1) * Math.PI / 180;
-                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                         Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                         Math.sin(dLon/2) * Math.sin(dLon/2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                return R * c;
-            }
-        }
+        });
 
-        // ============ PRICE TRACKER ============
-        async function loadPrice() {
+        // 3. Fetch Price (GeckoTerminal)
+        async function fetchPrice() {
             try {
-                const res = await fetch('https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6');
+                const res = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
                 const data = await res.json();
                 const attr = data?.data?.attributes;
                 
-                if(attr) {
+                if (attr) {
                     const price = parseFloat(attr.base_token_price_usd);
-                    const change = parseFloat(attr.price_change_percentage.h24);
+                    const change = parseFloat(attr.price_change_percentage?.h24 || 0);
                     
-                    document.getElementById('luma-price').textContent = '$' + price.toFixed(9);
+                    document.getElementById('livePrice').innerText = price < 0.01 ? '$' + price.toFixed(9) : '$' + price.toFixed(4);
                     
-                    const changeEl = document.getElementById('luma-change');
-                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                    changeEl.className = 'price-change ' + (change >= 0 ? 'up' : 'down');
-                    
-                    const mcap = price * SUPPLY;
-                    document.getElementById('stat-mcap').textContent = 
-                        '$' + mcap.toLocaleString('en-US', {maximumFractionDigits: 0});
+                    const changeEl = document.getElementById('liveChange');
+                    changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24h)';
+                    changeEl.className = `text-sm font-bold mt-1 ${change >= 0 ? 'text-green-400' : 'text-red-400'}`;
                 }
-            } catch(e) {
-                console.log('Price error:', e);
-            }
-        }
-
-        // ============ SPACE STATS ============
-        function updateStats() {
-            const now = new Date();
-            document.getElementById('stat-time').textContent = 
-                now.toLocaleTimeString('en-US', { hour12: false });
-            
-            // Next full moon calculation
-            const lunarMonth = 29.53;
-            const knownFullMoon = new Date('2024-01-25');
-            const daysSince = (now - knownFullMoon) / (1000 * 60 * 60 * 24);
-            const cyclesSince = Math.floor(daysSince / lunarMonth);
-            const nextFullMoon = new Date(knownFullMoon);
-            nextFullMoon.setDate(nextFullMoon.getDate() + (cyclesSince + 1) * lunarMonth);
-            const daysUntil = Math.ceil((nextFullMoon - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('stat-moon').textContent = daysUntil + ' days';
-        }
-
-        // ============ SPACE NEWS ============
-        function loadNews() {
-            const news = [
-                {
-                    title: 'SpaceX Starship Update',
-                    desc: 'Next orbital flight test scheduled for Q1 2026'
-                },
-                {
-                    title: 'NASA Artemis Program',
-                    desc: 'Lunar Gateway construction progressing on schedule'
-                },
-                {
-                    title: 'Mars Water Discovery',
-                    desc: 'New evidence of subsurface ice deposits found'
-                },
-                {
-                    title: 'ISS Expansion',
-                    desc: 'New commercial module installation planned for 2026'
-                }
-            ];
-            
-            const random = news[Math.floor(Math.random() * news.length)];
-            document.getElementById('news-title').textContent = random.title;
-            document.getElementById('news-description').textContent = random.desc;
-            
-            setTimeout(() => {
-                document.getElementById('news-banner').classList.add('visible');
-            }, 3000);
-        }
-
-        // ============ UTILITIES ============
-        function closeNews() {
-            document.getElementById('news-banner').classList.remove('visible');
-        }
-        
-        function openGame() {
-            window.open('game/luma-game.html', 'LUMA', 'width=500,height=750');
-        }
-        
-        async function copyContract() {
-            await navigator.clipboard.writeText(CONTRACT);
-            alert('Contract address copied!');
-        }
-        
-        async function addToMetamask() {
-            if(window.ethereum) {
-                await window.ethereum.request({
-                    method: 'wallet_watchAsset',
-                    params: {
-                        type: 'ERC20',
-                        options: {
-                            address: CONTRACT,
-                            symbol: 'LUMA',
-                            decimals: 18,
-                            image: window.location.origin + '/Luma-noel-logo.png'
-                        }
-                    }
-                });
-            } else {
-                alert('MetaMask not detected');
+            } catch (e) {
+                console.error("Erreur prix:", e);
             }
         }
         
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.lang-btn[onclick*="${lang}"]`).classList.add('active');
-            
-            if(lang === 'en') {
-                document.getElementById('hero-title').innerHTML = 'MOON TO MARS<br>INITIATIVE';
-                document.getElementById('hero-subtitle').textContent = 
-                    'The symbolic cryptocurrency project for humanity\'s journey from lunar presence to Martian colonization';
-            } else {
-                document.getElementById('hero-title').innerHTML = 'INITIATIVE<br>LUNE VERS MARS';
-                document.getElementById('hero-subtitle').textContent = 
-                    'Le projet crypto symbolique pour le voyage de l\'humanité de la présence lunaire à la colonisation martienne';
-            }
-            
-            terminal.start(lang);
-        }
-
-        // ============ SCROLL EFFECTS ============
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if(window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // ============ INIT ============
-        let terminal;
-        window.addEventListener('DOMContentLoaded', () => {
-            new Starfield();
-            terminal = new Terminal();
-            new ISSTracker();
-            loadPrice();
-            updateStats();
-            loadNews();
-            
-            setInterval(loadPrice, 60000);
-            setInterval(updateStats, 1000);
-        });
+        fetchPrice();
+        setInterval(fetchPrice, 60000);
     </script>
 </body>
 </html>
