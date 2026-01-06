@@ -1,751 +1,656 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lunar&Mars (LUMA) - Corridor Lune → Mars</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMA | Lunar&Mars Mission Control</title>
+    <link rel="icon" href="Luma-logo.png" />
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Z4L8P2YSD7');
+    </script>
 
-  <!-- ✅ Logo en couleurs (remplace tes fichiers) -->
-  <link rel="icon" href="Luma-logo.png" />
-
-  <!-- Google Analytics 4 - LUMA -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-Z4L8P2YSD7');
-  </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
-          colors: {
-            bg: '#0F0F10',
-            brand: '#ffb21a',
-            glass: 'rgba(255, 255, 255, 0.05)',
-          },
-          animation: { 'scroll-ticker': 'scroll 30s linear infinite' },
-          keyframes: {
-            scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-100%)' } }
-          }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        bg: '#050505',
+                        panel: '#0F0F12',
+                        brand: '#ffb21a',
+                        accent: '#3b82f6',
+                        success: '#10b981',
+                        danger: '#ef4444'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scroll-ticker': 'scroll 40s linear infinite',
+                    },
+                    keyframes: {
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-100%)' } }
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+        
+        /* Glassmorphism & Tech Cards */
+        .tech-card {
+            background: rgba(15, 15, 18, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        .tech-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
 
-  <style>
-    body { background-color: #0F0F10; color: white; overflow-x: hidden; }
-    .glow-bg { background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%); }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-    }
-    .glass-card:hover {
-      border-color: rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-      transform: translateY(-2px);
-    }
-  </style>
+        .data-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 0.25rem; }
+        .data-value { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: white; }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Météo Overlay */
+        #weather-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    </style>
 </head>
 
-<body class="antialiased selection:bg-brand/30">
+<body class="antialiased grid-bg relative">
 
-  <!-- ✅ Bandeau Fêtes / Messages (auto) -->
-  <div id="festival-bar" class="fixed top-0 w-full z-[60] hidden bg-white/5 border-b border-white/10 backdrop-blur-xl text-white text-xs font-semibold text-center py-2">
-    <span id="festival-text"></span>
-  </div>
+    <div id="weather-overlay"></div>
 
-  <!-- ✅ Overlay météo (pluie/neige/orage) -->
-  <div id="weather-overlay" class="fixed inset-0 pointer-events-none z-[55] overflow-hidden"></div>
-
-  <!-- ✅ Nav -->
-  <nav id="mainNav" class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0F0F10]/90 backdrop-blur-xl transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <!-- ✅ Logo en couleurs -->
-        <img src="Luma-logo.png" alt="Logo" class="w-8 h-8 rounded-lg opacity-95 hover:opacity-100 transition-all">
-        <span class="font-bold tracking-tight text-lg">Lunar&Mars</span>
-      </div>
-
-      <div class="hidden md:flex items-center gap-6 text-sm text-gray-400 font-medium">
-        <a href="#stats" class="hover:text-white transition-colors">Stats</a>
-        <a href="#tokenomics" class="hover:text-white transition-colors">Mission Control</a>
-        <a href="#events" class="hover:text-white transition-colors">Événements</a>
-        <a href="#roadmap" class="hover:text-white transition-colors">Roadmap</a>
-        <a href="#voyager" class="hover:text-white transition-colors">Voyager</a>
-        <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
-        <a href="#" onclick="openGamePopup()" class="hover:text-brand transition-colors flex items-center gap-1">
-          <i data-lucide="gamepad-2" class="w-3 h-3"></i> Jeu
-        </a>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank"
-           class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 transition-colors">
-          Acheter
-        </a>
-      </div>
+    <div id="festival-bar" class="hidden fixed top-0 w-full z-[70] bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
+        <span id="festival-text"></span>
     </div>
-  </nav>
 
-  <!-- ✅ Ticker crypto -->
-  <div id="tickerBar" class="fixed w-full z-40 bg-white/5 border-b border-white/5 backdrop-blur-md overflow-hidden h-8 flex items-center">
-    <div class="whitespace-nowrap animate-scroll-ticker flex gap-8 px-4 text-xs font-mono" id="ticker-track">
-      <span>Chargement des prix...</span>
+    <nav id="mainNav" class="fixed top-0 w-full z-50 border-b border-white/10 bg-[#050505]/90 backdrop-blur-xl h-16 flex items-center transition-all duration-300">
+        <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="Luma-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
+                <div class="hidden md:block">
+                    <span class="font-bold tracking-tight text-lg block leading-none text-white">Lunar&Mars</span>
+                    <span class="text-[10px] text-brand font-mono tracking-widest">MISSION CONTROL</span>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
+                <a href="#dashboard" class="hover:text-white transition-colors">DASHBOARD</a>
+                <a href="#iss-section" class="hover:text-white transition-colors">ISS & VOYAGER</a>
+                <a href="#news-section" class="hover:text-white transition-colors">INTEL FEED</a>
+                <a href="#manifesto" class="hover:text-white transition-colors">MANIFESTO</a>
+                <a href="#" onclick="openGamePopup()" class="text-brand hover:text-white flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ARCADE</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
+                    <span>Initialiser Achat</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="tickerBar" class="fixed top-16 w-full z-40 bg-[#0a0a0c] border-b border-white/5 backdrop-blur-md overflow-hidden h-8 flex items-center">
+        <div class="whitespace-nowrap animate-scroll-ticker flex gap-8 px-4 text-xs font-mono" id="ticker-track">
+            <span class="text-gray-500">Connexion aux satellites financiers...</span>
+        </div>
     </div>
-  </div>
 
-  <main id="mainContent" class="relative pb-20 px-6">
-    <div class="absolute inset-0 -z-10 glow-bg h-[800px]"></div>
+    <main id="mainContent" class="relative pt-32 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-6">
 
-    <div class="max-w-4xl mx-auto text-center mb-24 mt-10">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium mb-6">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-        </span>
-        Corridor Lune → Mars actif
-      </div>
+        <div id="dashboard" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <div class="md:col-span-12 lg:col-span-6 tech-card rounded-2xl p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i data-lucide="orbit" class="w-32 h-32 text-brand"></i></div>
+                <div class="relative z-10 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-2 py-1 rounded border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-mono mb-4">
+                            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
+                            SYSTÈMES NOMINAUX
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">LUMA INDEX</h1>
+                        <p class="text-sm text-gray-400 leading-relaxed max-w-lg">
+                            L'interface de convergence entre la blockchain Almagest, l'innovation technologique et l'expansion vers Mars. 
+                        </p>
+                    </div>
+                    <div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
+                        <div>
+                            <div class="data-label">PRIX (USD)</div>
+                            <div id="livePrice" class="data-value text-xl">Loading</div>
+                        </div>
+                        <div>
+                            <div class="data-label">VAR 24H</div>
+                            <div id="liveChange" class="data-value text-xl">--%</div>
+                        </div>
+                        <div>
+                            <div class="data-label">MARKET CAP</div>
+                            <div class="data-value text-xl text-gray-400">Micro</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex gap-3">
+                        <button id="copyBtn" class="text-[10px] border border-white/20 px-3 py-1 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
+                            <i data-lucide="copy" class="w-3 h-3"></i> 0xEA...ECC9
+                        </button>
+                        <button id="addMetaMask" class="text-[10px] border border-[#f6851b]/30 px-3 py-1 rounded hover:bg-[#f6851b]/10 text-[#f6851b] transition flex items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-3 h-3"> MetaMask
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-      <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-        LUMA EN UNE PHRASE
-      </h1>
+            <div class="md:col-span-6 lg:col-span-3 tech-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none"></div>
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="data-label">ENVIRONNEMENT LOCAL</div>
+                        <i id="weather-icon" data-lucide="scan" class="w-4 h-4 text-gray-500"></i>
+                    </div>
+                    <div id="wxLabel" class="text-3xl font-mono font-bold text-white">--°C</div>
+                    <div id="geoStatus" class="text-[10px] text-gray-500 font-mono mt-1">En attente GPS...</div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/5">
+                    <div class="data-label mb-1">DISTANCE ISS (RELATIVE)</div>
+                    <div id="issDistance" class="text-xl font-mono text-accent">-- km</div>
+                    <div class="text-[10px] text-gray-500">Basé sur votre position réelle</div>
+                </div>
+            </div>
 
-      <p class="text-xl md:text-2xl font-bold text-white mb-6">
-        LUMA EST UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.
-      </p>
+            <div class="md:col-span-6 lg:col-span-3 tech-card rounded-2xl p-6 relative">
+                <div class="data-label mb-4">HORLOGE COSMIQUE</div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                        <span class="text-xs text-gray-400">TERRE (UTC)</span>
+                        <span id="earth-clock" class="font-mono text-white text-right">--:--:--</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                        <span class="text-xs text-brand">MARS (SOL)</span>
+                        <span id="mars-clock" class="font-mono text-brand text-right">--:--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-400">PHASE LUNE</span>
+                        <span id="moon-phase" class="font-mono text-white text-right">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-      <p class="text-sm text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-        Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Il s'agit d'un jeton conceptuel, communautaire et éducatif,
-        destiné à inspirer la réflexion autour de l'exploration spatiale et de la décentralisation.
-      </p>
+        <div id="iss-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            
+            <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="satellite" class="text-blue-400"></i>
+                    <h3 class="font-bold text-lg text-white">VOYAGER LIVE TRACKING</h3>
+                    <span class="text-[10px] border border-blue-500/30 text-blue-400 px-2 rounded bg-blue-500/10">INTERSTELLAIRE</span>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-bold text-white">VOYAGER 1</span>
+                            <span class="text-[10px] text-gray-500">LAUNCH: 1977</span>
+                        </div>
+                        <div class="data-label">DISTANCE TERRE</div>
+                        <div id="v1-dist" class="text-2xl font-mono text-blue-200">Calcul...</div>
+                        <div class="w-full bg-gray-800 h-1 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-blue-500 h-full w-[99%] animate-pulse"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-bold text-white">VOYAGER 2</span>
+                            <span class="text-[10px] text-gray-500">HELIOSPAUSE FRANCHIE</span>
+                        </div>
+                        <div class="data-label">DISTANCE TERRE</div>
+                        <div id="v2-dist" class="text-xl font-mono text-gray-300">Calcul...</div>
+                    </div>
+                </div>
+            </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="luma-airdrop.html" target="_blank"
-           class="h-10 px-6 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-all flex items-center gap-2">
-          <i data-lucide="gift" class="w-4 h-4"></i> Airdrop
-        </a>
-        <a href="LUMA_Whitepaper_v1.1.pdf" target="_blank"
-           class="h-10 px-6 rounded-full border border-white/20 hover:bg-white/10 text-white text-sm font-medium transition-all flex items-center gap-2">
-          <i data-lucide="file-text" class="w-4 h-4"></i> Whitepaper
-        </a>
-        <button id="copyBtn"
-          class="h-10 px-6 rounded-full border border-white/20 hover:bg-white/10 text-gray-300 text-sm font-medium transition-all flex items-center gap-2">
-          <i data-lucide="copy" class="w-4 h-4"></i> <span id="copyText">Copier Contrat</span>
+            <div class="tech-card rounded-2xl p-6 relative flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg flex items-center gap-2 text-white"><i data-lucide="globe" class="text-green-400"></i> ISS ORBITAL DATA</h3>
+                    <div class="flex items-center gap-2">
+                         <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                         <span class="text-[10px] font-mono text-red-400">LIVE API</span>
+                    </div>
+                </div>
+                
+                <div class="flex-1 bg-[#0a0a0c] rounded-lg border border-white/5 relative overflow-hidden flex items-center justify-center min-h-[200px] group">
+                    <div class="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/40 via-[#050505] to-[#050505]"></div>
+                    <div class="grid-bg absolute inset-0 opacity-50"></div>
+                    
+                    <div class="text-center z-10 space-y-4">
+                        <div class="data-label">COORDONNÉES ORBITALES</div>
+                        <div class="font-mono text-3xl text-white tracking-tighter">
+                            <span id="iss-lat">LAT --.--</span><br>
+                            <span id="iss-lon" class="text-gray-400">LON --.--</span>
+                        </div>
+                        <div class="text-xs text-green-400 font-mono border border-green-500/20 bg-green-500/10 px-3 py-1 rounded-full inline-block">
+                            VITESSE: ~27,600 km/h
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="news-section" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+            <div class="lg:col-span-2 tech-card rounded-2xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-lg text-white">FLUX D'INFORMATION</h3>
+                    <div class="flex gap-2 text-[10px] font-mono">
+                        <span class="text-brand">CRYPTO API</span>
+                        <span class="text-blue-400">SPACE API</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-blue-400 mb-3 border-b border-white/10 pb-2">SPACEFLIGHT NEWS</h4>
+                        <div id="spaceNews" class="space-y-3">Chargement...</div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-brand mb-3 border-b border-white/10 pb-2">CRYPTO INTELLIGENCE</h4>
+                        <div id="cryptoNews" class="space-y-3">Chargement...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-card rounded-2xl p-6">
+                <h3 class="font-bold text-lg mb-6 text-white">MISSIONS ACTIVES</h3>
+                <div class="space-y-4">
+                    <div class="p-3 bg-white/5 rounded border-l-2 border-brand">
+                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                            <span>LUMA PROTOCOL</span>
+                            <span class="text-brand">LIVE</span>
+                        </div>
+                        <div class="text-sm font-bold text-white">PHASE 2: CONSTRUCTION</div>
+                        <div class="text-xs text-gray-500 mt-1">Expansion communauté & utilité.</div>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded border-l-2 border-green-500">
+                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                            <span>ARTEMIS II</span>
+                            <span class="text-green-400">PREP</span>
+                        </div>
+                        <div class="text-sm font-bold text-white">NASA / CNSA</div>
+                        <div class="text-xs text-gray-500 mt-1">Retour habité orbite lunaire.</div>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded border-l-2 border-blue-500">
+                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                            <span>STARSHIP</span>
+                            <span class="text-blue-400">TEST</span>
+                        </div>
+                        <div class="text-sm font-bold text-white">SPACEX</div>
+                        <div class="text-xs text-gray-500 mt-1">Développement lanceur lourd Mars.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="manifesto" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
+            <div class="tech-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold mb-4 text-brand">VISION & MANIFESTE</h2>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    LUMA n'est pas seulement un actif numérique. C'est un indice symbolique de la progression humaine. 
+                    Nous construisons le pont financier et culturel entre la Terre, la Lune et Mars.
+                </p>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Dans une économie multi-planétaire, la décentralisation n'est pas une option, c'est une nécessité physique. 
+                    LUMA prépare ce terrain à travers l'éducation, la communauté et la technologie Almagest.
+                </p>
+            </div>
+            
+            <div class="tech-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold mb-4 text-white">TIMELINE FUTURISTE</h2>
+                <div class="border-l border-white/10 ml-2 space-y-6">
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                        <div class="text-xs text-green-400 font-mono mb-1">Q1 2026</div>
+                        <div class="font-bold text-sm text-white">Lancement Infrastructure Almagest</div>
+                    </div>
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
+                        <div class="text-xs text-gray-500 font-mono mb-1">2027</div>
+                        <div class="font-bold text-sm text-gray-300">Intégration Flux Données Satellitaires</div>
+                    </div>
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand/50"></span>
+                        <div class="text-xs text-gray-500 font-mono mb-1">2030+</div>
+                        <div class="font-bold text-sm text-gray-300">Première Tx LUMA Terre-Mars</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="fixed bottom-6 right-6 z-40">
+        <button onclick="toggleExplorerMode()" class="bg-white text-black px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+            <i data-lucide="telescope" class="w-4 h-4"></i> MODE EXPLORATEUR
         </button>
-      </div>
-
-      <div class="mt-4 text-xs text-gray-600 font-mono break-all">
-        0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9
-      </div>
     </div>
 
-    <!-- ✅ STATS -->
-    <div id="stats" class="max-w-6xl mx-auto mb-32">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-        <!-- Prix -->
-        <div class="glass-card rounded-3xl p-6 relative overflow-hidden group flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-start mb-4">
-              <div class="p-2 rounded-lg bg-white/5 text-brand"><i data-lucide="bar-chart-3" class="w-5 h-5"></i></div>
-              <span class="text-xs text-gray-500 uppercase font-bold">Live Data</span>
-            </div>
-            <div class="space-y-1">
-              <div class="text-xs text-gray-500">Prix Actuel (USD)</div>
-              <div id="livePrice" class="text-2xl font-mono font-bold text-white">Loading...</div>
-              <div id="liveChange" class="text-xs font-bold">--%</div>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-white/10 flex gap-2">
-            <a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank"
-               class="text-xs flex-1 py-2 text-center bg-white/5 hover:bg-white/10 rounded">Chart</a>
-            <a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" target="_blank"
-               class="text-xs flex-1 py-2 text-center bg-white/5 hover:bg-white/10 rounded">MEXC</a>
-          </div>
-        </div>
-
-        <!-- Mission Control -->
-        <div id="tokenomics" class="glass-card rounded-3xl p-6 md:col-span-2 relative overflow-hidden group">
-          <div class="flex items-center gap-2 mb-6">
-            <div class="p-2 rounded-lg bg-white/5 text-brand"><i data-lucide="rocket" class="w-5 h-5"></i></div>
-            <h3 class="text-lg font-bold text-white">Mission Control</h3>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            <div>
-              <span class="text-[10px] uppercase text-gray-500 font-bold">Total Supply</span>
-              <div class="text-xl font-bold text-white my-1">202M</div>
-              <span class="text-[10px] text-indigo-400">Fixe (Pas de mint)</span>
+    <footer class="border-t border-white/5 bg-[#020202] py-12">
+        <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs text-gray-500">
+            <div class="col-span-1 md:col-span-2">
+                <img src="Luma-logo.png" class="w-8 h-8 rounded mb-4 shadow-md">
+                <p>Données temps réel fournies via API publiques (OpenMeteo, WhereTheISS, SpaceFlightNews). LUMA est un token communautaire BEP-20.</p>
+                <p class="mt-2">&copy; 2026 Lunar&Mars Project.</p>
             </div>
             <div>
-              <span class="text-[10px] uppercase text-gray-500 font-bold">Burned</span>
-              <div class="text-xl font-bold text-white my-1">10%</div>
-              <a href="https://bscscan.com/tx/0x4b8a548ebe8a599c66b59915d7413549a601ae5c2e6c5e7c0c0baf9214f15a17" target="_blank"
-                 class="text-[10px] underline hover:text-brand text-gray-400">Preuve Burn</a>
+                <h4 class="text-white font-bold mb-3">ARCHIVES HISTORIQUES</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-brand">Programme Apollo</a></li>
+                    <li><a href="#" class="hover:text-brand">Mars Pathfinder</a></li>
+                    <li><a href="#" class="hover:text-brand">Sondes Voyager</a></li>
+                </ul>
             </div>
             <div>
-              <span class="text-[10px] uppercase text-gray-500 font-bold">Locked</span>
-              <div class="text-xl font-bold text-white my-1">10%</div>
-              <a href="https://www.pinksale.finance/pinklock/bsc/record/1389151" target="_blank"
-                 class="text-[10px] underline hover:text-brand text-gray-400">PinkLock #1</a>
+                <h4 class="text-white font-bold mb-3">DONNÉES</h4>
+                <ul class="space-y-2">
+                    <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper V1.1</a></li>
+                    <li><a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" class="hover:text-brand">BscScan</a></li>
+                </ul>
             </div>
-            <div>
-              <span class="text-[10px] uppercase text-gray-500 font-bold">Taxes</span>
-              <div class="text-xl font-bold text-white my-1">0/0</div>
-              <span class="text-[10px] text-green-400">Buy / Sell</span>
-            </div>
-          </div>
-
-          <div class="mt-6 flex flex-wrap gap-3">
-            <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-[10px] font-bold border border-green-500/20 flex items-center gap-1">
-              <i data-lucide="check-circle" class="w-3 h-3"></i> Ownership Renounced
-            </span>
-            <a href="https://www.pinksale.finance/pinklock/bsc/record/1408517" target="_blank"
-               class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-bold border border-blue-500/20 flex items-center gap-1 hover:bg-blue-500/20">
-              <i data-lucide="lock" class="w-3 h-3"></i> Liquidity Locked (LP)
-            </a>
-          </div>
         </div>
+    </footer>
 
-        <!-- Wallet -->
-        <div class="glass-card rounded-3xl p-6 relative overflow-hidden group flex flex-col justify-center text-center">
-          <div class="p-2 rounded-lg bg-white/5 text-brand w-fit mx-auto mb-2"><i data-lucide="wallet" class="w-5 h-5"></i></div>
-          <h3 class="font-bold text-white mb-1">Wallet</h3>
-          <p class="text-gray-400 text-xs mb-4">Ajoutez LUMA en un clic.</p>
-          <button id="addMetaMask"
-            class="w-full py-2 rounded-xl bg-[#f6851b]/10 text-[#f6851b] border border-[#f6851b]/30 hover:bg-[#f6851b]/20 transition font-bold flex items-center justify-center gap-2 text-sm">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-4 h-4" alt="MetaMask">
-            Ajouter à MetaMask
-          </button>
-        </div>
+    <script>
+        lucide.createIcons();
+        const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
+        const $ = (id) => document.getElementById(id);
 
-        <!-- ✅ Live Space -->
-        <div class="glass-card rounded-3xl p-6 relative overflow-hidden group">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 rounded-lg bg-white/5 text-brand"><i data-lucide="satellite" class="w-5 h-5"></i></div>
-            <h3 class="font-bold text-white">Live Space</h3>
-          </div>
+        // --- 1. BANDEAU FÊTES / CALENDRIER ---
+        function setFestivalBar() {
+            const now = new Date();
+            const month = now.getMonth(); // 0 = Janvier
+            const day = now.getDate();
+            const bar = $("festival-bar");
+            const txt = $("festival-text");
+            const nav = $("mainNav");
+            const ticker = $("tickerBar");
+            const main = $("mainContent");
 
-          <div class="space-y-3 text-sm">
-            <div class="flex items-center justify-between">
-              <span class="text-gray-400">Météo locale</span>
-              <span id="wxLabel" class="font-mono">--</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-400">ISS distance</span>
-              <span id="issDistance" class="font-mono">-- km</span>
-            </div>
-            <div class="text-[11px] text-gray-500 leading-relaxed">
-              Localisation: <span id="geoStatus">en attente…</span>
-            </div>
+            let message = "";
+            let show = false;
 
-            <div class="pt-3 mt-3 border-t border-white/10 text-xs text-gray-400">
-              <span class="text-gray-500">Conseil :</span> autorisez la géolocalisation pour activer ISS + météo.
-            </div>
-          </div>
-        </div>
+            // Logique : Nouvel An (1-15 Janvier)
+            if (month === 0 && day <= 15) {
+                message = "✨ BONNE ANNÉE 2026 ! LUMA vous souhaite une année d'expansion cosmique.";
+                show = true;
+            } 
+            // Logique : Noël (20-31 Décembre)
+            else if (month === 11 && day >= 20) {
+                message = "🎄 AIRDROP DE NOËL EN COURS - VÉRIFIEZ VOS WALLETS !";
+                show = true;
+            }
 
-        <!-- ✅ Flux en continu -->
-        <div class="glass-card rounded-3xl p-6 relative overflow-hidden group md:col-span-2">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 rounded-lg bg-white/5 text-brand"><i data-lucide="newspaper" class="w-5 h-5"></i></div>
-            <h3 class="font-bold text-white">Flux en continu</h3>
-          </div>
+            if (show) {
+                txt.textContent = message;
+                bar.classList.remove("hidden");
+                // Ajustement du layout
+                nav.style.top = "32px";
+                ticker.style.top = "96px";
+                main.style.paddingTop = "12rem";
+            } else {
+                bar.classList.add("hidden");
+                nav.style.top = "0px";
+                ticker.style.top = "64px";
+                main.style.paddingTop = "10rem";
+            }
+        }
+        setFestivalBar();
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-              <div class="text-xs font-bold text-indigo-300 mb-2">Espace (NASA / SpaceX / missions)</div>
-              <div id="spaceNews" class="space-y-2 text-xs text-gray-300">Chargement…</div>
-            </div>
+        // --- 2. GÉOLOCALISATION & MÉTÉO VISUELLE ---
+        let stopParticles = null;
 
-            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-              <div class="text-xs font-bold text-brand mb-2">Crypto (marché / actualité)</div>
-              <div id="cryptoNews" class="space-y-2 text-xs text-gray-300">Chargement…</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Événements (tu peux réviser le contenu) -->
-        <div id="events" class="glass-card rounded-3xl p-6 relative overflow-hidden group md:col-span-1">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 rounded-lg bg-white/5 text-brand"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-            <h3 class="font-bold text-white">Événements</h3>
-          </div>
-          <div class="space-y-4">
-            <div class="p-3 rounded-xl bg-white/5 border border-white/5">
-              <span class="text-[10px] uppercase font-bold text-brand mb-1 block">En cours</span>
-              <div class="font-bold text-sm text-white">LUMA Mission Update</div>
-              <p class="text-xs text-gray-400 mt-1">Suivi live: crypto, espace, ISS, météo.</p>
-            </div>
-            <div class="p-3 rounded-xl bg-white/5 border border-white/5 opacity-70">
-              <span class="text-[10px] uppercase font-bold text-gray-400 mb-1 block">À venir</span>
-              <div class="font-bold text-sm text-white">LUMA Arcade</div>
-              <p class="text-xs text-gray-400 mt-1">Tournois et défis communautaires.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Communauté -->
-        <div class="glass-card rounded-3xl p-6 relative overflow-hidden group md:col-span-2">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 rounded-lg bg-white/5 text-brand"><i data-lucide="users" class="w-5 h-5"></i></div>
-            <h3 class="font-bold text-white">Communauté</h3>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <a href="https://t.me/LunarMarsOfficial" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 transition">
-              <span class="font-semibold text-blue-400 text-sm">Telegram</span>
-              <i data-lucide="external-link" class="w-4 h-4 text-blue-400"></i>
-            </a>
-            <a href="https://x.com/LunarMarsToken" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
-              <span class="font-semibold text-white text-sm">X (Twitter)</span>
-              <i data-lucide="external-link" class="w-4 h-4 text-white"></i>
-            </a>
-            <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
-              <span class="font-semibold text-gray-300 text-sm">BscScan</span>
-              <i data-lucide="external-link" class="w-4 h-4 text-gray-300"></i>
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Roadmap (inchangé) -->
-    <div id="roadmap" class="max-w-4xl mx-auto mb-32">
-      <h2 class="text-3xl font-bold mb-12 text-center text-white">Feuille de Route</h2>
-
-      <div class="space-y-6 relative border-l border-white/10 ml-4 md:ml-0 md:border-l-0">
-
-        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
-          <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">1</div>
-          <div class="ml-8 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-            <div class="p-6 rounded-2xl glass-card">
-              <div class="flex items-center justify-between md:justify-end mb-2 gap-2">
-                <h3 class="font-bold text-white">Lancement Orbital</h3>
-                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-green-500/30 text-green-400">Terminé</span>
-              </div>
-              <p class="text-sm text-gray-400">Déploiement contrat, Burn initial, Whitepaper v1, PinkLock, Création canaux X & Telegram.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
-          <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">2</div>
-          <div class="ml-8 md:ml-0 md:w-1/2 md:translate-x-full md:pl-12">
-            <div class="p-6 rounded-2xl glass-card border-brand/30">
-              <div class="flex items-center justify-between mb-2 gap-2">
-                <h3 class="font-bold text-white">Construction de l'équipage</h3>
-                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-brand/30 text-brand">En cours</span>
-              </div>
-              <p class="text-sm text-gray-400">Airdrops ciblés, Lancement site officiel, Jeu LUMA Arcade, Suivi stats.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
-          <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">3</div>
-          <div class="ml-8 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-            <div class="p-6 rounded-2xl glass-card">
-              <div class="flex items-center justify-between md:justify-end mb-2 gap-2">
-                <h3 class="font-bold text-white">Expansion Lunaire</h3>
-                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-white/10 text-gray-500">À venir</span>
-              </div>
-              <p class="text-sm text-gray-400">Référencements trackers, Partenariats Web3, Outils pédagogiques, Concours.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
-          <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border border-white/20 bg-[#0F0F10] items-center justify-center text-xs text-gray-400 font-bold z-10">4</div>
-          <div class="ml-8 md:ml-0 md:w-1/2 md:translate-x-full md:pl-12">
-            <div class="p-6 rounded-2xl glass-card">
-              <div class="flex items-center justify-between mb-2 gap-2">
-                <h3 class="font-bold text-white">Corridor Lune → Mars</h3>
-                <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-white/10 text-gray-500">Futur</span>
-              </div>
-              <p class="text-sm text-gray-400">Écosystème symbolique, Utilité créative (Jeu/Art), Gouvernance DAO.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ✅ Voyager -->
-    <div id="voyager" class="max-w-6xl mx-auto mb-32">
-      <h2 class="text-3xl font-bold mb-8 text-center text-white">Voyager 1 & 2</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="glass-card rounded-3xl p-6">
-          <div class="font-bold text-white mb-2">Voyager 1</div>
-          <div class="text-sm text-gray-400">Position: <span id="v1pos" class="font-mono">--</span></div>
-          <div class="text-sm text-gray-400">Distance Terre: <span id="v1earth" class="font-mono">--</span></div>
-          <div class="text-sm text-gray-400">Distance Soleil: <span id="v1sun" class="font-mono">--</span></div>
-        </div>
-        <div class="glass-card rounded-3xl p-6">
-          <div class="font-bold text-white mb-2">Voyager 2</div>
-          <div class="text-sm text-gray-400">Position: <span id="v2pos" class="font-mono">--</span></div>
-          <div class="text-sm text-gray-400">Distance Terre: <span id="v2earth" class="font-mono">--</span></div>
-          <div class="text-sm text-gray-400">Distance Soleil: <span id="v2sun" class="font-mono">--</span></div>
-        </div>
-      </div>
-      <p class="text-xs text-gray-600 text-center mt-4">
-        Note : sur GitHub Pages (front-only), Voyager “live” est difficile (CORS). Ici, valeurs “snapshot” propres.
-      </p>
-    </div>
-
-    <!-- FAQ -->
-    <div id="faq" class="max-w-3xl mx-auto mb-20">
-      <h2 class="text-3xl font-bold mb-8 text-center text-white">FAQ</h2>
-      <div class="space-y-4">
-        <div class="glass-card rounded-xl p-5">
-          <h4 class="font-bold text-white mb-2">LUMA est-il un projet de pump & dump ?</h4>
-          <p class="text-sm text-gray-400">Non. LUMA est un jeton symbolique, communautaire et éducatif. L’objectif est de rassembler autour d'une vision.</p>
-        </div>
-        <div class="glass-card rounded-xl p-5">
-          <h4 class="font-bold text-white mb-2">Comment acheter LUMA ?</h4>
-          <p class="text-sm text-gray-400">Connectez MetaMask à la BSC, puis utilisez PancakeSwap ou MEXC DEX avec l'adresse officielle.</p>
-        </div>
-        <div class="glass-card rounded-xl p-5">
-          <h4 class="font-bold text-white mb-2">Est-ce un conseil financier ?</h4>
-          <p class="text-sm text-gray-400">Non. Rien ici ne constitue un conseil financier. Chacun est responsable de ses décisions.</p>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer class="border-t border-white/5 py-12 text-center bg-[#0F0F10]">
-    <p class="text-gray-600 text-xs max-w-md mx-auto leading-relaxed px-4">
-      LUMA est un jeton communautaire symbolique sur BNB Smart Chain. Rien ici n'est un conseil financier ou d'investissement. <br>
-      Suivez-nous sur X : <a href="https://x.com/LunarMarsToken" class="hover:text-brand">@LunarMarsToken</a>.
-      <br>&copy; 2026 Lunar&Mars Project.
-    </p>
-  </footer>
-
-  <script>
-    // Icônes
-    lucide.createIcons();
-
-    // ✅ Configuration
-    const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
-    const TZ = "America/Toronto";
-    const $ = (id) => document.getElementById(id);
-
-    // ✅ Positionnement dynamique (festival bar on/off)
-    function layoutTopBars(isFestivalVisible) {
-      const nav = $("mainNav");
-      const ticker = $("tickerBar");
-      const main = $("mainContent");
-
-      if (isFestivalVisible) {
-        nav.style.top = "32px";
-        ticker.style.top = "88px";
-        main.style.paddingTop = "12rem";
-      } else {
-        nav.style.top = "0px";
-        ticker.style.top = "56px";
-        main.style.paddingTop = "10rem";
-      }
-    }
-
-    // 1) Copier contrat
-    $("copyBtn").addEventListener('click', () => {
-      navigator.clipboard.writeText(CONTRACT_ADDRESS);
-      const textSpan = $("copyText");
-      const originalText = textSpan.innerText;
-      textSpan.innerText = "Copié !";
-      textSpan.parentElement.classList.add('bg-green-500/20', 'text-green-400', 'border-green-500/30');
-      setTimeout(() => {
-        textSpan.innerText = originalText;
-        textSpan.parentElement.classList.remove('bg-green-500/20', 'text-green-400', 'border-green-500/30');
-      }, 2000);
-    });
-
-    // 2) MetaMask
-    $("addMetaMask").addEventListener('click', async () => {
-      if (window.ethereum) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_watchAsset',
-            params: {
-              type: 'ERC20',
-              options: {
-                address: CONTRACT_ADDRESS,
-                symbol: 'LUMA',
-                decimals: 18,
-                image: window.location.origin + '/Luma-logo.png',
-              },
-            },
-          });
-        } catch (error) { console.error(error); }
-      } else {
-        alert("MetaMask non détecté.");
-      }
-    });
-
-    // 3) Popup jeu
-    function openGamePopup() {
-      window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no');
-    }
-    window.openGamePopup = openGamePopup;
-
-    // 4) Prix + ticker (GeckoTerminal + CoinGecko)
-    const barCoins = [
-      { id:"binancecoin", symbol:"BNB" }, { id:"bitcoin", symbol:"BTC" },
-      { id:"ethereum", symbol:"ETH" }, { id:"solana", symbol:"SOL" }
-    ];
-
-    async function fetchMarketData() {
-      try {
-        const resLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
-        const dataLuma = await resLuma.json();
-        const attr = dataLuma?.data?.attributes;
-
-        let lumaPrice = 0;
-        let lumaChange = 0;
-
-        if (attr) {
-          lumaPrice = parseFloat(attr.base_token_price_usd);
-          lumaChange = parseFloat(attr.price_change_percentage?.h24 || 0);
-
-          $("livePrice").innerText = lumaPrice < 0.01 ? '$' + lumaPrice.toFixed(9) : '$' + lumaPrice.toFixed(4);
-          const changeEl = $("liveChange");
-          changeEl.innerText = (lumaChange >= 0 ? '+' : '') + lumaChange.toFixed(2) + '% (24h)';
-          changeEl.className = `text-xs font-bold ${lumaChange >= 0 ? 'text-green-400' : 'text-red-400'}`;
+        function clearWeatherOverlay() {
+            $("weather-overlay").innerHTML = "";
         }
 
-        const ids = barCoins.map(c => c.id).join(",");
-        const resCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-        const dataCoins = await resCoins.json();
+        function spawnParticles(char, rateMs) {
+            const w = $("weather-overlay");
+            const timer = setInterval(() => {
+                const p = document.createElement("div");
+                p.className = "absolute top-[-20px] text-white/60 pointer-events-none";
+                p.textContent = char;
+                p.style.left = Math.random() * 100 + "vw";
+                p.style.fontSize = (10 + Math.random() * 14) + "px";
+                p.style.opacity = (0.3 + Math.random() * 0.5).toString();
+                const dur = 4 + Math.random() * 4;
+                p.style.transition = `transform ${dur}s linear, opacity ${dur}s linear`;
+                w.appendChild(p);
 
-        const track = $("ticker-track");
-        let tickerHTML = '';
-        tickerHTML += `<span class="font-bold text-brand">LUMA $${lumaPrice.toFixed(9)} <span class="${lumaChange >= 0 ? 'text-green-400' : 'text-red-400'}">(${lumaChange.toFixed(2)}%)</span></span> <span class="text-white/20">|</span> `;
+                requestAnimationFrame(() => {
+                    p.style.transform = `translateY(110vh) translateX(${(-20 + Math.random()*40)}px)`;
+                    p.style.opacity = "0";
+                });
 
-        barCoins.forEach(c => {
-          const info = dataCoins[c.id];
-          if(info) {
-            const p = info.usd;
-            const chg = info.usd_24h_change;
-            tickerHTML += `<span>${c.symbol} $${p.toLocaleString()} <span class="${chg >= 0 ? 'text-green-400' : 'text-red-400'}">(${chg.toFixed(2)}%)</span></span> <span class="text-white/20 mx-4">|</span> `;
-          }
+                setTimeout(() => p.remove(), dur * 1000);
+            }, rateMs);
+            return () => clearInterval(timer);
+        }
+
+        function applyWeatherEffect(mode) {
+            clearWeatherOverlay();
+            if (stopParticles) stopParticles();
+
+            if (mode === "snow") stopParticles = spawnParticles("❄", 200);
+            else if (mode === "rain") stopParticles = spawnParticles("💧", 80);
+            else if (mode === "storm") {
+                stopParticles = spawnParticles("⚡", 300); // Éclairs symboliques ou pluie
+                // On peut ajouter un effet flash ici si voulu
+            }
+        }
+
+        // --- 3. APIs : WEATHER & ISS DISTANCE ---
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const toRad = x => x * Math.PI / 180;
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+            return 2 * R * Math.asin(Math.sqrt(a));
+        }
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                $("geoStatus").innerText = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+
+                // Météo
+                try {
+                    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    const data = await res.json();
+                    const code = data.current_weather.weathercode;
+                    const temp = data.current_weather.temperature;
+                    
+                    $("wxLabel").innerText = `${temp}°C`;
+                    
+                    let mode = "clear";
+                    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) mode = "rain";
+                    if (code >= 71 && code <= 77) mode = "snow";
+                    if (code >= 95) mode = "storm";
+                    
+                    applyWeatherEffect(mode);
+                } catch(e) { console.error("Weather error", e); }
+
+                // ISS Distance relative
+                setInterval(async () => {
+                    try {
+                        const r = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+                        const j = await r.json();
+                        // Update UI ISS
+                        $("iss-lat").innerText = `LAT ${j.latitude.toFixed(2)}`;
+                        $("iss-lon").innerText = `LON ${j.longitude.toFixed(2)}`;
+                        
+                        // Distance
+                        const dist = haversineKm(lat, lon, j.latitude, j.longitude);
+                        $("issDistance").innerText = `${Math.round(dist).toLocaleString()} km`;
+                    } catch(e){}
+                }, 5000);
+
+            }, () => {
+                $("geoStatus").innerText = "GPS Refusé - Mode global";
+            });
+        }
+
+        // --- 4. NEWS FEEDS ---
+        async function fetchSpaceNews() {
+            try {
+                const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=3");
+                const j = await r.json();
+                $("spaceNews").innerHTML = j.results.map(a => `
+                    <div class="border-b border-white/5 last:border-0 pb-2 mb-2">
+                        <a href="${a.url}" target="_blank" class="text-xs text-blue-300 hover:text-white transition block truncate">${a.title}</a>
+                        <span class="text-[10px] text-gray-500">${new Date(a.published_at).toLocaleDateString()}</span>
+                    </div>
+                `).join('');
+            } catch(e) { $("spaceNews").innerHTML = "<div class='text-xs text-red-400'>Flux indisponible</div>"; }
+        }
+
+        async function fetchCryptoNews() {
+            try {
+                const r = await fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
+                const j = await r.json();
+                const items = j.Data.slice(0, 3);
+                $("cryptoNews").innerHTML = items.map(n => `
+                     <div class="border-b border-white/5 last:border-0 pb-2 mb-2">
+                        <a href="${n.url}" target="_blank" class="text-xs text-brand hover:text-white transition block truncate">${n.title}</a>
+                        <span class="text-[10px] text-gray-500">${new Date(n.published_on * 1000).toLocaleDateString()}</span>
+                    </div>
+                `).join('');
+            } catch(e) { 
+                // Fallback si CORS bloque
+                $("cryptoNews").innerHTML = "<div class='text-[10px] text-gray-500'>Données protégées (CORS). Installez un proxy.</div>"; 
+            }
+        }
+        fetchSpaceNews();
+        fetchCryptoNews();
+
+        // --- 5. VOYAGER SIMULATION (MATHS) ---
+        function updateVoyager() {
+            const startTimestamp = 1704067200000; // 1 Jan 2024
+            const v1Start = 24400000000; const v1Speed = 17; // km/s
+            const v2Start = 20300000000; const v2Speed = 15; // km/s
+            
+            const now = Date.now();
+            const elapsed = (now - startTimestamp) / 1000;
+            
+            const d1 = v1Start + (elapsed * v1Speed);
+            const d2 = v2Start + (elapsed * v2Speed);
+            
+            $("v1-dist").innerText = Math.floor(d1).toLocaleString() + " km";
+            $("v2-dist").innerText = Math.floor(d2).toLocaleString() + " km";
+        }
+        setInterval(updateVoyager, 1000);
+
+        // --- 6. HORLOGES & TICKER ---
+        function updateClocks() {
+            const now = new Date();
+            $("earth-clock").innerText = now.toISOString().split('T')[1].split('.')[0] + " UTC";
+            
+            // Sol Martien (Approx)
+            const millisPerSol = 88775244;
+            const msPassed = now.getTime() - 947116800000;
+            const sols = msPassed / millisPerSol;
+            const solDay = Math.floor(sols) + 44796;
+            const solTime = (sols % 1) * 24;
+            const h = Math.floor(solTime);
+            const m = Math.floor((solTime - h) * 60);
+            $("mars-clock").innerText = `Sol ${solDay} ${h}:${m < 10 ? '0'+m : m}`;
+        }
+        setInterval(updateClocks, 1000);
+
+        // Crypto Ticker & Price
+        const barCoins = [{id:"bitcoin", sym:"BTC"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}];
+        async function fetchMarket() {
+            try {
+                // LUMA Price
+                const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
+                const dLuma = await rLuma.json();
+                const attr = dLuma.data.attributes;
+                const p = parseFloat(attr.base_token_price_usd);
+                const c = parseFloat(attr.price_change_percentage.h24);
+                
+                $("livePrice").innerText = p < 0.01 ? '$'+p.toFixed(8) : '$'+p.toFixed(4);
+                const cEl = $("liveChange");
+                cEl.innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
+                cEl.className = `data-value text-xl ${c>=0?'text-green-400':'text-red-400'}`;
+
+                // Ticker
+                const ids = barCoins.map(x=>x.id).join(',');
+                const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+                const dCoins = await rCoins.json();
+                
+                let html = `<span class="font-bold text-brand">LUMA $${p.toFixed(8)}</span> <span class="mx-4 text-gray-600">|</span> `;
+                barCoins.forEach(coin => {
+                    const data = dCoins[coin.id];
+                    if(data) {
+                        const chg = data.usd_24h_change;
+                        html += `<span class="text-gray-300">${coin.sym} $${data.usd} <span class="${chg>=0?'text-green-500':'text-red-500'}">(${chg.toFixed(1)}%)</span></span> <span class="mx-4 text-gray-600">|</span> `;
+                    }
+                });
+                $("ticker-track").innerHTML = html + html; // Duplicate for scroll
+            } catch(e){}
+        }
+        fetchMarket();
+        setInterval(fetchMarket, 60000);
+
+        // --- 7. UTILS (Copy/MetaMask/Game) ---
+        $("copyBtn").addEventListener('click', () => {
+            navigator.clipboard.writeText(CONTRACT_ADDRESS);
+            alert("Adresse copiée !");
+        });
+        
+        $("addMetaMask").addEventListener('click', async () => {
+            if (window.ethereum) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: CONTRACT_ADDRESS,
+                                symbol: 'LUMA',
+                                decimals: 18,
+                                image: window.location.origin + '/Luma-logo.png',
+                            },
+                        },
+                    });
+                } catch (e) {}
+            } else alert("MetaMask introuvable");
         });
 
-        track.innerHTML = tickerHTML + tickerHTML;
-      } catch (e) {
-        console.error("Erreur data:", e);
-      }
-    }
-    fetchMarketData();
-    setInterval(fetchMarketData, 60000);
-
-    // ✅ UTIL: Haversine
-    function haversineKm(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const toRad = (d) => (d * Math.PI) / 180;
-      const dLat = toRad(lat2 - lat1);
-      const dLon = toRad(lon2 - lon1);
-      const a =
-        Math.sin(dLat/2)**2 +
-        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
-      return 2 * R * Math.asin(Math.sqrt(a));
-    }
-
-    // ✅ 5) Bandeau fêtes (Nouvel An jusqu’au 15 janvier)
-    function setFestivalBar() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const localNow = new Date();
-
-      const inNewYearWindow =
-        localNow >= new Date(y, 0, 1, 0, 0, 0) &&
-        localNow <= new Date(y, 0, 15, 23, 59, 59);
-
-      const bar = $("festival-bar");
-      const txt = $("festival-text");
-
-      if (inNewYearWindow) {
-        txt.textContent = "✨ Bonne année ! LUMA vous souhaite une excellente année — cap sur l’innovation (jusqu’au 15 janvier).";
-        bar.classList.remove("hidden");
-        layoutTopBars(true);
-      } else {
-        bar.classList.add("hidden");
-        layoutTopBars(false);
-      }
-    }
-    setFestivalBar();
-
-    // ✅ 6) Météo + overlay (Open-Meteo, sans clé)
-    let geo = { lat: null, lon: null };
-    let stopParticles = null;
-
-    function clearWeatherOverlay() {
-      $("weather-overlay").innerHTML = "";
-    }
-
-    function spawnParticles(char, rateMs) {
-      const w = $("weather-overlay");
-      const timer = setInterval(() => {
-        const p = document.createElement("div");
-        p.className = "absolute top-[-20px] text-white/80 pointer-events-none";
-        p.textContent = char;
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.fontSize = (10 + Math.random() * 18) + "px";
-        p.style.opacity = (0.25 + Math.random() * 0.55).toString();
-        const dur = 6 + Math.random() * 6;
-        p.style.transition = `transform ${dur}s linear, opacity ${dur}s linear`;
-        w.appendChild(p);
-
-        requestAnimationFrame(() => {
-          p.style.transform = `translateY(120vh) translateX(${(-20 + Math.random()*40)}px)`;
-          p.style.opacity = "0";
-        });
-
-        setTimeout(() => p.remove(), dur * 1000);
-      }, rateMs);
-
-      return () => clearInterval(timer);
-    }
-
-    function applyWeatherEffect(mode) {
-      clearWeatherOverlay();
-      if (stopParticles) stopParticles();
-
-      if (mode === "snow") stopParticles = spawnParticles("❄", 180);
-      else if (mode === "rain") stopParticles = spawnParticles("💧", 120);
-      else if (mode === "storm") {
-        stopParticles = spawnParticles("💧", 90);
-        const w = $("weather-overlay");
-        const flash = document.createElement("div");
-        flash.className = "absolute inset-0 bg-white pointer-events-none";
-        flash.style.opacity = "0";
-        w.appendChild(flash);
-
-        setInterval(() => {
-          if (Math.random() < 0.18) {
-            flash.style.transition = "opacity 120ms ease";
-            flash.style.opacity = "0.28";
-            setTimeout(() => flash.style.opacity = "0", 140);
-          }
-        }, 900);
-      }
-    }
-
-    async function fetchWeather() {
-      if (geo.lat == null) return;
-
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${geo.lat}&longitude=${geo.lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=${encodeURIComponent(TZ)}`;
-      const r = await fetch(url);
-      const j = await r.json();
-      const cur = j.current;
-
-      const code = cur.weather_code;
-      const temp = cur.temperature_2m;
-
-      let mode = "clear";
-      if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) mode = "rain";
-      if (code >= 71 && code <= 77) mode = "snow";
-      if (code >= 95 && code <= 99) mode = "storm";
-
-      $("wxLabel").textContent = `${temp}°C • ${mode.toUpperCase()}`;
-      applyWeatherEffect(mode);
-    }
-
-    // ✅ 7) ISS distance (WhereTheISS.at)
-    async function fetchISS() {
-      if (geo.lat == null) return;
-      const r = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
-      const j = await r.json();
-      const d = haversineKm(geo.lat, geo.lon, j.latitude, j.longitude);
-      $("issDistance").textContent = `${Math.round(d).toLocaleString()} km`;
-    }
-
-    // ✅ 8) News Space + Crypto (front-only)
-    async function fetchSpaceNews() {
-      const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=5");
-      const j = await r.json();
-      const items = j.results || [];
-
-      $("spaceNews").innerHTML = items.map(a => {
-        const t = (a.title || "").slice(0, 95);
-        const when = a.published_at ? new Date(a.published_at).toLocaleDateString("fr-CA") : "";
-        return `<div>
-          <a class="block hover:text-white underline underline-offset-2" target="_blank" href="${a.url}">${t}</a>
-          <div class="text-[10px] text-gray-500">${when}</div>
-        </div>`;
-      }).join("");
-    }
-
-    async function fetchCryptoNews() {
-      try {
-        const r = await fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
-        const j = await r.json();
-        const items = (j.Data || []).slice(0, 5);
-
-        $("cryptoNews").innerHTML = items.map(n => {
-          const t = (n.title || "").slice(0, 95);
-          const when = n.published_on ? new Date(n.published_on * 1000).toLocaleDateString("fr-CA") : "";
-          return `<div>
-            <a class="block hover:text-white underline underline-offset-2" target="_blank" href="${n.url}">${t}</a>
-            <div class="text-[10px] text-gray-500">${when}</div>
-          </div>`;
-        }).join("");
-      } catch (e) {
-        $("cryptoNews").innerHTML = `<div class="text-gray-400">Flux crypto indisponible (CORS). Solution idéale : petit proxy (Cloudflare Worker).</div>`;
-      }
-    }
-
-    // ✅ 9) Voyager snapshot (stable)
-    function setVoyagerSnapshot() {
-      $("v1pos").textContent = "Espace interstellaire";
-      $("v2pos").textContent = "Espace interstellaire";
-      $("v1earth").textContent = "Snapshot (à maintenir)";
-      $("v2earth").textContent = "Snapshot (à maintenir)";
-      $("v1sun").textContent = "Snapshot (à maintenir)";
-      $("v2sun").textContent = "Snapshot (à maintenir)";
-    }
-    setVoyagerSnapshot();
-
-    // ✅ 10) Géolocalisation
-    function initGeo() {
-      if (!navigator.geolocation) {
-        $("geoStatus").textContent = "géolocalisation non disponible";
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          geo.lat = pos.coords.latitude;
-          geo.lon = pos.coords.longitude;
-          $("geoStatus").textContent = `${geo.lat.toFixed(3)}, ${geo.lon.toFixed(3)}`;
-
-          await fetchWeather();
-          await fetchISS();
-          await fetchSpaceNews();
-          await fetchCryptoNews();
-
-          setInterval(fetchWeather, 10 * 60 * 1000);
-          setInterval(fetchISS, 20 * 1000);
-          setInterval(fetchSpaceNews, 5 * 60 * 1000);
-          setInterval(fetchCryptoNews, 5 * 60 * 1000);
-        },
-        () => {
-          $("geoStatus").textContent = "permission refusée (ISS/Météo off)";
-        },
-        { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
-      );
-    }
-    initGeo();
-  </script>
+        function toggleExplorerMode() {
+            alert("Mode Explorateur (3D) en cours de développement pour la V2.");
+        }
+        function openGamePopup() {
+            window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no');
+        }
+    </script>
 </body>
 </html>
