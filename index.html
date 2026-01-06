@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LUMA | Lunar&Mars Mission Control</title>
-    <link rel="icon" href="luma-logo.png" />
+    <link rel="icon" href="Luma-logo.png" />
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
     <script>
@@ -29,9 +29,10 @@
                         brand: '#ffb21a',
                         accent: '#3b82f6',
                         webb: '#d4a017',
-                        mars: '#ef4444', // Rouge Mars
-                        moon: '#e5e7eb', // Gris Lune
+                        mars: '#ef4444',
+                        moon: '#e5e7eb',
                         quantum: '#8b5cf6',
+                        success: '#10b981'
                     },
                     animation: {
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -99,7 +100,7 @@
 
             <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
                 <a href="#dashboard" class="hover:text-white transition-colors" data-i18n="nav_dash">DASHBOARD</a>
-                <a href="#planetary-section" class="hover:text-white transition-colors" data-i18n="nav_planetary">PLANETARY OPS</a>
+                <a href="#planetary-section" class="hover:text-white transition-colors" data-i18n="nav_planetary">PLANETARY</a>
                 <a href="#science-section" class="hover:text-white transition-colors text-webb" data-i18n="nav_science">SCIENCE</a>
                 <a href="#iss-section" class="hover:text-white transition-colors" data-i18n="nav_iss">TRACKING</a>
             </div>
@@ -111,7 +112,7 @@
                     <span class="lang-btn" onclick="changeLanguage('en')" id="btn-en">EN</span>
                 </div>
                 <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
-                    <span data-i18n="btn_buy">INITIALISER ACHAT</span>
+                    <span data-i18n="btn_buy">ACHETER LUMA</span>
                 </a>
             </div>
         </div>
@@ -126,27 +127,50 @@
     <main id="mainContent" class="relative pt-32 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-6">
 
         <div id="dashboard" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
             <div class="md:col-span-12 lg:col-span-6 tech-card rounded-2xl p-6 relative overflow-hidden group">
                 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i data-lucide="orbit" class="w-32 h-32 text-brand"></i></div>
                 <div class="relative z-10 h-full flex flex-col justify-between">
                     <div>
                         <div class="inline-flex items-center gap-2 px-2 py-1 rounded border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-mono mb-4">
                             <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
-                            <span data-i18n="system_nominal">SYSTÈMES NOMINAUX</span>
+                            <span data-i18n="system_nominal">RÉSEAU BNB ACTIF</span>
                         </div>
-                        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2" data-i18n="hero_title">LUMA INDEX</h1>
+                        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2" data-i18n="hero_title">LUMA PROTOCOL</h1>
                         <p class="text-sm text-gray-400 leading-relaxed max-w-lg" data-i18n="hero_desc">
-                            L'interface de convergence entre la blockchain Almagest, l'innovation technologique et l'expansion vers Mars. 
+                            LUMA est un jeton conceptuel et communautaire représentant le corridor imaginaire entre la Lune et Mars.
+                            Ce n'est pas un actif spéculatif, mais un emblème pour l'avenir multi-planétaire.
                         </p>
                     </div>
-                    <div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
-                        <div><div class="data-label" data-i18n="lbl_price">PRIX (USD)</div><div id="livePrice" class="data-value text-xl">Loading</div></div>
-                        <div><div class="data-label" data-i18n="lbl_var">VAR 24H</div><div id="liveChange" class="data-value text-xl">--%</div></div>
-                        <div><div class="data-label">MARKET CAP</div><div class="data-value text-xl text-gray-400">Micro</div></div>
+                    
+                    <div class="mt-6 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
+                        <div>
+                            <div class="data-label text-brand">TOTAL SUPPLY</div>
+                            <div class="data-value text-lg">202.8M</div>
+                            <div class="text-[10px] text-gray-500">Fixe (No Mint)</div>
+                        </div>
+                        <div>
+                            <div class="data-label text-mars">BURNED</div>
+                            <div class="data-value text-lg">22.5M</div>
+                            <div class="text-[10px] text-gray-500">~11.11% Détruit</div>
+                        </div>
+                        <div>
+                            <div class="data-label text-accent">LOCKED</div>
+                            <div class="data-value text-lg">22.2M</div>
+                            <div class="text-[10px] text-gray-500">PinkSale (Vesting)</div>
+                        </div>
                     </div>
+
                     <div class="mt-4 flex gap-3">
-                        <button id="copyBtn" class="text-[10px] border border-white/20 px-3 py-1 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2"><i data-lucide="copy" class="w-3 h-3"></i> 0xEA...ECC9</button>
-                        <button id="addMetaMask" class="text-[10px] border border-[#f6851b]/30 px-3 py-1 rounded hover:bg-[#f6851b]/10 text-[#f6851b] transition flex items-center gap-2"><img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-3 h-3"> MetaMask</button>
+                        <button id="copyBtn" class="text-[10px] border border-white/20 px-3 py-1 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
+                            <i data-lucide="copy" class="w-3 h-3"></i> 0xEA...ECC9
+                        </button>
+                        <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" class="text-[10px] border border-white/20 px-3 py-1 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
+                            <i data-lucide="external-link" class="w-3 h-3"></i> BscScan
+                        </a>
+                        <span class="text-[10px] border border-green-500/30 text-green-400 px-3 py-1 rounded bg-green-500/10 flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> 0% Tax
+                        </span>
                     </div>
                 </div>
             </div>
@@ -162,9 +186,9 @@
                     <div id="geoStatus" class="text-[10px] text-gray-500 font-mono mt-1" data-i18n="geo_wait">En attente GPS...</div>
                 </div>
                 <div class="mt-4 pt-4 border-t border-white/5">
-                    <div class="data-label mb-1" data-i18n="lbl_iss_dist">DISTANCE ISS (RELATIVE)</div>
-                    <div id="issDistance" class="text-xl font-mono text-accent">-- km</div>
-                    <div class="text-[10px] text-gray-500" data-i18n="lbl_iss_sub">Basé sur votre position réelle</div>
+                    <div class="data-label mb-1" data-i18n="lbl_price">PRIX LUMA (LIVE)</div>
+                    <div id="livePrice" class="text-xl font-mono text-brand">Loading...</div>
+                    <div id="liveChange" class="text-[10px] font-bold text-gray-500">--% (24h)</div>
                 </div>
             </div>
 
@@ -191,7 +215,6 @@
             
             <div class="tech-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-mars/10 rounded-full blur-3xl"></div>
-                
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-600 to-red-900 border border-red-500 shadow-lg shadow-red-900/50"></div>
@@ -199,7 +222,6 @@
                     </div>
                     <span class="text-[10px] text-mars border border-mars/30 px-2 py-1 rounded bg-mars/5 animate-pulse">LIVE LINK</span>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div class="bg-white/5 p-3 rounded border border-white/5">
                         <div class="data-label text-mars">DISTANCE (KM)</div>
@@ -210,9 +232,8 @@
                         <div id="mars-light" class="data-value text-lg">-- min</div>
                     </div>
                 </div>
-
                 <div>
-                    <div class="data-label mb-2 flex items-center gap-2"><i data-lucide="thermometer" class="w-3 h-3"></i> SURFACE WEATHER (Gale Crater)</div>
+                    <div class="data-label mb-2 flex items-center gap-2"><i data-lucide="thermometer" class="w-3 h-3"></i> SURFACE (Gale Crater)</div>
                     <div class="flex justify-between items-end border-t border-white/10 pt-2">
                         <div>
                             <div class="text-2xl font-mono font-bold text-white" id="mars-temp">--°C</div>
@@ -228,7 +249,6 @@
 
             <div class="tech-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-moon/10 rounded-full blur-3xl"></div>
-                
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-600 border border-gray-400 shadow-lg shadow-gray-700/50"></div>
@@ -236,7 +256,6 @@
                     </div>
                     <span class="text-[10px] text-gray-400 border border-gray-600/30 px-2 py-1 rounded bg-gray-500/10">ORBITAL</span>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div class="bg-white/5 p-3 rounded border border-white/5">
                         <div class="data-label">DISTANCE (KM)</div>
@@ -247,7 +266,6 @@
                         <div class="data-value text-lg text-gray-300">1.28 sec</div>
                     </div>
                 </div>
-
                 <div>
                     <div class="data-label mb-2 flex items-center gap-2"><i data-lucide="sun" class="w-3 h-3"></i> SURFACE ENV (Equator)</div>
                     <div class="flex justify-between items-end border-t border-white/10 pt-2">
@@ -265,7 +283,6 @@
         </div>
 
         <div id="science-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            
             <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-webb/10 rounded-full blur-3xl"></div>
                 <div class="flex justify-between items-center mb-6">
@@ -275,7 +292,6 @@
                     </div>
                     <span class="text-[10px] text-webb border border-webb/30 px-2 py-1 rounded bg-webb/5">LAGRANGE L2</span>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div class="bg-white/5 p-3 rounded">
                         <div class="data-label">MIRROR TEMP (MIRI)</div>
@@ -286,10 +302,9 @@
                         <div class="data-value text-webb">1,500,000 km</div>
                     </div>
                 </div>
-
                 <div>
                     <div class="data-label mb-2" data-i18n="lbl_webb_disco">DERNIÈRES DÉCOUVERTES (API)</div>
-                    <div id="webbNews" class="space-y-3 text-sm text-gray-300 min-h-[80px]">Loading...</div>
+                    <div id="webbNews" class="space-y-3 text-sm text-gray-300 min-h-[80px]">Loading Deep Space Network...</div>
                 </div>
             </div>
 
@@ -310,7 +325,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="border-t border-white/5 pt-4">
                     <div class="flex items-center gap-2 mb-2">
                         <i data-lucide="disc" class="text-gray-400"></i>
@@ -321,6 +335,61 @@
                         <div class="text-right">
                             <div class="font-mono text-white text-sm">1,560 LY</div>
                             <div class="font-mono text-[10px] text-gray-500" id="bh-km">Calcul...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="iss-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="satellite" class="text-blue-400"></i>
+                    <h3 class="font-bold text-lg text-white" data-i18n="voyager_title">VOYAGER LIVE TRACKING</h3>
+                    <span class="text-[10px] border border-blue-500/30 text-blue-400 px-2 rounded bg-blue-500/10" data-i18n="interstellar">INTERSTELLAIRE</span>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-bold text-white">VOYAGER 1</span>
+                            <span class="text-[10px] text-gray-500">LAUNCH: 1977</span>
+                        </div>
+                        <div class="data-label" data-i18n="dist_earth">DISTANCE TERRE</div>
+                        <div id="v1-dist" class="text-2xl font-mono text-blue-200">Calcul...</div>
+                        <div class="w-full bg-gray-800 h-1 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-blue-500 h-full w-[99%] animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-bold text-white">VOYAGER 2</span>
+                            <span class="text-[10px] text-gray-500" data-i18n="heliopause">HELIOPAUSE FRANCHIE</span>
+                        </div>
+                        <div class="data-label" data-i18n="dist_earth">DISTANCE TERRE</div>
+                        <div id="v2-dist" class="text-xl font-mono text-gray-300">Calcul...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-card rounded-2xl p-6 relative flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg flex items-center gap-2 text-white"><i data-lucide="globe" class="text-green-400"></i> <span data-i18n="iss_title">ISS ORBITAL DATA</span></h3>
+                    <div class="flex items-center gap-2">
+                         <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                         <span class="text-[10px] font-mono text-red-400">LIVE API</span>
+                    </div>
+                </div>
+                <div class="flex-1 bg-[#0a0a0c] rounded-lg border border-white/5 relative overflow-hidden flex items-center justify-center min-h-[200px] group">
+                    <div class="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/40 via-[#050505] to-[#050505]"></div>
+                    <div class="grid-bg absolute inset-0 opacity-50"></div>
+                    <div class="text-center z-10 space-y-4">
+                        <div class="data-label" data-i18n="iss_coords">COORDONNÉES ORBITALES</div>
+                        <div class="font-mono text-3xl text-white tracking-tighter">
+                            <span id="iss-lat">LAT --.--</span><br>
+                            <span id="iss-lon" class="text-gray-400">LON --.--</span>
+                        </div>
+                        <div class="text-xs text-green-400 font-mono border border-green-500/20 bg-green-500/10 px-3 py-1 rounded-full inline-block">
+                            VITESSE: ~27,600 km/h
                         </div>
                     </div>
                 </div>
@@ -374,14 +443,20 @@
         <div id="manifesto" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
             <div class="tech-card rounded-2xl p-8">
                 <h2 class="text-2xl font-bold mb-4 text-brand" data-i18n="manifesto_title">VISION & MANIFESTE</h2>
-                <p class="text-gray-400 text-sm leading-relaxed mb-4" data-i18n="manifesto_p1">LUMA est un indice symbolique de la progression humaine.</p>
-                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="manifesto_p2">La décentralisation est une nécessité physique pour l'économie multi-planétaire.</p>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4" data-i18n="manifesto_p1">
+                    LUMA n'est pas seulement un actif numérique. C'est un indice symbolique de la progression humaine.
+                    Nous construisons le pont financier et culturel entre la Terre, la Lune et Mars.
+                </p>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="manifesto_p2">
+                    Dans une économie multi-planétaire, la décentralisation n'est pas une option, c'est une nécessité physique.
+                    LUMA prépare ce terrain à travers l'éducation et la technologie Almagest.
+                </p>
             </div>
             <div class="tech-card rounded-2xl p-8">
                 <h2 class="text-2xl font-bold mb-4 text-white" data-i18n="timeline_title">TIMELINE FUTURISTE</h2>
                 <div class="border-l border-white/10 ml-2 space-y-6">
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-xs text-green-400 font-mono mb-1">Q1 2026</div><div class="font-bold text-sm text-white" data-i18n="time_1">Lancement Almagest</div></div>
-                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand/50"></span><div class="text-xs text-gray-500 font-mono mb-1">2030+</div><div class="font-bold text-sm text-gray-300" data-i18n="time_3">Tx LUMA Terre-Mars</div></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-xs text-green-400 font-mono mb-1">Q1 2026</div><div class="font-bold text-sm text-white" data-i18n="time_1">Lancement Infrastructure Almagest</div></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand/50"></span><div class="text-xs text-gray-500 font-mono mb-1">2030+</div><div class="font-bold text-sm text-gray-300" data-i18n="time_3">Première Tx LUMA Terre-Mars</div></div>
                 </div>
             </div>
         </div>
@@ -404,14 +479,16 @@
             <div>
                 <h4 class="text-white font-bold mb-3" data-i18n="footer_archives">ARCHIVES</h4>
                 <ul class="space-y-2">
-                    <li><a href="#" class="hover:text-brand">Apollo / Voyager</a></li>
+                    <li><a href="#" class="hover:text-brand">Programme Apollo</a></li>
+                    <li><a href="#" class="hover:text-brand">Mars Pathfinder</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-white font-bold mb-3" data-i18n="footer_data">DONNÉES</h4>
                 <ul class="space-y-2">
-                    <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper</a></li>
-                    <li><a href="#" id="copyContract" class="hover:text-brand">Copier Contrat</a></li>
+                    <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper V1.1</a></li>
+                    <li><a href="luma-airdrop.html" target="_blank" class="hover:text-brand">Airdrop</a></li>
+                    <li><a href="#" id="copyContractFooter" class="hover:text-brand">Copier Contrat</a></li>
                 </ul>
             </div>
         </div>
@@ -420,14 +497,15 @@
     <script>
         lucide.createIcons();
         const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
+        const TOTAL_SUPPLY = 202845959;
         const $ = (id) => document.getElementById(id);
 
         // --- 0. TRADUCTION ---
         const translations = {
             fr: {
-                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY OPS", nav_science: "SCIENCE & WEBB", nav_iss: "TRACKING", nav_manifesto: "MANIFESTO", btn_buy: "INITIALISER ACHAT",
-                system_nominal: "SYSTÈMES NOMINAUX", hero_title: "LUMA INDEX", hero_desc: "L'interface de convergence entre la blockchain Almagest et l'expansion vers Mars.",
-                lbl_price: "PRIX (USD)", lbl_var: "VAR 24H", lbl_env: "ENVIRONNEMENT LOCAL", geo_wait: "En attente GPS...",
+                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY OPS", nav_science: "SCIENCE & WEBB", nav_iss: "TRACKING", nav_manifesto: "MANIFESTO", btn_buy: "ACHETER LUMA",
+                system_nominal: "RÉSEAU BNB ACTIF", hero_title: "LUMA PROTOCOL", hero_desc: "LUMA est un jeton conceptuel et communautaire représentant le corridor imaginaire entre la Lune et Mars.",
+                lbl_price: "PRIX LUMA (LIVE)", lbl_var: "VAR 24H", lbl_env: "ENVIRONNEMENT LOCAL", geo_wait: "En attente GPS...",
                 lbl_iss_dist: "DISTANCE ISS (RELATIVE)", lbl_iss_sub: "Basé sur votre position réelle", lbl_clock: "HORLOGE COSMIQUE",
                 lbl_earth: "TERRE (UTC)", lbl_mars: "MARS (SOL)", lbl_moon: "PHASE LUNE", lbl_webb_disco: "DERNIÈRES DÉCOUVERTES (API)",
                 title_quantum: "ORDINATEUR QUANTIQUE", voyager_title: "VOYAGER LIVE TRACKING", interstellar: "INTERSTELLAIRE",
@@ -439,9 +517,9 @@
                 footer_archives: "ARCHIVES", footer_data: "DONNÉES"
             },
             en: {
-                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY OPS", nav_science: "SCIENCE & WEBB", nav_iss: "TRACKING", nav_manifesto: "MANIFESTO", btn_buy: "INITIALIZE BUY",
-                system_nominal: "SYSTEMS NOMINAL", hero_title: "LUMA INDEX", hero_desc: "Convergence interface between Almagest blockchain and Mars expansion.",
-                lbl_price: "PRICE (USD)", lbl_var: "24H CHANGE", lbl_env: "LOCAL ENVIRONMENT", geo_wait: "Waiting for GPS...",
+                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY OPS", nav_science: "SCIENCE & WEBB", nav_iss: "TRACKING", nav_manifesto: "MANIFESTO", btn_buy: "BUY LUMA",
+                system_nominal: "BNB NETWORK ACTIVE", hero_title: "LUMA PROTOCOL", hero_desc: "LUMA is a conceptual and community token representing the imaginary corridor between the Moon and Mars.",
+                lbl_price: "LUMA PRICE (LIVE)", lbl_var: "24H CHANGE", lbl_env: "LOCAL ENVIRONMENT", geo_wait: "Waiting for GPS...",
                 lbl_iss_dist: "ISS DISTANCE (RELATIVE)", lbl_iss_sub: "Based on real location", lbl_clock: "COSMIC CLOCK",
                 lbl_earth: "EARTH (UTC)", lbl_mars: "MARS (SOL)", lbl_moon: "MOON PHASE", lbl_webb_disco: "LATEST DISCOVERIES (API)",
                 title_quantum: "QUANTUM COMPUTER", voyager_title: "VOYAGER LIVE TRACKING", interstellar: "INTERSTELLAR",
@@ -468,7 +546,7 @@
         }
         changeLanguage(currentLang);
 
-        // --- 1. FESTIVAL BAR ---
+        // --- 1. BANDEAU FÊTES ---
         function setFestivalBar() {
             const now = new Date();
             const month = now.getMonth(); const day = now.getDate();
@@ -487,53 +565,38 @@
             }
         }
 
-        // --- 2. PLANETARY OPS (MARS & MOON PHYSICS ENGINE) ---
+        // --- 2. PLANETARY OPS ---
         async function fetchMarsWeather() {
             try {
-                // API MAAS2 (Mars Weather)
                 const res = await fetch("https://api.maas2.org/");
                 const data = await res.json();
-                
                 $("mars-temp").innerText = `${data.max_temp}°C`;
-                $("mars-cond").innerText = data.season ? `${data.season.toUpperCase()} - ${data.atmo_opacity.toUpperCase()}` : "WINTER - SUNNY";
+                $("mars-cond").innerText = data.season ? `${data.season.toUpperCase()}` : "WINTER";
                 $("mars-pressure").innerText = `${data.pressure} Pa`;
-            } catch(e) {
-                $("mars-temp").innerText = "-63°C"; // Avg default
-                $("mars-cond").innerText = "DATA LINK LOST";
-            }
+            } catch(e) { $("mars-temp").innerText = "-63°C"; $("mars-cond").innerText = "DATA LINK LOST"; }
         }
         fetchMarsWeather();
 
         function updatePlanetaryData() {
             const now = Date.now();
-            
-            // 1. Moon Distance (Approximation Sine Wave) - Avg 384,400km
-            // Anomalistic month approx 27.55 days
+            // Moon (Approx)
             const moonPeriod = 27.55 * 24 * 3600 * 1000; 
             const moonPhase = (now % moonPeriod) / moonPeriod;
-            const moonDist = 384400 + (Math.sin(moonPhase * Math.PI * 2) * 21000); // +/- variability
+            const moonDist = 384400 + (Math.sin(moonPhase * Math.PI * 2) * 21000);
             $("moon-dist").innerText = Math.floor(moonDist).toLocaleString();
 
-            // 2. Moon Temp Simulation (Day/Night cycle)
-            // Synodic month 29.53 days
             const synodic = 29.53 * 24 * 3600 * 1000;
-            const age = (now % synodic) / synodic; // 0 to 1
-            let temp = -130; // Night base
-            if(age > 0.25 && age < 0.75) temp = 120; // Day
-            else if(age > 0.2 && age < 0.3) temp = 0; // Terminator
+            const age = (now % synodic) / synodic;
+            let temp = -130; if(age > 0.25 && age < 0.75) temp = 120;
             $("moon-temp").innerText = `${temp}°C`;
             $("moon-cycle").innerText = (age > 0.25 && age < 0.75) ? "DAY CYCLE" : "NIGHT CYCLE";
 
-            // 3. Mars Distance (Earth-Mars synodic period ~780 days)
-            // Varie de 54M km à 401M km
+            // Mars (Approx)
             const marsPeriod = 779.94 * 24 * 3600 * 1000;
             const marsPhase = (now % marsPeriod) / marsPeriod;
             const marsDist = 225000000 + (Math.cos(marsPhase * Math.PI * 2) * 170000000);
             $("mars-dist").innerText = Math.floor(marsDist).toLocaleString();
-            
-            // Light Time (Speed of light ~300,000 km/s)
-            const lightMins = (marsDist / 299792) / 60;
-            $("mars-light").innerText = `${lightMins.toFixed(1)} min`;
+            $("mars-light").innerText = `${((marsDist / 299792) / 60).toFixed(1)} min`;
         }
         setInterval(updatePlanetaryData, 1000);
 
@@ -598,15 +661,13 @@
             }, () => { $("geoStatus").innerText = "GPS OFF"; });
         }
 
-        // --- 5. NEWS (WEBB FILTER) ---
+        // --- 5. NEWS ---
         async function fetchSpaceNews() {
             try {
-                // Webb News (Filter query)
                 const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2");
                 const jWebb = await rWebb.json();
                 $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join('');
                 
-                // General News
                 const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=3");
                 const j = await r.json();
                 $("spaceNews").innerHTML = j.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-blue-300 hover:text-white transition block truncate">${a.title}</a></div>`).join('');
@@ -622,7 +683,7 @@
         }
         fetchSpaceNews(); fetchCryptoNews();
 
-        // --- 6. VOYAGER & BLACK HOLE ---
+        // --- 6. VOYAGER & BH ---
         function updateSpaceData() {
             const startTimestamp = 1704067200000; const now = Date.now(); const elapsed = (now - startTimestamp) / 1000;
             $("v1-dist").innerText = Math.floor(24400000000 + (elapsed * 17)).toLocaleString() + " km";
@@ -645,20 +706,34 @@
         const barCoins = [{id:"bitcoin", sym:"BTC"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}];
         async function fetchMarket() {
             try {
+                // LUMA PRICE
                 const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
-                const dLuma = await rLuma.json(); const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
-                $("livePrice").innerText = p < 0.01 ? '$'+p.toFixed(8) : '$'+p.toFixed(4);
+                const dLuma = await rLuma.json(); 
+                const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
+                const c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
+                
+                // Update DOM
+                const pStr = p < 0.01 ? '$'+p.toFixed(8) : '$'+p.toFixed(4);
+                $("livePrice").innerText = pStr;
+                $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '% (24h)';
+                $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
+
+                // TICKER
                 const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
                 const dCoins = await rCoins.json();
-                let html = `<span class="font-bold text-brand">LUMA $${p.toFixed(8)}</span> <span class="mx-4 text-gray-600">|</span> `;
+                let html = `<span class="font-bold text-brand">LUMA ${pStr}</span> <span class="mx-4 text-gray-600">|</span> `;
                 barCoins.forEach(coin => { const d = dCoins[coin.id]; if(d) html += `<span class="text-gray-300">${coin.sym} $${d.usd}</span> <span class="mx-4 text-gray-600">|</span> `; });
                 $("ticker-track").innerHTML = html + html; 
             } catch(e){}
         }
         fetchMarket(); setInterval(fetchMarket, 60000);
 
-        $("copyBtn").addEventListener('click', () => { navigator.clipboard.writeText(CONTRACT_ADDRESS); alert("Adresse copiée !"); });
-        $("addMetaMask").addEventListener('click', async () => { if (window.ethereum) { try { await window.ethereum.request({ method: 'wallet_watchAsset', params: { type: 'ERC20', options: { address: CONTRACT_ADDRESS, symbol: 'LUMA', decimals: 18, image: window.location.origin + '/luma-logo.png' }}}); } catch (e) {} } else alert("MetaMask introuvable"); });
+        // Copy
+        function copy(text) { navigator.clipboard.writeText(text); alert("Copié !"); }
+        $("copyBtn").addEventListener('click', () => copy(CONTRACT_ADDRESS));
+        $("copyContractFooter").addEventListener('click', (e) => { e.preventDefault(); copy(CONTRACT_ADDRESS); });
+
+        $("addMetaMask").addEventListener('click', async () => { if (window.ethereum) { try { await window.ethereum.request({ method: 'wallet_watchAsset', params: { type: 'ERC20', options: { address: CONTRACT_ADDRESS, symbol: 'LUMA', decimals: 18, image: window.location.origin + '/Luma-logo.png' }}}); } catch (e) {} } else alert("MetaMask introuvable"); });
         function toggleExplorerMode() { alert("Mode Explorateur (3D) en cours de développement."); }
         function openGamePopup() { window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no'); }
     </script>
