@@ -1,969 +1,769 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LUMA | Lunar&Mars Mission Control</title>
-  <link rel="icon" href="luma-logo.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMA | Lunar&Mars Mission Control</title>
+    <link rel="icon" href="Luma-noel-logo.png" />
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Z4L8P2YSD7');
+    </script>
 
-  <!-- GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4L8P2YSD7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-Z4L8P2YSD7');
-  </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
-          colors: {
-            bg: '#050505',
-            panel: '#0F0F12',
-            brand: '#ffb21a',
-            accent: '#3b82f6',
-            success: '#10b981',
-            danger: '#ef4444'
-          },
-          animation: {
-            'scroll-ticker': 'scroll 40s linear infinite',
-          },
-          keyframes: {
-            scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-100%)' } }
-          }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        bg: '#050505',
+                        panel: '#0F0F12',
+                        brand: '#ffb21a',
+                        accent: '#3b82f6',
+                        webb: '#d4a017',
+                        mars: '#ef4444',
+                        moon: '#e5e7eb',
+                        quantum: '#8b5cf6',
+                        success: '#10b981'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scroll-ticker': 'scroll 40s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-100%)' } }
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  <style>
-    body { background-color:#050505; color:#e5e5e5; overflow-x:hidden; }
-    .grid-bg{
-      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size:40px 40px;
-    }
-    .tech-card{
-      background: rgba(15, 15, 18, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
-      transition: border-color .3s ease, transform .3s ease;
-    }
-    .tech-card:hover{ border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    <style>
+        body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+        
+        /* Glassmorphism & Tech Cards */
+        .tech-card {
+            background: rgba(15, 15, 18, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        .tech-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
 
-    .data-label{ font-size:.65rem; text-transform:uppercase; letter-spacing:.05em; color:#6b7280; font-weight:600; margin-bottom:.25rem;}
-    .data-value{ font-family:'JetBrains Mono', monospace; font-weight:700; color:white; }
+        .data-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 0.25rem; }
+        .data-value { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: white; }
+        
+        .grid-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
 
-    #weather-overlay{ position:fixed; inset:0; pointer-events:none; z-index:40; overflow:hidden; }
-    .particle{ position:absolute; top:-20px; pointer-events:none; opacity:.65; }
-
-    ::-webkit-scrollbar{ width:6px; }
-    ::-webkit-scrollbar-track{ background:#050505; }
-    ::-webkit-scrollbar-thumb{ background:#333; border-radius:3px; }
-
-    /* Mini toast */
-    #toast{
-      position:fixed; bottom:18px; left:18px; z-index:80;
-      background:rgba(0,0,0,.7); border:1px solid rgba(255,255,255,.15);
-      padding:10px 12px; border-radius:12px; font-size:12px; display:none;
-      backdrop-filter: blur(10px);
-    }
-  </style>
+        #weather-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; }
+        
+        .lang-btn { cursor: pointer; opacity: 0.5; transition: opacity 0.3s; font-weight: bold; }
+        .lang-btn.active { opacity: 1; color: #ffb21a; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    </style>
 </head>
 
 <body class="antialiased grid-bg relative">
-  <div id="weather-overlay"></div>
-  <div id="toast"></div>
 
-  <!-- Holiday bar -->
-  <div id="festival-bar" class="hidden fixed top-0 w-full z-[70] bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
-    <span id="festival-text"></span>
-  </div>
+    <div id="weather-overlay"></div>
 
-  <nav id="mainNav" class="fixed top-0 w-full z-50 border-b border-white/10 bg-[#050505]/90 backdrop-blur-xl h-16 flex items-center transition-all duration-300">
-    <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <img src="luma-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
-        <div class="hidden md:block">
-          <span class="font-bold tracking-tight text-lg block leading-none text-white" data-i18n="brand_name">Lunar&Mars</span>
-          <span class="text-[10px] text-brand font-mono tracking-widest" data-i18n="brand_sub">MISSION CONTROL</span>
-        </div>
-      </div>
-
-      <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
-        <a href="#dashboard" class="hover:text-white transition-colors" data-i18n="nav_dashboard">DASHBOARD</a>
-        <a href="#iss-section" class="hover:text-white transition-colors" data-i18n="nav_iss">ISS & VOYAGER</a>
-        <a href="#intel" class="hover:text-white transition-colors" data-i18n="nav_intel">INTEL FEED</a>
-        <a href="#manifesto" class="hover:text-white transition-colors" data-i18n="nav_manifesto">MANIFESTO</a>
-        <a href="#" onclick="openGamePopup()" class="text-brand hover:text-white flex items-center gap-1">
-          <i data-lucide="gamepad-2" class="w-3 h-3"></i> <span data-i18n="nav_arcade">ARCADE</span>
-        </a>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button id="btnFR" class="text-[11px] px-3 py-2 rounded border border-white/15 hover:bg-white/5 transition font-bold">FR</button>
-        <button id="btnEN" class="text-[11px] px-3 py-2 rounded border border-white/15 hover:bg-white/5 transition font-bold">EN</button>
-
-        <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56"
-           target="_blank"
-           class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
-          <span data-i18n="buy_btn">Initialiser Achat</span>
-        </a>
-      </div>
+    <div id="festival-bar" class="hidden fixed top-0 w-full z-[70] bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 border-b border-white/20 text-white text-xs font-semibold text-center py-2 shadow-lg">
+        <span id="festival-text"></span>
     </div>
-  </nav>
 
-  <div id="tickerBar" class="fixed top-16 w-full z-40 bg-[#0a0a0c] border-b border-white/5 backdrop-blur-md overflow-hidden h-8 flex items-center">
-    <div class="whitespace-nowrap animate-scroll-ticker flex gap-8 px-4 text-xs font-mono" id="ticker-track">
-      <span class="text-gray-500" data-i18n="ticker_loading">Connexion aux satellites financiers...</span>
+    <nav id="mainNav" class="fixed top-0 w-full z-50 border-b border-white/10 bg-[#050505]/90 backdrop-blur-xl h-16 flex items-center transition-all duration-300">
+        <div class="max-w-[1400px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="Luma-noel-logo.png" alt="LUMA" class="w-10 h-10 rounded-lg shadow-lg hover:scale-105 transition-transform">
+                <div class="hidden md:block">
+                    <span class="font-bold tracking-tight text-lg block leading-none text-white">Lunar&Mars</span>
+                    <span class="text-[10px] text-brand font-mono tracking-widest">MISSION CONTROL</span>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex items-center gap-6 text-xs font-medium text-gray-400 font-mono">
+                <a href="#dashboard" class="hover:text-white transition-colors" data-i18n="nav_dash">DASHBOARD</a>
+                <a href="#planetary-section" class="hover:text-white transition-colors" data-i18n="nav_planetary">PLANETARY</a>
+                <a href="#science-section" class="hover:text-white transition-colors text-webb" data-i18n="nav_science">SCIENCE</a>
+                <a href="#roadmap" class="hover:text-white transition-colors" data-i18n="nav_roadmap">ROADMAP</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 text-xs font-mono border-r border-white/10 pr-4">
+                    <span class="lang-btn active" onclick="changeLanguage('fr')" id="btn-fr">FR</span>
+                    <span class="text-gray-600">/</span>
+                    <span class="lang-btn" onclick="changeLanguage('en')" id="btn-en">EN</span>
+                </div>
+                <a href="https://pancakeswap.finance/swap?outputCurrency=0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9&chainId=56" target="_blank" class="bg-white text-black px-4 py-2 rounded text-xs font-bold hover:bg-gray-200 transition-all uppercase tracking-wider flex items-center gap-2">
+                    <span data-i18n="btn_buy">ACHETER LUMA</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="tickerBar" class="fixed top-16 w-full z-40 bg-[#0a0a0c] border-b border-white/5 backdrop-blur-md overflow-hidden h-8 flex items-center">
+        <div class="whitespace-nowrap animate-scroll-ticker flex gap-8 px-4 text-xs font-mono" id="ticker-track">
+            <span class="text-gray-500">Connexion aux satellites financiers...</span>
+        </div>
     </div>
-  </div>
 
-  <main id="mainContent" class="relative pt-32 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-6">
+    <main id="mainContent" class="relative pt-32 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto space-y-6">
 
-    <!-- DASHBOARD -->
-    <section id="dashboard" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div id="dashboard" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <div class="md:col-span-12 lg:col-span-6 tech-card rounded-2xl p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i data-lucide="orbit" class="w-32 h-32 text-brand"></i></div>
+                <div class="relative z-10 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-2 py-1 rounded border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-mono mb-4">
+                            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
+                            <span data-i18n="system_nominal">RÉSEAU BNB ACTIF</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2" data-i18n="hero_title">LUMA PROTOCOL</h1>
+                        <p class="text-sm text-gray-400 leading-relaxed max-w-lg" data-i18n="hero_desc">
+                            LUMA est un jeton conceptuel et communautaire représentant le corridor imaginaire entre la Lune et Mars.
+                            Ce n'est pas un actif spéculatif, mais un emblème pour l'avenir multi-planétaire.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
+                        <div>
+                            <div class="data-label text-brand">TOTAL SUPPLY</div>
+                            <div class="data-value text-lg">202.8M</div>
+                            <div class="text-[10px] text-gray-500">Fixe (No Mint)</div>
+                        </div>
+                        <div>
+                            <div class="data-label text-mars">BURNED</div>
+                            <div class="data-value text-lg">22.5M</div>
+                            <div class="text-[10px] text-gray-500">~11.11% Détruit</div>
+                        </div>
+                        <div>
+                            <div class="data-label text-accent">LOCKED</div>
+                            <div class="data-value text-lg">22.2M</div>
+                            <div class="text-[10px] text-gray-500">PinkSale (Vesting)</div>
+                        </div>
+                    </div>
 
-      <div class="md:col-span-12 lg:col-span-6 tech-card rounded-2xl p-6 relative overflow-hidden group">
-        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
-          <i data-lucide="orbit" class="w-32 h-32 text-brand"></i>
-        </div>
-
-        <div class="relative z-10 h-full flex flex-col justify-between">
-          <div>
-            <div class="inline-flex items-center gap-2 px-2 py-1 rounded border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-mono mb-4">
-              <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span data-i18n="systems_nominal">SYSTÈMES NOMINAUX</span>
+                    <div class="mt-4 flex gap-3">
+                        <button id="copyBtn" class="text-[10px] border border-white/20 px-3 py-1 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
+                            <i data-lucide="copy" class="w-3 h-3"></i> 0xEA...ECC9
+                        </button>
+                        <a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" class="text-[10px] border border-white/20 px-3 py-1 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
+                            <i data-lucide="external-link" class="w-3 h-3"></i> BscScan
+                        </a>
+                        <span class="text-[10px] border border-green-500/30 text-green-400 px-3 py-1 rounded bg-green-500/10 flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> 0% Tax
+                        </span>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">LUMA INDEX</h1>
-            <p class="text-sm text-gray-400 leading-relaxed max-w-lg" data-i18n="hero_desc">
-              Indice symbolique : crypto + espace, en temps réel. Vision Lune → Mars.
-            </p>
-          </div>
 
-          <div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
-            <div>
-              <div class="data-label" data-i18n="price_usd">PRIX (USD)</div>
-              <div id="livePrice" class="data-value text-xl">--</div>
+            <div class="md:col-span-6 lg:col-span-3 tech-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none"></div>
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="data-label" data-i18n="lbl_env">ENVIRONNEMENT LOCAL</div>
+                        <i id="weather-icon" data-lucide="scan" class="w-4 h-4 text-gray-500"></i>
+                    </div>
+                    <div id="wxLabel" class="text-3xl font-mono font-bold text-white">--°C</div>
+                    <div id="geoStatus" class="text-[10px] text-gray-500 font-mono mt-1" data-i18n="geo_wait">En attente GPS...</div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/5">
+                    <div class="data-label mb-1" data-i18n="lbl_price">PRIX LUMA (LIVE)</div>
+                    <div id="livePrice" class="text-xl font-mono text-brand">Loading...</div>
+                    <div id="liveChange" class="text-[10px] font-bold text-gray-500">--% (24h)</div>
+                </div>
             </div>
-            <div>
-              <div class="data-label" data-i18n="change_24h">VAR 24H</div>
-              <div id="liveChange" class="data-value text-xl">--%</div>
+
+            <div class="md:col-span-6 lg:col-span-3 tech-card rounded-2xl p-6 relative">
+                <div class="data-label mb-4" data-i18n="lbl_clock">HORLOGE COSMIQUE</div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                        <span class="text-xs text-gray-400" data-i18n="lbl_earth">TERRE (UTC)</span>
+                        <span id="earth-clock" class="font-mono text-white text-right">--:--:--</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                        <span class="text-xs text-brand" data-i18n="lbl_mars">MARS (SOL)</span>
+                        <span id="mars-clock" class="font-mono text-brand text-right">--:--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-400" data-i18n="lbl_moon">PHASE LUNE</span>
+                        <span id="moon-phase" class="font-mono text-white text-right">--</span>
+                    </div>
+                </div>
             </div>
-            <div>
-              <div class="data-label" data-i18n="mcap">MARKET CAP</div>
-              <div id="liveMcap" class="data-value text-xl text-gray-300">--</div>
+        </div>
+
+        <div id="planetary-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            
+            <div class="tech-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-6 -top-6 w-32 h-32 bg-mars/10 rounded-full blur-3xl"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-600 to-red-900 border border-red-500 shadow-lg shadow-red-900/50"></div>
+                        <h3 class="font-bold text-lg text-white">MARS STATUS</h3>
+                    </div>
+                    <span class="text-[10px] text-mars border border-mars/30 px-2 py-1 rounded bg-mars/5 animate-pulse">LIVE LINK</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-white/5 p-3 rounded border border-white/5">
+                        <div class="data-label text-mars">DISTANCE (KM)</div>
+                        <div id="mars-dist" class="data-value text-lg">Calcul...</div>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded border border-white/5">
+                        <div class="data-label text-mars">LIGHT TIME</div>
+                        <div id="mars-light" class="data-value text-lg">-- min</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="data-label mb-2 flex items-center gap-2"><i data-lucide="thermometer" class="w-3 h-3"></i> SURFACE (Gale Crater)</div>
+                    <div class="flex justify-between items-end border-t border-white/10 pt-2">
+                        <div>
+                            <div class="text-2xl font-mono font-bold text-white" id="mars-temp">--°C</div>
+                            <div class="text-[10px] text-gray-500" id="mars-cond">Establishing Link...</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-gray-400">PRESSURE</div>
+                            <div class="font-mono text-brand" id="mars-pressure">-- Pa</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="mt-4 flex gap-3 flex-wrap">
-            <button id="copyBtn" class="text-[10px] border border-white/20 px-3 py-2 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
-              <i data-lucide="copy" class="w-3 h-3"></i> <span data-i18n="copy_contract">Copier Contrat</span>
-            </button>
-
-            <button id="addMetaMask" class="text-[10px] border border-[#f6851b]/30 px-3 py-2 rounded hover:bg-[#f6851b]/10 text-[#f6851b] transition flex items-center gap-2">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-3 h-3" alt="MetaMask"> MetaMask
-            </button>
-
-            <a href="LUMA_Whitepaper_v1.1.pdf" target="_blank"
-               class="text-[10px] border border-white/20 px-3 py-2 rounded hover:bg-white/10 text-gray-300 transition flex items-center gap-2">
-              <i data-lucide="file-text" class="w-3 h-3"></i> <span data-i18n="whitepaper">Whitepaper</span>
-            </a>
-          </div>
-
-          <div class="mt-3 text-[10px] text-gray-500 font-mono break-all">
-            <span data-i18n="contract_label">Contrat:</span> <span id="contractFull"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="md:col-span-6 lg:col-span-3 tech-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none"></div>
-        <div>
-          <div class="flex justify-between items-start mb-2">
-            <div class="data-label" data-i18n="local_env">ENVIRONNEMENT LOCAL</div>
-            <i id="weather-icon" data-lucide="cloud" class="w-4 h-4 text-gray-500"></i>
-          </div>
-          <div id="wxLabel" class="text-3xl font-mono font-bold text-white">--°C</div>
-          <div id="geoStatus" class="text-[10px] text-gray-500 font-mono mt-1" data-i18n="gps_wait">En attente GPS...</div>
-        </div>
-
-        <div class="mt-4 pt-4 border-t border-white/5">
-          <div class="data-label mb-1" data-i18n="iss_distance">DISTANCE ISS (RELATIVE)</div>
-          <div id="issDistance" class="text-xl font-mono text-accent">-- km</div>
-          <div class="text-[10px] text-gray-500" data-i18n="iss_note">Basé sur votre position réelle</div>
-        </div>
-      </div>
-
-      <div class="md:col-span-6 lg:col-span-3 tech-card rounded-2xl p-6 relative">
-        <div class="data-label mb-4" data-i18n="cosmic_clock">HORLOGE COSMIQUE</div>
-        <div class="space-y-4">
-          <div class="flex justify-between items-center border-b border-white/5 pb-2">
-            <span class="text-xs text-gray-400" data-i18n="earth_utc">TERRE (UTC)</span>
-            <span id="earth-clock" class="font-mono text-white text-right">--:--:--</span>
-          </div>
-          <div class="flex justify-between items-center border-b border-white/5 pb-2">
-            <span class="text-xs text-brand" data-i18n="mars_sol">MARS (SOL)</span>
-            <span id="mars-clock" class="font-mono text-brand text-right">--</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-xs text-gray-400" data-i18n="moon_phase">PHASE LUNE</span>
-            <span id="moon-phase" class="font-mono text-white text-right">--</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ISS & VOYAGER -->
-    <section id="iss-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-      <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div class="flex items-center gap-3 mb-6">
-          <i data-lucide="satellite" class="text-blue-400"></i>
-          <h3 class="font-bold text-lg text-white" data-i18n="voyager_title">VOYAGER LIVE TRACKING</h3>
-          <span class="text-[10px] border border-blue-500/30 text-blue-400 px-2 rounded bg-blue-500/10" data-i18n="interstellar">INTERSTELLAIRE</span>
-        </div>
-
-        <div class="space-y-6">
-          <div>
-            <div class="flex justify-between items-end mb-1">
-              <span class="text-sm font-bold text-white">VOYAGER 1</span>
-              <span class="text-[10px] text-gray-500" data-i18n="voyager_ref">Réf. NASA (base)</span>
+            <div class="tech-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-6 -top-6 w-32 h-32 bg-moon/10 rounded-full blur-3xl"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-600 border border-gray-400 shadow-lg shadow-gray-700/50"></div>
+                        <h3 class="font-bold text-lg text-white">MOON STATUS</h3>
+                    </div>
+                    <span class="text-[10px] text-gray-400 border border-gray-600/30 px-2 py-1 rounded bg-gray-500/10">ORBITAL</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-white/5 p-3 rounded border border-white/5">
+                        <div class="data-label">DISTANCE (KM)</div>
+                        <div id="moon-dist" class="data-value text-lg">Calcul...</div>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded border border-white/5">
+                        <div class="data-label">LIGHT TIME</div>
+                        <div class="data-value text-lg text-gray-300">1.28 sec</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="data-label mb-2 flex items-center gap-2"><i data-lucide="sun" class="w-3 h-3"></i> SURFACE ENV (Equator)</div>
+                    <div class="flex justify-between items-end border-t border-white/10 pt-2">
+                        <div>
+                            <div class="text-2xl font-mono font-bold text-white" id="moon-temp">--°C</div>
+                            <div class="text-[10px] text-gray-500" id="moon-cycle">Calculating Cycle...</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-gray-400">ATMOSPHERE</div>
+                            <div class="font-mono text-gray-500">VACUUM</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="data-label" data-i18n="distance_earth">DISTANCE TERRE</div>
-            <div id="v1-dist" class="text-2xl font-mono text-blue-200">--</div>
-            <div id="v1-au" class="text-[10px] font-mono text-gray-400">-- AU</div>
-          </div>
+        </div>
 
-          <div>
-            <div class="flex justify-between items-end mb-1">
-              <span class="text-sm font-bold text-white">VOYAGER 2</span>
-              <span class="text-[10px] text-gray-500" data-i18n="voyager_ref">Réf. NASA (base)</span>
+        <div id="science-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
+                <div class="absolute -right-6 -top-6 w-32 h-32 bg-webb/10 rounded-full blur-3xl"></div>
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="aperture" class="text-webb"></i>
+                        <h3 class="font-bold text-lg text-white">JAMES WEBB (JWST)</h3>
+                    </div>
+                    <span class="text-[10px] text-webb border border-webb/30 px-2 py-1 rounded bg-webb/5">LAGRANGE L2</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-white/5 p-3 rounded">
+                        <div class="data-label">MIRROR TEMP (MIRI)</div>
+                        <div class="data-value text-blue-200">-266.15 °C</div>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded">
+                        <div class="data-label">DISTANCE TERRE</div>
+                        <div class="data-value text-webb">1,500,000 km</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="data-label mb-2" data-i18n="lbl_webb_disco">DERNIÈRES DÉCOUVERTES (API)</div>
+                    <div id="webbNews" class="space-y-3 text-sm text-gray-300 min-h-[80px]">Loading Deep Space Network...</div>
+                </div>
             </div>
-            <div class="data-label" data-i18n="distance_earth">DISTANCE TERRE</div>
-            <div id="v2-dist" class="text-xl font-mono text-gray-200">--</div>
-            <div id="v2-au" class="text-[10px] font-mono text-gray-400">-- AU</div>
-          </div>
 
-          <div class="p-3 bg-white/5 rounded border border-white/10 text-[11px] text-gray-300 leading-relaxed">
-            <span class="text-blue-300 font-bold" data-i18n="voyager_where">Où sont-elles?</span>
-            <span data-i18n="voyager_where_desc">Les deux sondes sont en espace interstellaire (au-delà de l’héliopause).</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-card rounded-2xl p-6 relative flex flex-col">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="font-bold text-lg flex items-center gap-2 text-white">
-            <i data-lucide="globe" class="text-green-400"></i> <span data-i18n="iss_title">ISS ORBITAL DATA</span>
-          </h3>
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-            <span class="text-[10px] font-mono text-red-400">LIVE API</span>
-          </div>
-        </div>
-
-        <div class="flex-1 bg-[#0a0a0c] rounded-lg border border-white/5 relative overflow-hidden flex items-center justify-center min-h-[220px] group">
-          <div class="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/40 via-[#050505] to-[#050505]"></div>
-          <div class="grid-bg absolute inset-0 opacity-50"></div>
-
-          <div class="text-center z-10 space-y-4">
-            <div class="data-label" data-i18n="iss_coords">COORDONNÉES ORBITALES</div>
-            <div class="font-mono text-3xl text-white tracking-tighter">
-              <span id="iss-lat">LAT --.--</span><br>
-              <span id="iss-lon" class="text-gray-400">LON --.--</span>
+            <div class="tech-card rounded-2xl p-6 flex flex-col justify-between">
+                <div class="mb-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="cpu" class="text-quantum"></i>
+                        <h3 class="font-bold text-lg text-white" data-i18n="title_quantum">QUANTUM COMPUTER</h3>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full border-2 border-quantum/30 flex items-center justify-center animate-spin-slow">
+                            <div class="w-2 h-2 bg-quantum rounded-full"></div>
+                        </div>
+                        <div>
+                            <div class="data-label">QUBIT COHERENCE</div>
+                            <div class="text-sm text-white">99.8% (Simulated Stable)</div>
+                            <div class="text-[10px] text-gray-500">Google Sycamore / IBM Osprey</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-white/5 pt-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="disc" class="text-gray-400"></i>
+                        <span class="text-xs font-bold text-white">STELLAR CARTOGRAPHY</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-400">NEAREST BLACK HOLE (Gaia BH1)</span>
+                        <div class="text-right">
+                            <div class="font-mono text-white text-sm">1,560 LY</div>
+                            <div class="font-mono text-[10px] text-gray-500" id="bh-km">Calcul...</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text-xs text-green-400 font-mono border border-green-500/20 bg-green-500/10 px-3 py-1 rounded-full inline-block">
-              <span data-i18n="iss_speed">VITESSE:</span> ~27,600 km/h
+        </div>
+
+        <div id="iss-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="satellite" class="text-blue-400"></i>
+                    <h3 class="font-bold text-lg text-white" data-i18n="voyager_title">VOYAGER LIVE TRACKING</h3>
+                    <span class="text-[10px] border border-blue-500/30 text-blue-400 px-2 rounded bg-blue-500/10" data-i18n="interstellar">INTERSTELLAIRE</span>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-bold text-white">VOYAGER 1</span>
+                            <span class="text-[10px] text-gray-500">LAUNCH: 1977</span>
+                        </div>
+                        <div class="data-label" data-i18n="dist_earth">DISTANCE TERRE</div>
+                        <div id="v1-dist" class="text-2xl font-mono text-blue-200">Calcul...</div>
+                        <div class="w-full bg-gray-800 h-1 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-blue-500 h-full w-[99%] animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-bold text-white">VOYAGER 2</span>
+                            <span class="text-[10px] text-gray-500" data-i18n="heliopause">HELIOPAUSE FRANCHIE</span>
+                        </div>
+                        <div class="data-label" data-i18n="dist_earth">DISTANCE TERRE</div>
+                        <div id="v2-dist" class="text-xl font-mono text-gray-300">Calcul...</div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- INTEL FEED -->
-    <section id="intel" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 tech-card rounded-2xl p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="font-bold text-lg text-white" data-i18n="intel_title">FLUX D'INFORMATION</h3>
-          <div class="flex gap-2 text-[10px] font-mono">
-            <span class="text-brand" data-i18n="intel_crypto">CRYPTO</span>
-            <span class="text-blue-400" data-i18n="intel_space">SPACE</span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 class="text-xs font-bold text-blue-400 mb-3 border-b border-white/10 pb-2" data-i18n="space_news">SPACEFLIGHT NEWS</h4>
-            <div id="spaceNews" class="space-y-3 text-xs text-gray-300">--</div>
-          </div>
-
-          <div>
-            <h4 class="text-xs font-bold text-brand mb-3 border-b border-white/10 pb-2" data-i18n="crypto_intel">CRYPTO INTEL</h4>
-            <div id="cryptoIntel" class="space-y-3 text-xs text-gray-300">--</div>
-          </div>
-        </div>
-
-        <div class="mt-6 pt-4 border-t border-white/10 text-[10px] text-gray-500">
-          <span data-i18n="cors_note">
-            Note: GitHub Pages bloque souvent certaines “news APIs”. Ici, nous utilisons des sources compatibles CORS. Pour des médias (CoinDesk, etc.), il faut un proxy.
-          </span>
-        </div>
-      </div>
-
-      <div class="tech-card rounded-2xl p-6">
-        <h3 class="font-bold text-lg mb-6 text-white" data-i18n="missions_title">MISSIONS ACTIVES</h3>
-        <div class="space-y-4">
-          <div class="p-3 bg-white/5 rounded border-l-2 border-brand">
-            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-              <span>LUMA</span><span class="text-brand">LIVE</span>
+            <div class="tech-card rounded-2xl p-6 relative flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg flex items-center gap-2 text-white"><i data-lucide="globe" class="text-green-400"></i> <span data-i18n="iss_title">ISS ORBITAL DATA</span></h3>
+                    <div class="flex items-center gap-2">
+                         <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                         <span class="text-[10px] font-mono text-red-400">LIVE API</span>
+                    </div>
+                </div>
+                <div class="flex-1 bg-[#0a0a0c] rounded-lg border border-white/5 relative overflow-hidden flex items-center justify-center min-h-[200px] group">
+                    <div class="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/40 via-[#050505] to-[#050505]"></div>
+                    <div class="grid-bg absolute inset-0 opacity-50"></div>
+                    <div class="text-center z-10 space-y-4">
+                        <div class="data-label" data-i18n="iss_coords">COORDONNÉES ORBITALES</div>
+                        <div class="font-mono text-3xl text-white tracking-tighter">
+                            <span id="iss-lat">LAT --.--</span><br>
+                            <span id="iss-lon" class="text-gray-400">LON --.--</span>
+                        </div>
+                        <div class="text-xs text-green-400 font-mono border border-green-500/20 bg-green-500/10 px-3 py-1 rounded-full inline-block">
+                            VITESSE: ~27,600 km/h
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text-sm font-bold text-white" data-i18n="luma_phase">PHASE: CONSTRUCTION</div>
-            <div class="text-xs text-gray-500 mt-1" data-i18n="luma_phase_desc">Expansion communauté & utilité.</div>
-          </div>
-
-          <div class="p-3 bg-white/5 rounded border-l-2 border-green-500">
-            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-              <span>NASA</span><span class="text-green-400">TRACK</span>
-            </div>
-            <div class="text-sm font-bold text-white" data-i18n="nasa_card">Artemis / Lune</div>
-            <div class="text-xs text-gray-500 mt-1" data-i18n="nasa_card_desc">Suivi via Spaceflight News + sources NASA.</div>
-          </div>
-
-          <div class="p-3 bg-white/5 rounded border-l-2 border-blue-500">
-            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-              <span>SpaceX</span><span class="text-blue-400">TRACK</span>
-            </div>
-            <div class="text-sm font-bold text-white" data-i18n="spacex_card">Starship / Mars</div>
-            <div class="text-xs text-gray-500 mt-1" data-i18n="spacex_card_desc">Événements et tests via flux spatial.</div>
-          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- MANIFESTO -->
-    <section id="manifesto" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
-      <div class="tech-card rounded-2xl p-8">
-        <h2 class="text-2xl font-bold mb-4 text-brand" data-i18n="manifesto_title">VISION & MANIFESTE</h2>
-        <p class="text-gray-400 text-sm leading-relaxed mb-4" data-i18n="manifesto_p1">
-          LUMA n’est pas “juste un token”. C’est un tableau de bord public qui relie finance décentralisée et exploration spatiale.
-        </p>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="manifesto_p2">
-          Mon opinion : le projet devient crédible quand il apporte de la valeur (infos, outils, transparence) — pas seulement un discours.
-        </p>
-      </div>
+        <div id="news-section" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-2 tech-card rounded-2xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-lg text-white" data-i18n="news_title">FLUX D'INFORMATION</h3>
+                    <div class="flex gap-2 text-[10px] font-mono">
+                        <span class="text-brand">CRYPTO</span>
+                        <span class="text-blue-400">SPACE</span>
+                        <span class="text-quantum">TECH</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-blue-400 mb-3 border-b border-white/10 pb-2">SPACEFLIGHT NEWS</h4>
+                        <div id="spaceNews" class="space-y-3">Loading...</div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-brand mb-3 border-b border-white/10 pb-2">CRYPTO INTELLIGENCE</h4>
+                        <div id="cryptoNews" class="space-y-3">Loading...</div>
+                    </div>
+                </div>
+            </div>
 
-      <div class="tech-card rounded-2xl p-8">
-        <h2 class="text-2xl font-bold mb-4 text-white" data-i18n="timeline_title">TIMELINE FUTURISTE</h2>
-        <div class="border-l border-white/10 ml-2 space-y-6">
-          <div class="pl-6 relative">
-            <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span>
-            <div class="text-xs text-green-400 font-mono mb-1">Q1 2026</div>
-            <div class="font-bold text-sm text-white" data-i18n="t1">Mission Control v1 (live APIs)</div>
-          </div>
-          <div class="pl-6 relative">
-            <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
-            <div class="text-xs text-gray-500 font-mono mb-1">2026+</div>
-            <div class="font-bold text-sm text-gray-300" data-i18n="t2">Widgets éducatifs (Lune/Mars/DeFi)</div>
-          </div>
-          <div class="pl-6 relative">
-            <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand/50"></span>
-            <div class="text-xs text-gray-500 font-mono mb-1">2030+</div>
-            <div class="font-bold text-sm text-gray-300" data-i18n="t3">Expérience “Explorer Mode” (3D / data)</div>
-          </div>
+            <div class="tech-card rounded-2xl p-6">
+                <h3 class="font-bold text-lg mb-6 text-white" data-i18n="missions_active">MISSIONS ACTIVES</h3>
+                <div class="space-y-4">
+                    <div class="p-3 bg-white/5 rounded border-l-2 border-brand">
+                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                            <span>LUMA PROTOCOL</span>
+                            <span class="text-brand">LIVE</span>
+                        </div>
+                        <div class="text-sm font-bold text-white">PHASE 2: CREW BUILDING</div>
+                        <div class="text-xs text-gray-500 mt-1" data-i18n="mission_luma">Expansion, Airdrops, Site V2.</div>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded border-l-2 border-green-500">
+                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                            <span>ARTEMIS II</span>
+                            <span class="text-green-400">PREP</span>
+                        </div>
+                        <div class="text-sm font-bold text-white">NASA / CNSA</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </section>
 
-  </main>
+        <div id="roadmap" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
+            <div class="tech-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold mb-4 text-brand" data-i18n="manifesto_title">VISION & MANIFESTE</h2>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4" data-i18n="manifesto_p1">
+                    LUMA n'est pas seulement un actif numérique. C'est un indice symbolique de la progression humaine.
+                    Nous construisons le pont financier et culturel entre la Terre, la Lune et Mars.
+                </p>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="manifesto_p2">
+                    Dans une économie multi-planétaire, la décentralisation n'est pas une option, c'est une nécessité physique.
+                    LUMA prépare ce terrain à travers l'éducation et la technologie Almagest.
+                </p>
+            </div>
+            
+            <div class="tech-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold mb-4 text-white" data-i18n="roadmap_title">ROADMAP</h2>
+                <div class="border-l border-white/10 ml-2 space-y-6">
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                        <div class="text-xs text-green-400 font-mono mb-1" data-i18n="phase_1">PHASE 1</div>
+                        <div class="font-bold text-sm text-white" data-i18n="phase_1_desc">Lancement Orbital (Terminé)</div>
+                    </div>
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand"></span>
+                        <div class="text-xs text-brand font-mono mb-1" data-i18n="phase_2">PHASE 2</div>
+                        <div class="font-bold text-sm text-white" data-i18n="phase_2_desc">Construction de l'Équipage (En cours)</div>
+                    </div>
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
+                        <div class="text-xs text-gray-500 font-mono mb-1" data-i18n="phase_3">PHASE 3</div>
+                        <div class="font-bold text-sm text-gray-300" data-i18n="phase_3_desc">Expansion Lunaire</div>
+                    </div>
+                    <div class="pl-6 relative">
+                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
+                        <div class="text-xs text-gray-500 font-mono mb-1" data-i18n="phase_4">PHASE 4</div>
+                        <div class="font-bold text-sm text-gray-300" data-i18n="phase_4_desc">Corridor Lune → Mars</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <div class="fixed bottom-6 right-6 z-40">
-    <button onclick="toggleExplorerMode()" class="bg-white text-black px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
-      <i data-lucide="telescope" class="w-4 h-4"></i> <span data-i18n="explorer_mode">MODE EXPLORATEUR</span>
-    </button>
-  </div>
+    </main>
 
-  <footer class="border-t border-white/5 bg-[#020202] py-12">
-    <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs text-gray-500">
-      <div class="col-span-1 md:col-span-2">
-        <img src="luma-logo.png" class="w-8 h-8 rounded mb-4 shadow-md" alt="LUMA">
-        <p data-i18n="footer_p1">Données temps réel via APIs publiques (Open-Meteo, WhereTheISS, Spaceflight News, CoinGecko).</p>
-        <p class="mt-2">&copy; 2026 Lunar&Mars Project.</p>
-      </div>
-      <div>
-        <h4 class="text-white font-bold mb-3" data-i18n="footer_links">LIENS</h4>
-        <ul class="space-y-2">
-          <li><a href="https://x.com/LunarMarsToken" target="_blank" class="hover:text-brand">X (Twitter)</a></li>
-          <li><a href="https://t.me/LunarMarsOfficial" target="_blank" class="hover:text-brand">Telegram</a></li>
-          <li><a href="https://bscscan.com/token/0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9" target="_blank" class="hover:text-brand">BscScan</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-white font-bold mb-3" data-i18n="footer_docs">DOCS</h4>
-        <ul class="space-y-2">
-          <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper</a></li>
-          <li><a href="https://www.geckoterminal.com/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6" target="_blank" class="hover:text-brand">GeckoTerminal</a></li>
-        </ul>
-      </div>
+    <div class="fixed bottom-6 right-6 z-40">
+        <button onclick="toggleExplorerMode()" class="bg-white text-black px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+            <i data-lucide="telescope" class="w-4 h-4"></i> <span data-i18n="btn_explore">MODE EXPLORATEUR</span>
+        </button>
     </div>
-  </footer>
 
-  <script>
-    // ============ CONFIG ============
-    lucide.createIcons();
+    <footer class="border-t border-white/5 bg-[#020202] py-12">
+        <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs text-gray-500">
+            <div class="col-span-1 md:col-span-2">
+                <img src="Luma-noel-logo.png" class="w-8 h-8 rounded mb-4 shadow-md">
+                <p data-i18n="footer_desc">Données temps réel via API publiques. LUMA est un token BEP-20.</p>
+                <p class="mt-2">&copy; 2026 Lunar&Mars Project.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3" data-i18n="footer_archives">LIENS</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://t.me/LunarMarsOfficial" class="hover:text-brand">Telegram</a></li>
+                    <li><a href="https://x.com/LunarMarsToken" class="hover:text-brand">X (Twitter)</a></li>
+                    <li><a href="https://www.mexc.com/dex/trade?pair_ca=0xc4ce7c692fdd27603437199c9b40baf5e2b804e6&chain_id=56&token_ca=0xea6c0908734d7cadc10c01b2e4e9d8e1664eecc9&inviteCode=1489J" class="hover:text-brand">MEXC DEX</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3" data-i18n="footer_data">DONNÉES</h4>
+                <ul class="space-y-2">
+                    <li><a href="LUMA_Whitepaper_v1.1.pdf" target="_blank" class="hover:text-brand">Whitepaper V1.1</a></li>
+                    <li><a href="luma-airdrop.html" target="_blank" class="hover:text-brand">Airdrop</a></li>
+                    <li><a href="#" id="copyContractFooter" class="hover:text-brand">Copier Contrat</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-    const CONTRACT_ADDRESS = "0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9";
-    const LUMA_SUPPLY = 202845959; // ajustez si besoin
-
-    const $ = (id) => document.getElementById(id);
-
-    $("contractFull").textContent = CONTRACT_ADDRESS;
-
-    function toast(msg){
-      const t = $("toast");
-      t.textContent = msg;
-      t.style.display = "block";
-      setTimeout(()=> t.style.display="none", 1600);
-    }
-
-    // ============ I18N (FR/EN global) ============
-    const I18N = {
-      fr: {
-        brand_name: "Lunar&Mars",
-        brand_sub: "MISSION CONTROL",
-        nav_dashboard: "DASHBOARD",
-        nav_iss: "ISS & VOYAGER",
-        nav_intel: "INTEL FEED",
-        nav_manifesto: "MANIFESTE",
-        nav_arcade: "ARCADE",
-        buy_btn: "Initialiser Achat",
-        ticker_loading: "Connexion aux satellites financiers...",
-        systems_nominal: "SYSTÈMES NOMINAUX",
-        hero_desc: "Indice symbolique : crypto + espace, en temps réel. Vision Lune → Mars.",
-        price_usd: "PRIX (USD)",
-        change_24h: "VAR 24H",
-        mcap: "MARKET CAP",
-        copy_contract: "Copier Contrat",
-        whitepaper: "Whitepaper",
-        contract_label: "Contrat:",
-        local_env: "ENVIRONNEMENT LOCAL",
-        gps_wait: "En attente GPS...",
-        iss_distance: "DISTANCE ISS (RELATIVE)",
-        iss_note: "Basé sur votre position réelle",
-        cosmic_clock: "HORLOGE COSMIQUE",
-        earth_utc: "TERRE (UTC)",
-        mars_sol: "MARS (SOL)",
-        moon_phase: "PHASE LUNE",
-        voyager_title: "VOYAGER LIVE TRACKING",
-        interstellar: "INTERSTELLAIRE",
-        voyager_ref: "Réf. NASA (base)",
-        distance_earth: "DISTANCE TERRE",
-        voyager_where: "Où sont-elles?",
-        voyager_where_desc: "Les deux sondes sont en espace interstellaire (au-delà de l’héliopause).",
-        iss_title: "ISS ORBITAL DATA",
-        iss_coords: "COORDONNÉES ORBITALES",
-        iss_speed: "VITESSE:",
-        intel_title: "FLUX D'INFORMATION",
-        intel_crypto: "CRYPTO",
-        intel_space: "SPACE",
-        space_news: "SPACEFLIGHT NEWS",
-        crypto_intel: "CRYPTO INTEL",
-        cors_note: "Note: GitHub Pages bloque souvent certaines “news APIs”. Ici, nous utilisons des sources compatibles CORS. Pour des médias (CoinDesk, etc.), il faut un proxy.",
-        missions_title: "MISSIONS ACTIVES",
-        luma_phase: "PHASE: CONSTRUCTION",
-        luma_phase_desc: "Expansion communauté & utilité.",
-        nasa_card: "Artemis / Lune",
-        nasa_card_desc: "Suivi via Spaceflight News + sources NASA.",
-        spacex_card: "Starship / Mars",
-        spacex_card_desc: "Événements et tests via flux spatial.",
-        manifesto_title: "VISION & MANIFESTE",
-        manifesto_p1: "LUMA n’est pas “juste un token”. C’est un tableau de bord public qui relie finance décentralisée et exploration spatiale.",
-        manifesto_p2: "Mon opinion : le projet devient crédible quand il apporte de la valeur (infos, outils, transparence) — pas seulement un discours.",
-        timeline_title: "TIMELINE FUTURISTE",
-        t1: "Mission Control v1 (live APIs)",
-        t2: "Widgets éducatifs (Lune/Mars/DeFi)",
-        t3: "Expérience “Explorer Mode” (3D / data)",
-        explorer_mode: "MODE EXPLORATEUR",
-        footer_p1: "Données temps réel via APIs publiques (Open-Meteo, WhereTheISS, Spaceflight News, CoinGecko).",
-        footer_links: "LIENS",
-        footer_docs: "DOCS",
-      },
-      en: {
-        brand_name: "Lunar&Mars",
-        brand_sub: "MISSION CONTROL",
-        nav_dashboard: "DASHBOARD",
-        nav_iss: "ISS & VOYAGER",
-        nav_intel: "INTEL FEED",
-        nav_manifesto: "MANIFESTO",
-        nav_arcade: "ARCADE",
-        buy_btn: "Start Buy",
-        ticker_loading: "Linking to financial satellites...",
-        systems_nominal: "SYSTEMS NOMINAL",
-        hero_desc: "Symbolic index: crypto + space, real-time. Moon → Mars vision.",
-        price_usd: "PRICE (USD)",
-        change_24h: "24H CHANGE",
-        mcap: "MARKET CAP",
-        copy_contract: "Copy Contract",
-        whitepaper: "Whitepaper",
-        contract_label: "Contract:",
-        local_env: "LOCAL ENVIRONMENT",
-        gps_wait: "Waiting for GPS...",
-        iss_distance: "ISS DISTANCE (RELATIVE)",
-        iss_note: "Based on your real position",
-        cosmic_clock: "COSMIC CLOCK",
-        earth_utc: "EARTH (UTC)",
-        mars_sol: "MARS (SOL)",
-        moon_phase: "MOON PHASE",
-        voyager_title: "VOYAGER LIVE TRACKING",
-        interstellar: "INTERSTELLAR",
-        voyager_ref: "NASA ref (base)",
-        distance_earth: "EARTH DISTANCE",
-        voyager_where: "Where are they?",
-        voyager_where_desc: "Both probes are in interstellar space (beyond the heliopause).",
-        iss_title: "ISS ORBITAL DATA",
-        iss_coords: "ORBITAL COORDINATES",
-        iss_speed: "SPEED:",
-        intel_title: "INTEL FEED",
-        intel_crypto: "CRYPTO",
-        intel_space: "SPACE",
-        space_news: "SPACEFLIGHT NEWS",
-        crypto_intel: "CRYPTO INTEL",
-        cors_note: "Note: GitHub Pages often blocks some “news APIs”. Here we use CORS-friendly sources. For media outlets (CoinDesk, etc.), you need a proxy.",
-        missions_title: "ACTIVE MISSIONS",
-        luma_phase: "PHASE: BUILDING",
-        luma_phase_desc: "Community growth & utility.",
-        nasa_card: "Artemis / Moon",
-        nasa_card_desc: "Tracking via Spaceflight News + NASA sources.",
-        spacex_card: "Starship / Mars",
-        spacex_card_desc: "Events and tests via space feed.",
-        manifesto_title: "VISION & MANIFESTO",
-        manifesto_p1: "LUMA isn’t “just a token”. It’s a public dashboard connecting DeFi and space exploration.",
-        manifesto_p2: "My opinion: credibility comes from real utility (tools, data, transparency) — not hype.",
-        timeline_title: "FUTURIST TIMELINE",
-        t1: "Mission Control v1 (live APIs)",
-        t2: "Educational widgets (Moon/Mars/DeFi)",
-        t3: "“Explorer Mode” experience (3D / data)",
-        explorer_mode: "EXPLORER MODE",
-        footer_p1: "Real-time data via public APIs (Open-Meteo, WhereTheISS, Spaceflight News, CoinGecko).",
-        footer_links: "LINKS",
-        footer_docs: "DOCS",
-      }
-    };
-
-    function applyI18n(lang){
-      document.documentElement.lang = lang;
-      localStorage.setItem("luma_lang", lang);
-      $("btnFR").classList.toggle("bg-white", lang==="fr");
-      $("btnFR").classList.toggle("text-black", lang==="fr");
-      $("btnEN").classList.toggle("bg-white", lang==="en");
-      $("btnEN").classList.toggle("text-black", lang==="en");
-
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
-        const k = el.getAttribute("data-i18n");
-        if(I18N[lang] && I18N[lang][k]) el.textContent = I18N[lang][k];
-      });
-    }
-
-    const defaultLang = (localStorage.getItem("luma_lang") || (navigator.language||"fr").toLowerCase().startsWith("fr") ? "fr" : "en");
-    applyI18n(defaultLang);
-    $("btnFR").onclick = ()=> applyI18n("fr");
-    $("btnEN").onclick = ()=> applyI18n("en");
-
-    // ============ HOLIDAY BAR ============
-    function setFestivalBar(){
-      const now = new Date();
-      const m = now.getMonth(); // 0=Jan
-      const d = now.getDate();
-      const bar = $("festival-bar");
-      const txt = $("festival-text");
-      const nav = $("mainNav");
-      const ticker = $("tickerBar");
-      const main = $("mainContent");
-
-      const lang = document.documentElement.lang || "fr";
-
-      // Fenêtres simples (ajustables)
-      const rules = [
-        { when: (m===0 && d<=15), fr:"✨ BONNE ANNÉE ! LUMA vous souhaite une année d’expansion cosmique.", en:"✨ HAPPY NEW YEAR! Wishing you a cosmic year with LUMA." },
-        { when: (m===1 && d>=10 && d<=16), fr:"💘 Saint-Valentin : partagez LUMA à un ami.", en:"💘 Valentine’s: share LUMA with a friend." },
-        { when: (m===5 && d>=20 && d<=26), fr:"⚜️ Fête nationale du Québec : fierté & communauté.", en:"⚜️ Québec National Day: pride & community." },
-        { when: (m===6 && d>=1 && d<=3), fr:"🇨🇦 Canada Day : cap sur l’avenir.", en:"🇨🇦 Canada Day: forward to the future." },
-        { when: (m===9 && d>=25 && d<=31), fr:"🎃 Halloween : gardez vos clés privées.", en:"🎃 Halloween: protect your private keys." },
-        { when: (m===11 && d>=20), fr:"🎄 Temps des Fêtes : prudence et générosité.", en:"🎄 Holidays: stay safe and generous." },
-      ];
-
-      const hit = rules.find(r=>r.when);
-      if(hit){
-        txt.textContent = (lang==="fr") ? hit.fr : hit.en;
-        bar.classList.remove("hidden");
-        nav.style.top = "32px";
-        ticker.style.top = "96px";
-        main.style.paddingTop = "12rem";
-      } else {
-        bar.classList.add("hidden");
-        nav.style.top = "0px";
-        ticker.style.top = "64px";
-        main.style.paddingTop = "10rem";
-      }
-    }
-    setFestivalBar();
-
-    // ============ WEATHER OVERLAY ============
-    let stopParticles = null;
-
-    function clearWeatherOverlay(){
-      $("weather-overlay").innerHTML = "";
-    }
-
-    function spawnParticles(char, rateMs){
-      const w = $("weather-overlay");
-      const timer = setInterval(()=>{
-        const p = document.createElement("div");
-        p.className = "particle";
-        p.textContent = char;
-        p.style.left = Math.random()*100 + "vw";
-        p.style.fontSize = (10 + Math.random()*14) + "px";
-        const dur = 4 + Math.random()*5;
-        p.style.transition = `transform ${dur}s linear, opacity ${dur}s linear`;
-        w.appendChild(p);
-        requestAnimationFrame(()=>{
-          p.style.transform = `translateY(110vh) translateX(${(-20 + Math.random()*40)}px)`;
-          p.style.opacity = "0";
-        });
-        setTimeout(()=>p.remove(), dur*1000);
-      }, rateMs);
-      return ()=> clearInterval(timer);
-    }
-
-    function applyWeatherEffect(mode){
-      clearWeatherOverlay();
-      if(stopParticles) stopParticles();
-      if(mode==="snow") stopParticles = spawnParticles("❄", 220);
-      else if(mode==="rain") stopParticles = spawnParticles("💧", 85);
-      else if(mode==="storm") stopParticles = spawnParticles("⚡", 280);
-    }
-
-    // ============ GEO + WEATHER + ISS ============
-    function haversineKm(lat1, lon1, lat2, lon2){
-      const R=6371, toRad=x=>x*Math.PI/180;
-      const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
-      const a=Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-      return 2*R*Math.asin(Math.sqrt(a));
-    }
-
-    let userLat=null, userLon=null;
-
-    async function updateWeather(){
-      if(userLat==null) return;
-      try{
-        const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${userLat}&longitude=${userLon}&current_weather=true`);
-        const j = await r.json();
-        const temp = j?.current_weather?.temperature;
-        const code = j?.current_weather?.weathercode;
-        if(typeof temp==="number") $("wxLabel").textContent = `${Math.round(temp)}°C`;
-
-        // mode
-        let mode="clear";
-        if((code>=51 && code<=67) || (code>=80 && code<=82)) mode="rain";
-        if(code>=71 && code<=77) mode="snow";
-        if(code>=95) mode="storm";
-
-        applyWeatherEffect(mode);
-
-        // icon (simple)
-        const icon = $("weather-icon");
-        if(mode==="snow") icon.setAttribute("data-lucide","snowflake");
-        else if(mode==="rain") icon.setAttribute("data-lucide","cloud-rain");
-        else if(mode==="storm") icon.setAttribute("data-lucide","cloud-lightning");
-        else icon.setAttribute("data-lucide","sun");
-
+    <script>
         lucide.createIcons();
-      }catch(e){}
-    }
+        const CONTRACT_ADDRESS = '0xEA6C0908734D7cADc10C01b2e4E9d8e1664EECc9';
+        const $ = (id) => document.getElementById(id);
 
-    async function updateISS(){
-      if(userLat==null) return;
-      try{
-        const r = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
-        const j = await r.json();
-        $("iss-lat").textContent = `LAT ${j.latitude.toFixed(2)}`;
-        $("iss-lon").textContent = `LON ${j.longitude.toFixed(2)}`;
-        const dist = haversineKm(userLat, userLon, j.latitude, j.longitude);
-        $("issDistance").textContent = `${Math.round(dist).toLocaleString()} km`;
-      }catch(e){}
-    }
+        // --- 0. TRADUCTION ---
+        const translations = {
+            fr: {
+                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY OPS", nav_science: "SCIENCE & WEBB", nav_iss: "TRACKING", nav_roadmap: "ROADMAP", btn_buy: "ACHETER LUMA",
+                system_nominal: "RÉSEAU BNB ACTIF", hero_title: "LUMA PROTOCOL", hero_desc: "LUMA est un jeton conceptuel et communautaire représentant le corridor imaginaire entre la Lune et Mars.",
+                lbl_price: "PRIX LUMA (LIVE)", lbl_var: "VAR 24H", lbl_env: "ENVIRONNEMENT LOCAL", geo_wait: "En attente GPS...",
+                lbl_iss_dist: "DISTANCE ISS (RELATIVE)", lbl_iss_sub: "Basé sur votre position réelle", lbl_clock: "HORLOGE COSMIQUE",
+                lbl_earth: "TERRE (UTC)", lbl_mars: "MARS (SOL)", lbl_moon: "PHASE LUNE", lbl_webb_disco: "DERNIÈRES DÉCOUVERTES (API)",
+                title_quantum: "ORDINATEUR QUANTIQUE", voyager_title: "VOYAGER LIVE TRACKING", interstellar: "INTERSTELLAIRE",
+                dist_earth: "DISTANCE TERRE", heliopause: "HELIOPAUSE FRANCHIE", iss_title: "ISS ORBITAL DATA", iss_coords: "COORDONNÉES ORBITALES",
+                news_title: "FLUX D'INFORMATION", missions_active: "MISSIONS ACTIVES", mission_luma: "Expansion communauté.",
+                manifesto_title: "VISION & MANIFESTE", manifesto_p1: "LUMA est un indice symbolique de la progression humaine.",
+                manifesto_p2: "La décentralisation est une nécessité physique.", roadmap_title: "ROADMAP", 
+                phase_1: "PHASE 1", phase_1_desc: "Lancement Orbital (Terminé)",
+                phase_2: "PHASE 2", phase_2_desc: "Construction de l'Équipage (En cours)",
+                phase_3: "PHASE 3", phase_3_desc: "Expansion Lunaire",
+                phase_4: "PHASE 4", phase_4_desc: "Corridor Lune → Mars",
+                time_1: "Lancement Almagest", time_2: "Données Satellitaires", time_3: "Première Tx Terre-Mars", 
+                btn_explore: "MODE EXPLORATEUR", footer_desc: "Données temps réel via API. LUMA BEP-20.", footer_archives: "LIENS", footer_data: "DONNÉES"
+            },
+            en: {
+                nav_dash: "DASHBOARD", nav_planetary: "PLANETARY OPS", nav_science: "SCIENCE & WEBB", nav_iss: "TRACKING", nav_roadmap: "ROADMAP", btn_buy: "BUY LUMA",
+                system_nominal: "BNB NETWORK ACTIVE", hero_title: "LUMA PROTOCOL", hero_desc: "LUMA is a conceptual and community token representing the imaginary corridor between the Moon and Mars.",
+                lbl_price: "LUMA PRICE (LIVE)", lbl_var: "24H CHANGE", lbl_env: "LOCAL ENVIRONMENT", geo_wait: "Waiting for GPS...",
+                lbl_iss_dist: "ISS DISTANCE (RELATIVE)", lbl_iss_sub: "Based on real location", lbl_clock: "COSMIC CLOCK",
+                lbl_earth: "EARTH (UTC)", lbl_mars: "MARS (SOL)", lbl_moon: "MOON PHASE", lbl_webb_disco: "LATEST DISCOVERIES (API)",
+                title_quantum: "QUANTUM COMPUTER", voyager_title: "VOYAGER LIVE TRACKING", interstellar: "INTERSTELLAR",
+                dist_earth: "DISTANCE FROM EARTH", heliopause: "HELIOPAUSE CROSSED", iss_title: "ISS ORBITAL DATA", iss_coords: "ORBITAL COORDINATES",
+                news_title: "INTELLIGENCE FEED", missions_active: "ACTIVE MISSIONS", mission_luma: "Community expansion.",
+                manifesto_title: "VISION & MANIFESTO", manifesto_p1: "LUMA is a symbolic index of human progression.",
+                manifesto_p2: "Decentralization is a physical necessity.", roadmap_title: "ROADMAP",
+                phase_1: "PHASE 1", phase_1_desc: "Orbital Launch (Completed)",
+                phase_2: "PHASE 2", phase_2_desc: "Crew Building (Active)",
+                phase_3: "PHASE 3", phase_3_desc: "Lunar Expansion",
+                phase_4: "PHASE 4", phase_4_desc: "Moon → Mars Corridor",
+                time_1: "Almagest Launch", time_2: "Satellite Data Feed", time_3: "First Earth-Mars Tx", 
+                btn_explore: "EXPLORER MODE", footer_desc: "Real-time data via API. LUMA BEP-20.", footer_archives: "LINKS", footer_data: "DATA"
+            }
+        };
 
-    function initGeo(){
-      if(!("geolocation" in navigator)){
-        // fallback Centre-du-Québec approx (si besoin)
-        userLat = 45.8817; userLon = -72.4842;
-        $("geoStatus").textContent = "GPS indisponible";
-        updateWeather(); updateISS();
-        setInterval(updateISS, 6000);
-        setInterval(updateWeather, 120000);
-        return;
-      }
+        let currentLang = localStorage.getItem('luma-lang') || 'fr';
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('luma-lang', lang);
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.innerText = translations[lang][key];
+            });
+            setFestivalBar();
+        }
+        changeLanguage(currentLang);
 
-      navigator.geolocation.getCurrentPosition(async (pos)=>{
-        userLat = pos.coords.latitude;
-        userLon = pos.coords.longitude;
-        $("geoStatus").textContent = `${userLat.toFixed(2)}, ${userLon.toFixed(2)}`;
-        await updateWeather();
-        await updateISS();
-        setInterval(updateISS, 6000);
-        setInterval(updateWeather, 120000);
-      }, ()=>{
-        userLat = 45.8817; userLon = -72.4842;
-        $("geoStatus").textContent = "GPS refusé — mode global";
-        updateWeather(); updateISS();
-        setInterval(updateISS, 6000);
-        setInterval(updateWeather, 120000);
-      });
-    }
+        // --- 1. BANDEAU FÊTES ---
+        function setFestivalBar() {
+            const now = new Date();
+            const month = now.getMonth(); const day = now.getDate();
+            const bar = $("festival-bar"); const txt = $("festival-text");
+            const nav = $("mainNav"); const ticker = $("tickerBar"); const main = $("mainContent");
+            let message = "", show = false;
 
-    // ============ VOYAGER (NASA baseline + progression) ============
-    // Baseline NASA (page “Where are Voyager 1 and 2 now?” last updated Sep 11 2025)
-    // V1 Earth distance: 15,885,161,583 mi; 170.88944697 AU
-    // V2 Earth distance is also on the same page; if you want exact: adjust below if needed.
-    // Ici: on utilise la baseline AU puis on ajoute une progression (AU/an approximatives).
-    const AU_KM = 149597870.7;
-    const baselineDate = new Date("2025-09-11T00:00:00Z").getTime();
+            if (month === 0 && day <= 15) { message = currentLang === 'fr' ? "✨ BONNE ANNÉE 2026 !" : "✨ HAPPY NEW YEAR 2026!"; show = true; }
+            else if (month === 11 && day >= 20) { message = currentLang === 'fr' ? "🎄 AIRDROP DE NOËL !" : "🎄 CHRISTMAS AIRDROP!"; show = true; }
 
-    const V1_BASE_AU = 170.88944697;
-    const V2_BASE_AU = 142.0; // valeur de départ; ajustez si vous voulez l’exact NASA (je peux vous la fixer aussi)
-
-    // vitesses approx (NASA FAQ: V1 ~3.5 AU/an). V2 un peu plus lent.
-    const V1_AU_PER_YEAR = 3.5;
-    const V2_AU_PER_YEAR = 3.1;
-
-    function updateVoyager(){
-      const now = Date.now();
-      const years = (now - baselineDate) / (1000*60*60*24*365.25);
-      const v1au = V1_BASE_AU + (years * V1_AU_PER_YEAR);
-      const v2au = V2_BASE_AU + (years * V2_AU_PER_YEAR);
-
-      const v1km = v1au * AU_KM;
-      const v2km = v2au * AU_KM;
-
-      $("v1-au").textContent = v1au.toFixed(3) + " AU";
-      $("v2-au").textContent = v2au.toFixed(3) + " AU";
-      $("v1-dist").textContent = Math.round(v1km).toLocaleString() + " km";
-      $("v2-dist").textContent = Math.round(v2km).toLocaleString() + " km";
-    }
-
-    // ============ CLOCKS ============
-    function updateClocks(){
-      const now = new Date();
-      $("earth-clock").textContent = now.toISOString().split("T")[1].split(".")[0] + " UTC";
-
-      // Mars “approx” (simple, stable)
-      const millisPerSol = 88775244;
-      const msPassed = now.getTime() - 947116800000;
-      const sols = msPassed / millisPerSol;
-      const solDay = Math.floor(sols) + 44796;
-      const solTime = (sols % 1) * 24;
-      const h = Math.floor(solTime);
-      const m = Math.floor((solTime - h) * 60);
-      $("mars-clock").textContent = `Sol ${solDay} ${h}:${m<10?("0"+m):m}`;
-
-      // Moon phase (simple approximation)
-      const synodic = 29.53058867;
-      const knownNewMoon = new Date("2024-01-11T11:57:00Z").getTime();
-      const daysSince = (now.getTime()-knownNewMoon)/(1000*60*60*24);
-      const age = ((daysSince % synodic) + synodic) % synodic;
-
-      let phase="--";
-      if(age<1.84566) phase="🌑 New";
-      else if(age<5.53699) phase="🌒 Waxing Crescent";
-      else if(age<9.22831) phase="🌓 First Quarter";
-      else if(age<12.91963) phase="🌔 Waxing Gibbous";
-      else if(age<16.61096) phase="🌕 Full";
-      else if(age<20.30228) phase="🌖 Waning Gibbous";
-      else if(age<23.99361) phase="🌗 Last Quarter";
-      else if(age<27.68493) phase="🌘 Waning Crescent";
-      else phase="🌑 New";
-
-      $("moon-phase").textContent = phase;
-    }
-
-    // ============ MARKET (LUMA + ticker) ============
-    const barCoins = [
-      {id:"bitcoin", sym:"BTC"},
-      {id:"binancecoin", sym:"BNB"},
-      {id:"ethereum", sym:"ETH"},
-      {id:"solana", sym:"SOL"},
-    ];
-
-    async function fetchMarket(){
-      try{
-        // LUMA via GeckoTerminal (CORS OK)
-        const rL = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
-        const jL = await rL.json();
-        const attr = jL?.data?.attributes;
-        const p = parseFloat(attr?.base_token_price_usd || "0");
-        const c = parseFloat(attr?.price_change_percentage?.h24 || "0");
-
-        if(p>0){
-          $("livePrice").textContent = (p<0.01) ? "$"+p.toFixed(8) : "$"+p.toFixed(4);
-          $("liveMcap").textContent = "$" + Math.round(p*LUMA_SUPPLY).toLocaleString();
-
-          const el = $("liveChange");
-          el.textContent = (c>=0?"+":"") + c.toFixed(2) + "%";
-          el.className = "data-value text-xl " + (c>=0 ? "text-green-400" : "text-red-400");
+            if (show) {
+                txt.textContent = message; bar.classList.remove("hidden");
+                nav.style.top = "32px"; ticker.style.top = "96px"; main.style.paddingTop = "12rem";
+            } else {
+                bar.classList.add("hidden"); nav.style.top = "0px"; ticker.style.top = "64px"; main.style.paddingTop = "10rem";
+            }
         }
 
-        // Coins ticker via CoinGecko (CORS OK)
-        const ids = barCoins.map(x=>x.id).join(",");
-        const rC = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-        const jC = await rC.json();
+        // --- 2. PLANETARY OPS ---
+        async function fetchMarsWeather() {
+            try {
+                const res = await fetch("https://api.maas2.org/");
+                const data = await res.json();
+                $("mars-temp").innerText = `${data.max_temp}°C`;
+                $("mars-cond").innerText = data.season ? `${data.season.toUpperCase()}` : "WINTER";
+                $("mars-pressure").innerText = `${data.pressure} Pa`;
+            } catch(e) { $("mars-temp").innerText = "-63°C"; $("mars-cond").innerText = "DATA LINK LOST"; }
+        }
+        fetchMarsWeather();
 
-        let html = `<span class="font-bold text-brand">LUMA ${p>0?("$"+p.toFixed(8)):"--"}</span> <span class="mx-4 text-gray-600">|</span>`;
-        barCoins.forEach(coin=>{
-          const d = jC[coin.id];
-          if(!d) return;
-          const chg = d.usd_24h_change;
-          html += `<span class="text-gray-300">${coin.sym} $${Number(d.usd).toLocaleString()} <span class="${chg>=0?'text-green-500':'text-red-500'}">(${chg.toFixed(1)}%)</span></span> <span class="mx-4 text-gray-600">|</span>`;
-        });
+        function updatePlanetaryData() {
+            const now = Date.now();
+            // Moon (Approx)
+            const moonPeriod = 27.55 * 24 * 3600 * 1000; 
+            const moonPhase = (now % moonPeriod) / moonPeriod;
+            const moonDist = 384400 + (Math.sin(moonPhase * Math.PI * 2) * 21000);
+            $("moon-dist").innerText = Math.floor(moonDist).toLocaleString();
 
-        $("ticker-track").innerHTML = html + html;
-      }catch(e){}
-    }
+            const synodic = 29.53 * 24 * 3600 * 1000;
+            const age = (now % synodic) / synodic;
+            let temp = -130; if(age > 0.25 && age < 0.75) temp = 120;
+            $("moon-temp").innerText = `${temp}°C`;
+            $("moon-cycle").innerText = (age > 0.25 && age < 0.75) ? "DAY CYCLE" : "NIGHT CYCLE";
 
-    // ============ INTEL FEEDS ============
-    async function fetchSpaceNews(){
-      try{
-        const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=5");
-        const j = await r.json();
-        $("spaceNews").innerHTML = j.results.map(a=>`
-          <div class="border-b border-white/5 last:border-0 pb-2 mb-2">
-            <a href="${a.url}" target="_blank" class="text-blue-300 hover:text-white transition block line-clamp-2">${a.title}</a>
-            <span class="text-[10px] text-gray-500">${new Date(a.published_at).toLocaleDateString()}</span>
-          </div>
-        `).join("");
-      }catch(e){
-        $("spaceNews").innerHTML = `<div class="text-red-400 text-xs">Flux indisponible</div>`;
-      }
-    }
+            // Mars (Approx)
+            const marsPeriod = 779.94 * 24 * 3600 * 1000;
+            const marsPhase = (now % marsPeriod) / marsPeriod;
+            const marsDist = 225000000 + (Math.cos(marsPhase * Math.PI * 2) * 170000000);
+            $("mars-dist").innerText = Math.floor(marsDist).toLocaleString();
+            $("mars-light").innerText = `${((marsDist / 299792) / 60).toFixed(1)} min`;
+        }
+        setInterval(updatePlanetaryData, 1000);
 
-    async function fetchCryptoIntel(){
-      try{
-        // CoinGecko trending (CORS OK)
-        const r = await fetch("https://api.coingecko.com/api/v3/search/trending");
-        const j = await r.json();
-        const coins = (j.coins || []).slice(0,5).map(x=>x.item);
+        // --- 3. MÉTÉO VISUELLE ---
+        let stopParticles = null;
+        function clearWeatherOverlay() { $("weather-overlay").innerHTML = ""; }
+        function spawnParticles(char, rateMs) {
+            const w = $("weather-overlay");
+            const timer = setInterval(() => {
+                const p = document.createElement("div");
+                p.className = "absolute top-[-20px] text-white/60 pointer-events-none";
+                p.textContent = char;
+                p.style.left = Math.random() * 100 + "vw";
+                p.style.fontSize = (10 + Math.random() * 14) + "px";
+                p.style.opacity = (0.3 + Math.random() * 0.5).toString();
+                const dur = 4 + Math.random() * 4;
+                p.style.transition = `transform ${dur}s linear, opacity ${dur}s linear`;
+                w.appendChild(p);
+                requestAnimationFrame(() => { p.style.transform = `translateY(110vh) translateX(${(-20 + Math.random()*40)}px)`; p.style.opacity = "0"; });
+                setTimeout(() => p.remove(), dur * 1000);
+            }, rateMs);
+            return () => clearInterval(timer);
+        }
+        function applyWeatherEffect(mode) {
+            clearWeatherOverlay();
+            if (stopParticles) stopParticles();
+            if (mode === "snow") stopParticles = spawnParticles("❄", 200);
+            else if (mode === "rain") stopParticles = spawnParticles("💧", 80);
+            else if (mode === "storm") stopParticles = spawnParticles("⚡", 300);
+        }
 
-        // Market movers (top gainers/losers approximé via markets)
-        const r2 = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h");
-        const m = await r2.json();
-        const sorted = [...m].filter(x=>typeof x.price_change_percentage_24h==="number").sort((a,b)=>b.price_change_percentage_24h-a.price_change_percentage_24h);
-        const gainers = sorted.slice(0,3);
-        const losers  = sorted.slice(-3).reverse();
+        // --- 4. GENERAL APIs ---
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; const toRad = x => x * Math.PI / 180;
+            const dLat = toRad(lat2 - lat1); const dLon = toRad(lon2 - lon1);
+            return 2 * R * Math.asin(Math.sqrt(Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2));
+        }
 
-        const lang = document.documentElement.lang || "fr";
-        const tTrend = (lang==="fr") ? "Tendances" : "Trending";
-        const tGain  = (lang==="fr") ? "Top gagnants (24h)" : "Top gainers (24h)";
-        const tLose  = (lang==="fr") ? "Top perdants (24h)" : "Top losers (24h)";
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+                $("geoStatus").innerText = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+                try {
+                    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    const data = await res.json();
+                    $("wxLabel").innerText = `${data.current_weather.temperature}°C`;
+                    let mode = "clear"; const c = data.current_weather.weathercode;
+                    if ((c >= 51 && c <= 67) || (c >= 80 && c <= 82)) mode = "rain";
+                    if (c >= 71 && c <= 77) mode = "snow";
+                    if (c >= 95) mode = "storm";
+                    applyWeatherEffect(mode);
+                } catch(e) {}
+                setInterval(async () => {
+                    try {
+                        const r = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+                        const j = await r.json();
+                        $("iss-lat").innerText = `LAT ${j.latitude.toFixed(2)}`;
+                        $("iss-lon").innerText = `LON ${j.longitude.toFixed(2)}`;
+                        $("issDistance").innerText = `${Math.round(haversineKm(lat, lon, j.latitude, j.longitude)).toLocaleString()} km`;
+                    } catch(e){}
+                }, 5000);
+            }, () => { $("geoStatus").innerText = "GPS OFF"; });
+        }
 
-        const block = (title, rows) => `
-          <div class="p-3 bg-white/5 rounded border border-white/10">
-            <div class="text-[10px] text-gray-400 mb-2 font-mono">${title}</div>
-            ${rows.join("")}
-          </div>
-        `;
+        // --- 5. NEWS ---
+        async function fetchSpaceNews() {
+            try {
+                const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2");
+                const jWebb = await rWebb.json();
+                $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join('');
+                
+                const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=3");
+                const j = await r.json();
+                $("spaceNews").innerHTML = j.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-blue-300 hover:text-white transition block truncate">${a.title}</a></div>`).join('');
+            } catch(e) {}
+        }
+        
+        async function fetchCryptoNews() {
+            try {
+                const r = await fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
+                const j = await r.json();
+                $("cryptoNews").innerHTML = j.Data.slice(0, 3).map(n => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${n.url}" target="_blank" class="text-xs text-brand hover:text-white transition block truncate">${n.title}</a></div>`).join('');
+            } catch(e) {}
+        }
+        fetchSpaceNews(); fetchCryptoNews();
 
-        const row = (name, sym, chg, url) => `
-          <div class="flex items-center justify-between text-[12px] py-1">
-            <a class="text-brand hover:text-white transition truncate max-w-[70%]" href="${url}" target="_blank">${name} <span class="text-gray-500">(${sym.toUpperCase()})</span></a>
-            <span class="${chg>=0?'text-green-400':'text-red-400'} font-mono">${(chg>=0?"+":"") + chg.toFixed(2)}%</span>
-          </div>
-        `;
+        // --- 6. VOYAGER & BH ---
+        function updateSpaceData() {
+            const startTimestamp = 1704067200000; const now = Date.now(); const elapsed = (now - startTimestamp) / 1000;
+            $("v1-dist").innerText = Math.floor(24400000000 + (elapsed * 17)).toLocaleString() + " km";
+            $("v2-dist").innerText = Math.floor(20300000000 + (elapsed * 15)).toLocaleString() + " km";
+            $("bh-km").innerText = (1560 * 9.461e12).toExponential(3) + " KM";
+        }
+        setInterval(updateSpaceData, 1000);
 
-        const trendRows = coins.map(c => `
-          <div class="flex items-center justify-between text-[12px] py-1">
-            <a class="text-brand hover:text-white transition truncate max-w-[90%]" href="https://www.coingecko.com/en/coins/${c.id}" target="_blank">${c.name} <span class="text-gray-500">(${c.symbol.toUpperCase()})</span></a>
-          </div>
-        `);
+        // --- 7. UTILS ---
+        function updateClocks() {
+            const now = new Date();
+            $("earth-clock").innerText = now.toISOString().split('T')[1].split('.')[0] + " UTC";
+            const millisPerSol = 88775244; const sols = (now.getTime() - 947116800000) / millisPerSol;
+            const solDay = Math.floor(sols) + 44796;
+            const solTime = (sols % 1) * 24; const h = Math.floor(solTime); const m = Math.floor((solTime - h) * 60);
+            $("mars-clock").innerText = `Sol ${solDay} ${h}:${m < 10 ? '0'+m : m}`;
+        }
+        setInterval(updateClocks, 1000);
 
-        const gainRows = gainers.map(c => row(c.name, c.symbol, c.price_change_percentage_24h, `https://www.coingecko.com/en/coins/${c.id}`));
-        const loseRows = losers.map(c => row(c.name, c.symbol, c.price_change_percentage_24h, `https://www.coingecko.com/en/coins/${c.id}`));
+        const barCoins = [{id:"bitcoin", sym:"BTC"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}];
+        async function fetchMarket() {
+            try {
+                // LUMA PRICE
+                const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
+                const dLuma = await rLuma.json(); 
+                const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
+                const c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
+                
+                // Update DOM
+                const pStr = p < 0.01 ? '$'+p.toFixed(8) : '$'+p.toFixed(4);
+                $("livePrice").innerText = pStr;
+                $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '% (24h)';
+                $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
 
-        $("cryptoIntel").innerHTML = [
-          block(tTrend, trendRows),
-          block(tGain, gainRows),
-          block(tLose, loseRows),
-        ].join('<div class="h-3"></div>');
-      }catch(e){
-        $("cryptoIntel").innerHTML = `<div class="text-gray-500 text-xs">CoinGecko indisponible</div>`;
-      }
-    }
+                // TICKER
+                const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
+                const dCoins = await rCoins.json();
+                let html = `<span class="font-bold text-brand">LUMA ${pStr}</span> <span class="mx-4 text-gray-600">|</span> `;
+                barCoins.forEach(coin => { const d = dCoins[coin.id]; if(d) html += `<span class="text-gray-300">${coin.sym} $${d.usd}</span> <span class="mx-4 text-gray-600">|</span> `; });
+                $("ticker-track").innerHTML = html + html; 
+            } catch(e){}
+        }
+        fetchMarket(); setInterval(fetchMarket, 60000);
 
-    // ============ UTILS ============
-    $("copyBtn").addEventListener("click", async ()=>{
-      try{
-        await navigator.clipboard.writeText(CONTRACT_ADDRESS);
-        const lang = document.documentElement.lang || "fr";
-        toast(lang==="fr" ? "Contrat copié." : "Contract copied.");
-      }catch(e){
-        alert("Clipboard blocked.");
-      }
-    });
+        // Copy
+        function copy(text) { navigator.clipboard.writeText(text); alert("Copié !"); }
+        $("copyBtn").addEventListener('click', () => copy(CONTRACT_ADDRESS));
+        $("copyContractFooter").addEventListener('click', (e) => { e.preventDefault(); copy(CONTRACT_ADDRESS); });
 
-    $("addMetaMask").addEventListener("click", async ()=>{
-      if(!window.ethereum){
-        alert("MetaMask introuvable");
-        return;
-      }
-      try{
-        await window.ethereum.request({
-          method:"wallet_watchAsset",
-          params:{
-            type:"ERC20",
-            options:{
-              address: CONTRACT_ADDRESS,
-              symbol:"LUMA",
-              decimals:18,
-              image: window.location.origin + "/luma-logo.png",
-            }
-          }
-        });
-      }catch(e){}
-    });
-
-    function openGamePopup(){
-      window.open("game/luma-game.html", "LUMA_ARCADE", "width=500,height=750,resizable=yes,scrollbars=no");
-    }
-
-    function toggleExplorerMode(){
-      const lang = document.documentElement.lang || "fr";
-      alert(lang==="fr" ? "Mode Explorateur : prévu pour la V2." : "Explorer Mode: planned for V2.");
-    }
-
-    // ============ INIT ============
-    window.addEventListener("DOMContentLoaded", async ()=>{
-      initGeo();
-      updateClocks();
-      updateVoyager();
-      fetchMarket();
-      fetchSpaceNews();
-      fetchCryptoIntel();
-
-      setInterval(updateClocks, 1000);
-      setInterval(updateVoyager, 2000);
-      setInterval(fetchMarket, 60000);
-      setInterval(fetchSpaceNews, 120000);
-      setInterval(fetchCryptoIntel, 180000);
-    });
-  </script>
+        $("addMetaMask").addEventListener('click', async () => { if (window.ethereum) { try { await window.ethereum.request({ method: 'wallet_watchAsset', params: { type: 'ERC20', options: { address: CONTRACT_ADDRESS, symbol: 'LUMA', decimals: 18, image: window.location.origin + '/Luma-logo.png' }}}); } catch (e) {} } else alert("MetaMask introuvable"); });
+        function toggleExplorerMode() { alert("Mode Explorateur (3D) en cours de développement."); }
+        function openGamePopup() { window.open('game/luma-game.html', 'LUMA_ARCADE', 'width=500,height=750,resizable=yes,scrollbars=no'); }
+    </script>
 </body>
 </html>
