@@ -14,7 +14,7 @@
         gtag('config', 'G-Z4L8P2YSD7');
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -30,11 +30,6 @@
                         moon: '#e5e7eb',
                         quantum: '#8b5cf6',
                         success: '#10b981'
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'scroll-ticker': 'scroll 40s linear infinite',
-                        'spin-slow': 'spin 12s linear infinite',
                     }
                 }
             }
@@ -68,6 +63,45 @@
         .lang-btn { cursor: pointer; opacity: 0.5; transition: opacity 0.3s; font-weight: bold; }
         .lang-btn.active { opacity: 1; color: #ffb21a; }
         
+        /* --- ANIMATION TICKER CORRIGÉE --- */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Déplace de 50% car le contenu est dupliqué */
+        }
+        
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #0a0a0c;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            height: 32px;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 64px; /* Hauteur navbar */
+            z-index: 40;
+            backdrop-filter: blur(10px);
+        }
+
+        .ticker-move {
+            display: flex;
+            white-space: nowrap;
+            /* Animation continue de 40s */
+            animation: scroll-left 40s linear infinite; 
+        }
+        
+        .ticker-move:hover {
+            animation-play-state: paused;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
@@ -114,9 +148,9 @@
         </div>
     </nav>
 
-    <div id="tickerBar" class="fixed top-16 w-full z-40 bg-[#0a0a0c] border-b border-white/5 backdrop-blur-md overflow-hidden h-8 flex items-center">
-        <div class="whitespace-nowrap animate-[scroll_40s_linear_infinite] flex gap-8 px-4 text-xs font-mono" id="ticker-track">
-            <span class="text-gray-500">Connexion aux satellites financiers...</span>
+    <div id="tickerBar" class="ticker-wrap">
+        <div class="ticker-move" id="ticker-track">
+            <div class="ticker-item text-gray-500">Connexion aux satellites financiers...</div>
         </div>
     </div>
 
@@ -196,22 +230,10 @@
                 <div class="tech-card rounded-2xl p-6 bg-gradient-to-br from-red-900/20 to-transparent border-red-900/30">
                     <h3 class="text-brand font-bold text-sm mb-4 uppercase flex items-center gap-2"><i data-lucide="flame" class="w-4 h-4"></i> Sécurité & Burn</h3>
                     <ul class="space-y-4 text-sm text-gray-300">
-                        <li class="flex justify-between border-b border-white/5 pb-2">
-                            <span>🔥 Burn (10%)</span>
-                            <span class="font-mono text-white">22,538,440 LUMA</span>
-                        </li>
-                        <li class="flex justify-between border-b border-white/5 pb-2">
-                            <span>🔒 Supply Verrouillé (~10%)</span>
-                            <span class="font-mono text-white">PinkLock V2</span>
-                        </li>
-                        <li class="flex justify-between border-b border-white/5 pb-2">
-                            <span>💧 Liquidité LP</span>
-                            <span class="text-green-400">Verrouillée 1 an</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>🧾 Ownership</span>
-                            <span class="text-green-400">Renounced (Renoncé)</span>
-                        </li>
+                        <li class="flex justify-between border-b border-white/5 pb-2"><span>🔥 Burn (10%)</span><span class="font-mono text-white">22,538,440 LUMA</span></li>
+                        <li class="flex justify-between border-b border-white/5 pb-2"><span>🔒 Supply Verrouillé</span><span class="font-mono text-white">PinkLock V2</span></li>
+                        <li class="flex justify-between border-b border-white/5 pb-2"><span>💧 Liquidité LP</span><span class="text-green-400">Verrouillée 1 an</span></li>
+                        <li class="flex justify-between"><span>🧾 Ownership</span><span class="text-green-400">Renounced (Renoncé)</span></li>
                     </ul>
                     <div class="mt-4 grid grid-cols-2 gap-2">
                         <a href="https://bscscan.com/tx/0x4b8a548ebe8a599c66b59915d7413549a601ae5c2e6c5e7c0c0baf9214f15a17" target="_blank" class="text-[10px] text-center bg-white/5 py-2 rounded hover:bg-white/10 text-gray-400">Preuve Burn</a>
@@ -243,26 +265,10 @@
             <div class="lg:col-span-2 tech-card rounded-2xl p-8">
                 <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-wider" data-i18n="roadmap_title">FEUILLE DE ROUTE</h2>
                 <div class="space-y-6 border-l border-white/10 ml-2">
-                    <div class="pl-6 relative">
-                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span>
-                        <div class="text-xs text-green-400 font-bold mb-1" data-i18n="phase_1">PHASE 1 - LANCEMENT ORBITAL</div>
-                        <p class="text-sm text-gray-400" data-i18n="phase_1_desc">Déploiement contrat, Burn initial, Whitepaper v1, Canaux sociaux.</p>
-                    </div>
-                    <div class="pl-6 relative">
-                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand animate-pulse"></span>
-                        <div class="text-xs text-brand font-bold mb-1" data-i18n="phase_2">PHASE 2 - CONSTRUCTION (EN COURS)</div>
-                        <p class="text-sm text-gray-400" data-i18n="phase_2_desc">Airdrops ciblés, Site Officiel, Jeu Arcade, Suivi stats.</p>
-                    </div>
-                    <div class="pl-6 relative">
-                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
-                        <div class="text-xs text-white font-bold mb-1" data-i18n="phase_3">PHASE 3 - EXPANSION LUNAIRE</div>
-                        <p class="text-sm text-gray-400" data-i18n="phase_3_desc">Partenariats Web3, Outils pédagogiques, Concours.</p>
-                    </div>
-                    <div class="pl-6 relative">
-                        <span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span>
-                        <div class="text-xs text-white font-bold mb-1" data-i18n="phase_4">PHASE 4 - CORRIDOR LUNE → MARS</div>
-                        <p class="text-sm text-gray-400" data-i18n="phase_4_desc">Écosystème symbolique, Utilité créative, Gouvernance.</p>
-                    </div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-green-500"></span><div class="text-xs text-green-400 font-bold mb-1" data-i18n="phase_1">PHASE 1 - LANCEMENT ORBITAL</div><p class="text-sm text-gray-400" data-i18n="phase_1_desc">Déploiement contrat, Burn initial, Whitepaper v1, Canaux sociaux.</p></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-brand animate-pulse"></span><div class="text-xs text-brand font-bold mb-1" data-i18n="phase_2">PHASE 2 - CONSTRUCTION (EN COURS)</div><p class="text-sm text-gray-400" data-i18n="phase_2_desc">Airdrops ciblés, Site Officiel, Jeu Arcade, Suivi stats.</p></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_3">PHASE 3 - EXPANSION LUNAIRE</div><p class="text-sm text-gray-400" data-i18n="phase_3_desc">Partenariats Web3, Outils pédagogiques, Concours.</p></div>
+                    <div class="pl-6 relative"><span class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-white/20"></span><div class="text-xs text-white font-bold mb-1" data-i18n="phase_4">PHASE 4 - CORRIDOR LUNE → MARS</div><p class="text-sm text-gray-400" data-i18n="phase_4_desc">Écosystème symbolique, Utilité créative, Gouvernance.</p></div>
                 </div>
             </div>
 
@@ -292,10 +298,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
                     <div class="absolute -right-6 -top-6 w-32 h-32 bg-webb/10 rounded-full blur-3xl"></div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex items-center gap-3"><i data-lucide="aperture" class="text-webb"></i><h3 class="font-bold text-lg text-white">JAMES WEBB (JWST)</h3></div>
-                        <span class="text-[10px] text-webb border border-webb/30 px-2 py-1 rounded bg-webb/5">LAGRANGE L2</span>
-                    </div>
+                    <div class="flex justify-between items-center mb-4"><div class="flex items-center gap-3"><i data-lucide="aperture" class="text-webb"></i><h3 class="font-bold text-lg text-white">JAMES WEBB (JWST)</h3></div><span class="text-[10px] text-webb border border-webb/30 px-2 py-1 rounded bg-webb/5">LAGRANGE L2</span></div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">TEMP MIRI</div><div class="data-value text-blue-200">-266.15 °C</div></div>
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">DISTANCE TERRE</div><div class="data-value text-webb">1.5M km</div></div>
@@ -305,10 +308,7 @@
 
                 <div class="tech-card rounded-2xl p-6 relative overflow-hidden">
                     <div class="absolute -right-6 -top-6 w-32 h-32 bg-mars/10 rounded-full blur-3xl"></div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex items-center gap-3"><i data-lucide="globe" class="text-mars"></i><h3 class="font-bold text-lg text-white">MARS LIVE</h3></div>
-                        <span class="text-[10px] text-mars border border-mars/30 px-2 py-1 rounded bg-mars/5">GALE CRATER</span>
-                    </div>
+                    <div class="flex justify-between items-center mb-4"><div class="flex items-center gap-3"><i data-lucide="globe" class="text-mars"></i><h3 class="font-bold text-lg text-white">MARS LIVE</h3></div><span class="text-[10px] text-mars border border-mars/30 px-2 py-1 rounded bg-mars/5">GALE CRATER</span></div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">TEMP SURFACE</div><div class="data-value text-white" id="mars-temp">--°C</div></div>
                         <div class="bg-white/5 p-3 rounded"><div class="data-label">DISTANCE</div><div class="data-value text-mars" id="mars-dist">Calcul...</div></div>
@@ -384,7 +384,7 @@
         const TOTAL_SUPPLY = 202845959;
         const $ = (id) => document.getElementById(id);
 
-        // --- 0. TRADUCTION (Dictionnaire Master + V2) ---
+        // --- 0. TRADUCTION ---
         const translations = {
             fr: {
                 nav_dash: "DASHBOARD", nav_planetary: "PLANÉTAIRE", nav_science: "SCIENCE", nav_roadmap: "ROADMAP", btn_buy: "ACHETER LUMA",
@@ -428,7 +428,7 @@
         }
         changeLanguage(currentLang);
 
-        // --- 1. BANDEAU FÊTES (Logique Master) ---
+        // --- 1. BANDEAU FÊTES ---
         function setFestivalBar() {
             const now = new Date();
             const month = now.getMonth(); const day = now.getDate();
@@ -540,22 +540,15 @@
                 
                 const r = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=3");
                 const j = await r.json();
-                $("spaceNews").innerHTML = j.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-blue-300 hover:text-white transition block truncate">${a.title}</a></div>`).join('');
+                // Utilisation dans la section science pour filtrer par Webb, ou autre logique si besoin.
             } catch(e) {}
         }
-        
-        async function fetchCryptoNews() {
-            try {
-                const r = await fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
-                const j = await r.json();
-                $("cryptoNews").innerHTML = j.Data.slice(0, 3).map(n => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${n.url}" target="_blank" class="text-xs text-brand hover:text-white transition block truncate">${n.title}</a></div>`).join('');
-            } catch(e) {}
-        }
-        fetchSpaceNews(); fetchCryptoNews();
+        fetchSpaceNews();
 
         // --- 6. UTILS ---
         function updateClocks() {
             const now = new Date();
+            $("earth-clock").innerText = now.toISOString().split('T')[1].split('.')[0] + " UTC";
             const millisPerSol = 88775244; const sols = (now.getTime() - 947116800000) / millisPerSol;
             const solDay = Math.floor(sols) + 44796;
             $("mars-clock").innerText = `Sol ${solDay}`;
@@ -585,6 +578,7 @@
                 const dCoins = await rCoins.json();
                 let html = `<span class="font-bold text-brand">LUMA ${pStr}</span> <span class="mx-4 text-gray-600">|</span> `;
                 barCoins.forEach(coin => { const d = dCoins[coin.id]; if(d) html += `<span class="text-gray-300">${coin.sym} $${d.usd}</span> <span class="mx-4 text-gray-600">|</span> `; });
+                // Double pour l'animation
                 $("ticker-track").innerHTML = html + html; 
             } catch(e){}
         }
