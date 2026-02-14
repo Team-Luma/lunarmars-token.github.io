@@ -58,7 +58,8 @@
             width: 100%; overflow: hidden; height: 36px; background: #000;
             border-bottom: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
         }
-        .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker-scroll 40s linear infinite; }
+        /* Vitesse ajustée à 80s pour une lecture confortable */
+        .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker-scroll 80s linear infinite; }
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; }
         @keyframes ticker-scroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
         
@@ -406,7 +407,6 @@
             let pStr = "$0.00000000";
             let c = 0;
 
-            // 1. On sécurise l'appel LUMA au cas où GeckoTerminal plante
             try {
                 const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
                 if (rLuma.ok) {
@@ -427,10 +427,8 @@
                 console.error("Erreur API LUMA:", e);
             }
 
-            // On ajoute LUMA dans le Ticker, même si ça a planté (ça affichera juste $0.00)
             itemsHtml += `<div class="ticker-item"><strong class="text-brand">LUMA</strong> ${pStr} <span class="${c>=0?'up':'down'}">(${c.toFixed(2)}%)</span></div>`;
 
-            // 2. On sécurise l'appel CoinGecko au cas où il bloque (Rate Limit 429)
             try {
                 const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
                 if (rCoins.ok) {
@@ -450,11 +448,9 @@
                 itemsHtml += `<div class="ticker-item text-red-500">Mise à jour des marchés en attente...</div>`;
             }
 
-            // 3. On injecte dans le HTML (x4 pour l'animation infinie)
             $("ticker-track").innerHTML = itemsHtml + itemsHtml + itemsHtml + itemsHtml; 
         }
         
-        // On lance immédiatement, puis toutes les minutes
         fetchTicker(); 
         setInterval(fetchTicker, 60000);
 
