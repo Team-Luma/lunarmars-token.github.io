@@ -133,7 +133,11 @@
 
         <div class="ticker-wrap">
             <div class="ticker-move" id="ticker-track">
-                </div>
+                <div class="ticker-item"><strong class="text-brand">LUMA</strong> Chargement...</div>
+                <div class="ticker-item"><strong>BTC</strong> --</div>
+                <div class="ticker-item"><strong>ETH</strong> --</div>
+                <div class="ticker-item"><strong>BNB</strong> --</div>
+            </div>
         </div>
     </div>
 
@@ -383,11 +387,10 @@
             });
         }
         
-        // Correctif Langue : chargement via localStorage
         const saved = localStorage.getItem('luma-lang');
         changeLanguage(saved === 'en' ? 'en' : 'fr');
 
-        // --- TICKER WALL STREET ---
+        // --- TICKER WALL STREET BLINDÉ ---
         const barCoins = [
             {id:"bitcoin", sym:"BTC"}, {id:"ethereum", sym:"ETH"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}, {id:"ripple", sym:"XRP"},
             {id:"cardano", sym:"ADA"}, {id:"avalanche-2", sym:"AVAX"}, {id:"dogecoin", sym:"DOGE"}, {id:"polkadot", sym:"DOT"}, {id:"chainlink", sym:"LINK"},
@@ -399,40 +402,63 @@
         ];
 
         async function fetchTicker() {
+            let itemsHtml = "";
+            let pStr = "$0.00000000";
+            let c = 0;
+
+            // 1. On sécurise l'appel LUMA au cas où GeckoTerminal plante
             try {
-                // LUMA
                 const rLuma = await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/0xc4ce7c692fdd27603437199c9b40baf5e2b804e6");
-                const dLuma = await rLuma.json(); 
-                const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
-                const c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
-                
-                const pStr = p < 0.01 ? '$'+p.toFixed(9) : '$'+p.toFixed(4);
-                $("livePrice").innerText = pStr;
-                $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
-                $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
-                
-                if($("stat-mcap")) $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
-
-                // COINS
-                const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
-                const dCoins = await rCoins.json();
-                
-                let itemsHtml = `<div class="ticker-item"><strong class="text-brand">LUMA</strong> ${pStr} <span class="${c>=0?'up':'down'}">(${c.toFixed(2)}%)</span></div>`;
-                barCoins.forEach(coin => {
-                    const d = dCoins[coin.id];
-                    if(d) {
-                         const chg = d.usd_24h_change;
-                         itemsHtml += `<div class="ticker-item"><strong>${coin.sym}</strong> $${d.usd} <span class="${chg>=0?'up':'down'}">(${chg.toFixed(1)}%)</span></div>`;
+                if (rLuma.ok) {
+                    const dLuma = await rLuma.json(); 
+                    if (dLuma && dLuma.data) {
+                        const p = parseFloat(dLuma.data.attributes.base_token_price_usd);
+                        c = parseFloat(dLuma.data.attributes.price_change_percentage.h24);
+                        pStr = p < 0.01 ? '$'+p.toFixed(9) : '$'+p.toFixed(4);
+                        
+                        $("livePrice").innerText = pStr;
+                        $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
+                        $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
+                        
+                        if($("stat-mcap")) $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
                     }
-                });
+                }
+            } catch(e) {
+                console.error("Erreur API LUMA:", e);
+            }
 
-                $("ticker-track").innerHTML = itemsHtml + itemsHtml + itemsHtml + itemsHtml; 
+            // On ajoute LUMA dans le Ticker, même si ça a planté (ça affichera juste $0.00)
+            itemsHtml += `<div class="ticker-item"><strong class="text-brand">LUMA</strong> ${pStr} <span class="${c>=0?'up':'down'}">(${c.toFixed(2)}%)</span></div>`;
 
-            } catch(e) {}
+            // 2. On sécurise l'appel CoinGecko au cas où il bloque (Rate Limit 429)
+            try {
+                const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
+                if (rCoins.ok) {
+                    const dCoins = await rCoins.json();
+                    barCoins.forEach(coin => {
+                        const d = dCoins[coin.id];
+                        if(d && d.usd) {
+                             const chg = d.usd_24h_change || 0;
+                             itemsHtml += `<div class="ticker-item"><strong>${coin.sym}</strong> $${d.usd} <span class="${chg>=0?'up':'down'}">(${chg.toFixed(1)}%)</span></div>`;
+                        }
+                    });
+                } else {
+                     itemsHtml += `<div class="ticker-item text-red-500">Mise à jour CoinGecko ralentie...</div>`;
+                }
+            } catch(e) {
+                console.error("Erreur API Coins:", e);
+                itemsHtml += `<div class="ticker-item text-red-500">Mise à jour des marchés en attente...</div>`;
+            }
+
+            // 3. On injecte dans le HTML (x4 pour l'animation infinie)
+            $("ticker-track").innerHTML = itemsHtml + itemsHtml + itemsHtml + itemsHtml; 
         }
-        fetchTicker(); setInterval(fetchTicker, 60000);
+        
+        // On lance immédiatement, puis toutes les minutes
+        fetchTicker(); 
+        setInterval(fetchTicker, 60000);
 
-        // --- PLANETARY (CORRIGÉ) ---
+        // --- PLANETARY ---
         function updatePlanetaryData() {
             const startV = 1704067200000;
             const nowMs = Date.now();
@@ -450,7 +476,7 @@
 
         async function fetchWebbNews() { try { const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2"); const jWebb = await rWebb.json(); $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join(''); } catch(e) {} } fetchWebbNews();
 
-        // --- UTILS (MÉTÉO CORRIGÉE) ---
+        // --- UTILS (MÉTÉO) ---
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 const lat = pos.coords.latitude; const lon = pos.coords.longitude;
@@ -468,7 +494,6 @@
                         setInterval(() => {
                            const p=document.createElement("div"); p.className="absolute top-[-20px] text-white/50 pointer-events-none";
                            p.textContent=char; p.style.left=Math.random()*100+"vw"; 
-                           // Correction de l'animation pour faire tomber les particules
                            p.style.animation = `fall ${2 + Math.random() * 3}s linear`;
                            w.appendChild(p); setTimeout(()=>p.remove(),5000);
                         }, 200);
