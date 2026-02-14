@@ -48,18 +48,16 @@
 
     <style>
         body { 
-            /* Fond spatial épuré */
             background: radial-gradient(circle at top, #1a1a24 0%, #050505 100%) fixed;
             color: #e5e5e5; 
             overflow-x: hidden; 
         }
 
-        /* --- TICKER WALL STREET MODIFIÉ --- */
+        /* --- TICKER WALL STREET --- */
         .ticker-wrap {
             width: 100%; overflow: hidden; height: 36px; background: #000;
             border-bottom: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
         }
-        /* Vitesse accélérée : 40s au lieu de 120s */
         .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker-scroll 40s linear infinite; }
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; }
         @keyframes ticker-scroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
@@ -84,6 +82,13 @@
         #weather-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; }
         .lang-btn { cursor: pointer; opacity: 0.5; font-weight: bold; }
         .lang-btn.active { opacity: 1; color: #ffb21a; }
+
+        /* MÉTÉO - ANIMATION CHUTE */
+        @keyframes fall {
+            0% { transform: translateY(-30px); opacity: 0; }
+            10% { opacity: 0.6; }
+            100% { transform: translateY(110vh); opacity: 0; }
+        }
     </style>
 </head>
 
@@ -174,7 +179,11 @@
                     
                     <div class="data-label text-brand mb-1">PRIX LUMA (LIVE)</div>
                     <div id="livePrice" class="text-4xl font-mono font-bold text-white mb-0">$0.00000000</div>
-                    <div id="liveChange" class="text-sm font-bold text-gray-500 mb-6">0.00%</div>
+                    <div id="liveChange" class="text-sm font-bold text-gray-500 mb-2">0.00%</div>
+                    
+                    <div class="mb-4 text-[11px] text-gray-400 font-mono">
+                        MCAP: <span id="stat-mcap" class="text-white font-bold">$0</span>
+                    </div>
                     
                     <div class="space-y-3">
                         <button id="addMetaMask" class="w-full py-3 bg-[#f6851b]/10 border border-[#f6851b]/30 rounded text-[#f6851b] font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#f6851b]/20 transition">
@@ -342,10 +351,10 @@
             fr: {
                 nav_vision: "VISION", nav_stats: "STATS", nav_tokenomics: "TOKENOMICS", nav_tracking: "TRACKING", nav_roadmap: "ROADMAP", btn_buy: "ACHETER",
                 hero_title: "VISION & MANIFESTO", hero_subtitle: "LUMA EN UNE PHRASE : UN JETON COMMUNAUTAIRE PENSÉ POUR L’AVENIR LUNE → MARS.",
-                hero_desc: "Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain...",
-                vision_title: "VISION & CONCEPT", vision_text: "La vision de Lunar&Mars repose sur un axe simple : Lune → Mars...",
-                evolution_title: "ÉVOLUTION (~30 JOURS)", evolution_list: "<li>Déploiement sur BSC.</li><li>Contrat vérifié.</li><li>Pool de liquidité.</li>",
-                disclaimer_text: "Avertissement : LUMA n’est pas un produit financier...",
+                hero_desc: "Lunar&Mars (LUMA) est un jeton BEP-20 déployé sur la BNB Smart Chain. Initialement conçu comme un symbole de la transition future entre la présence humaine sur la Lune et l’exploration de Mars, le projet a évolué vers un actif communautaire expérimental, public et transparent, avec une priorité donnée à la simplicité, à la stabilité et à l’accessibilité.",
+                vision_title: "VISION & CONCEPT", vision_text: "La vision de Lunar&Mars repose sur un axe simple : Lune → Mars comme fil conducteur. Ce thème sert de cadre à un projet communautaire visant à (a) apprendre et démontrer des mécanismes blockchain de base, (b) construire progressivement un actif numérique simple et vérifiable, et (c) développer une présence publique cohérente (site, documentation, canaux sociaux, transparence on-chain).",
+                evolution_title: "ÉVOLUTION (~30 JOURS)", evolution_list: "<li>Déploiement du jeton sur BSC et identité stable (contrat public).</li><li>Vérification du contrat sur l’explorateur (code lisible publiquement).</li><li>Mise en place d’un site officiel et d’une page d’accès rapide.</li><li>Création d’un pool de liquidité et premières transactions organiques.</li><li>Début de la distribution communautaire (airdrops / animation).</li>",
+                disclaimer_text: "Avertissement : LUMA n’est pas un produit financier offrant un rendement garanti. Les actifs numériques comportent des risques, incluant la volatilité et la perte totale du capital.",
                 lbl_market_data: "PRIX LUMA (LIVE)", lbl_env: "MÉTÉO LOCALE", lbl_iss_dist: "DISTANCE DE VOUS"
             },
             en: {
@@ -361,7 +370,8 @@
 
         let currentLang = 'fr';
         function changeLanguage(lang) {
-            currentLang = lang; localStorage.setItem('luma-lang', lang);
+            currentLang = lang; 
+            localStorage.setItem('luma-lang', lang);
             document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
             document.getElementById('btn-en').classList.toggle('active', lang === 'en');
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -372,10 +382,12 @@
                 }
             });
         }
-        changeLanguage('fr');
+        
+        // Correctif Langue : chargement via localStorage
+        const saved = localStorage.getItem('luma-lang');
+        changeLanguage(saved === 'en' ? 'en' : 'fr');
 
-        // --- TICKER WALL STREET MODIFIÉ ---
-        // Liste étendue avec des cryptos populaires et récentes
+        // --- TICKER WALL STREET ---
         const barCoins = [
             {id:"bitcoin", sym:"BTC"}, {id:"ethereum", sym:"ETH"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}, {id:"ripple", sym:"XRP"},
             {id:"cardano", sym:"ADA"}, {id:"avalanche-2", sym:"AVAX"}, {id:"dogecoin", sym:"DOGE"}, {id:"polkadot", sym:"DOT"}, {id:"chainlink", sym:"LINK"},
@@ -414,26 +426,31 @@
                     }
                 });
 
-                // Duplicate content to ensure infinite loop
                 $("ticker-track").innerHTML = itemsHtml + itemsHtml + itemsHtml + itemsHtml; 
 
             } catch(e) {}
         }
         fetchTicker(); setInterval(fetchTicker, 60000);
 
-        // --- PLANETARY ---
+        // --- PLANETARY (CORRIGÉ) ---
         function updatePlanetaryData() {
-            const startV = 1704067200000; const now = Date.now(); const elapsed = (now - startV) / 1000;
-            $("v1-dist").innerText = Math.floor(24400000000 + (elapsed * 17)).toLocaleString() + " km";
-            $("v2-dist").innerText = Math.floor(20300000000 + (elapsed * 15)).toLocaleString() + " km";
-            const millisPerSol = 88775244; const sols = (now.getTime() - 947116800000) / millisPerSol;
+            const startV = 1704067200000;
+            const nowMs = Date.now();
+            const elapsed = (nowMs - startV) / 1000;
+
+            $("v1-dist").innerText = Math.floor(24400000000 + elapsed * 17).toLocaleString() + " km";
+            $("v2-dist").innerText = Math.floor(20300000000 + elapsed * 15).toLocaleString() + " km";
+
+            const millisPerSol = 88775244;
+            const sols = (nowMs - 947116800000) / millisPerSol;
             $("mars-clock").innerText = `Sol ${Math.floor(sols) + 44796}`;
         }
+        updatePlanetaryData();
         setInterval(updatePlanetaryData, 1000);
 
         async function fetchWebbNews() { try { const rWebb = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?search=Webb&limit=2"); const jWebb = await rWebb.json(); $("webbNews").innerHTML = jWebb.results.map(a => `<div class="border-b border-white/5 pb-2 mb-2"><a href="${a.url}" target="_blank" class="text-xs text-webb hover:text-white transition block">${a.title}</a></div>`).join(''); } catch(e) {} } fetchWebbNews();
 
-        // --- UTILS ---
+        // --- UTILS (MÉTÉO CORRIGÉE) ---
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 const lat = pos.coords.latitude; const lon = pos.coords.longitude;
@@ -450,7 +467,9 @@
                     if(char) {
                         setInterval(() => {
                            const p=document.createElement("div"); p.className="absolute top-[-20px] text-white/50 pointer-events-none";
-                           p.textContent=char; p.style.left=Math.random()*100+"vw"; p.style.animation=`float ${2+Math.random()*3}s linear`;
+                           p.textContent=char; p.style.left=Math.random()*100+"vw"; 
+                           // Correction de l'animation pour faire tomber les particules
+                           p.style.animation = `fall ${2 + Math.random() * 3}s linear`;
                            w.appendChild(p); setTimeout(()=>p.remove(),5000);
                         }, 200);
                     }
