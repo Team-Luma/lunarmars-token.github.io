@@ -48,7 +48,8 @@
 
     <style>
         body { 
-            background: #050505 url("Luma-fond-christmas.jpg") center/cover fixed no-repeat;
+            /* Remplacement de l'image de Noël par un fond spatial sombre et pur */
+            background: radial-gradient(circle at top, #1a1a24 0%, #050505 100%) fixed;
             color: #e5e5e5; 
             overflow-x: hidden; 
         }
@@ -68,7 +69,7 @@
 
         /* UI */
         .tech-card {
-            background: rgba(12, 12, 14, 0.92); /* Opaque pour lisibilité */
+            background: rgba(12, 12, 14, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(16px);
             border-radius: 16px;
@@ -90,11 +91,6 @@
     <div id="weather-overlay"></div>
 
     <div class="fixed top-0 w-full z-50 flex flex-col bg-[#050505]/95 backdrop-blur-xl shadow-2xl">
-        
-        <div id="festival-bar" class="w-full bg-gradient-to-r from-yellow-700 via-yellow-500 to-yellow-700 border-b border-white/20 text-black text-xs font-extrabold text-center py-2 tracking-widest uppercase">
-            ✨ Bonne Année 2026 ! LUMA vous souhaite une année d'expansion cosmique 🚀
-        </div>
-
         <nav class="w-full border-b border-white/10 h-16 flex items-center">
             <div class="max-w-[1600px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -306,7 +302,7 @@
                         <div class="flex justify-between text-[10px] uppercase font-bold text-gray-500 mb-1">
                             <span>TERMINÉ</span> <span>DÉC 2025</span>
                         </div>
-                        <div class="text-gray-400 text-sm">Airdrop de Noël</div>
+                        <div class="text-gray-400 text-sm">Airdrop Initial (Phase 1)</div>
                         <p class="text-[10px] text-gray-500">Distribué aux premiers holders.</p>
                     </div>
                     <div class="p-3 rounded border border-brand/20 bg-brand/5">
@@ -408,7 +404,9 @@
                 $("livePrice").innerText = pStr;
                 $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
                 $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
-                $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
+                
+                // On met à jour le market cap si l'élément existait ailleurs
+                if($("stat-mcap")) $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
 
                 // COINS
                 const rCoins = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${barCoins.map(x=>x.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);
