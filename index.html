@@ -48,17 +48,18 @@
 
     <style>
         body { 
-            /* Remplacement de l'image de Noël par un fond spatial sombre et pur */
+            /* Fond spatial épuré */
             background: radial-gradient(circle at top, #1a1a24 0%, #050505 100%) fixed;
             color: #e5e5e5; 
             overflow-x: hidden; 
         }
 
-        /* --- TICKER WALL STREET --- */
+        /* --- TICKER WALL STREET MODIFIÉ --- */
         .ticker-wrap {
             width: 100%; overflow: hidden; height: 36px; background: #000;
             border-bottom: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
         }
+        /* Vitesse accélérée : 40s au lieu de 120s */
         .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker-scroll 40s linear infinite; }
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; }
         @keyframes ticker-scroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
@@ -91,6 +92,7 @@
     <div id="weather-overlay"></div>
 
     <div class="fixed top-0 w-full z-50 flex flex-col bg-[#050505]/95 backdrop-blur-xl shadow-2xl">
+        
         <nav class="w-full border-b border-white/10 h-16 flex items-center">
             <div class="max-w-[1600px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -126,19 +128,7 @@
 
         <div class="ticker-wrap">
             <div class="ticker-move" id="ticker-track">
-                <div class="ticker-item"><strong class="text-brand">LUMA</strong> $0.00000056 <span class="up">(+0.00%)</span></div>
-                <div class="ticker-item"><strong>BTC</strong> $93,620 <span class="up">(+1.2%)</span></div>
-                <div class="ticker-item"><strong>ETH</strong> $3,450 <span class="down">(-0.5%)</span></div>
-                <div class="ticker-item"><strong>BNB</strong> $605 <span class="up">(+0.8%)</span></div>
-                <div class="ticker-item"><strong>SOL</strong> $138 <span class="up">(+2.1%)</span></div>
-                <div class="ticker-item"><strong>XRP</strong> $1.12 <span class="down">(-1.1%)</span></div>
-                <div class="ticker-item"><strong>DOGE</strong> $0.12 <span class="up">(+4.0%)</span></div>
-                <div class="ticker-item"><strong class="text-brand">LUMA</strong> $0.00000056 <span class="up">(+0.00%)</span></div>
-                <div class="ticker-item"><strong>BTC</strong> $93,620 <span class="up">(+1.2%)</span></div>
-                <div class="ticker-item"><strong>ETH</strong> $3,450 <span class="down">(-0.5%)</span></div>
-                <div class="ticker-item"><strong>BNB</strong> $605 <span class="up">(+0.8%)</span></div>
-                <div class="ticker-item"><strong>SOL</strong> $138 <span class="up">(+2.1%)</span></div>
-            </div>
+                </div>
         </div>
     </div>
 
@@ -384,12 +374,16 @@
         }
         changeLanguage('fr');
 
-        // --- TICKER WALL STREET ---
+        // --- TICKER WALL STREET MODIFIÉ ---
+        // Liste étendue avec des cryptos populaires et récentes
         const barCoins = [
             {id:"bitcoin", sym:"BTC"}, {id:"ethereum", sym:"ETH"}, {id:"binancecoin", sym:"BNB"}, {id:"solana", sym:"SOL"}, {id:"ripple", sym:"XRP"},
             {id:"cardano", sym:"ADA"}, {id:"avalanche-2", sym:"AVAX"}, {id:"dogecoin", sym:"DOGE"}, {id:"polkadot", sym:"DOT"}, {id:"chainlink", sym:"LINK"},
             {id:"tron", sym:"TRX"}, {id:"matic-network", sym:"MATIC"}, {id:"shiba-inu", sym:"SHIB"}, {id:"litecoin", sym:"LTC"}, {id:"uniswap", sym:"UNI"},
-            {id:"bitcoin-cash", sym:"BCH"}, {id:"stellar", sym:"XLM"}, {id:"monero", sym:"XMR"}, {id:"cosmos", sym:"ATOM"}, {id:"ethereum-classic", sym:"ETC"}
+            {id:"bitcoin-cash", sym:"BCH"}, {id:"stellar", sym:"XLM"}, {id:"monero", sym:"XMR"}, {id:"cosmos", sym:"ATOM"}, {id:"ethereum-classic", sym:"ETC"},
+            {id:"toncoin", sym:"TON"}, {id:"near", sym:"NEAR"}, {id:"aptos", sym:"APT"}, {id:"internet-computer", sym:"ICP"}, {id:"kaspa", sym:"KAS"},
+            {id:"pepe", sym:"PEPE"}, {id:"arbitrum", sym:"ARB"}, {id:"render-token", sym:"RNDR"}, {id:"filecoin", sym:"FIL"}, {id:"immutable-x", sym:"IMX"},
+            {id:"stacks", sym:"STX"}, {id:"optimism", sym:"OP"}, {id:"injective-protocol", sym:"INJ"}, {id:"the-graph", sym:"GRT"}, {id:"fantom", sym:"FTM"}
         ];
 
         async function fetchTicker() {
@@ -405,7 +399,6 @@
                 $("liveChange").innerText = (c>=0?'+':'') + c.toFixed(2) + '%';
                 $("liveChange").style.color = c>=0 ? '#10b981' : '#ef4444';
                 
-                // On met à jour le market cap si l'élément existait ailleurs
                 if($("stat-mcap")) $("stat-mcap").innerText = '$' + (p * TOTAL_SUPPLY).toLocaleString('en-US', {maximumFractionDigits: 0});
 
                 // COINS
